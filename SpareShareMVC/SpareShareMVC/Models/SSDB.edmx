@@ -1,0 +1,331 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Assess">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CheckedNum" Type="int" />
+          <Property Name="GiveNum" Type="int" />
+          <Property Name="ReceiveNum" Type="int" />
+          <Property Name="CreditPoint" Type="int" />
+          <Property Name="CreditLevel" Type="int" />
+        </EntityType>
+        <EntityType Name="Checks">
+          <Key>
+            <PropertyRef Name="CheckId" />
+          </Key>
+          <Property Name="CheckId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AdminId" Type="int" />
+          <Property Name="Result" Type="int" />
+          <Property Name="RefuseReason" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CheckedTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="ThingId" />
+            <PropertyRef Name="ReceiverId" />
+          </Key>
+          <Property Name="ThingId" Type="int" Nullable="false" />
+          <Property Name="ReceiverId" Type="int" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ReplyText" Type="nvarchar" MaxLength="1000" />
+          <Property Name="NewScore" Type="int" />
+          <Property Name="SimilarScore" Type="int" />
+          <Property Name="UsefulScore" Type="int" />
+          <Property Name="SpeedScore" Type="int" />
+          <Property Name="BeautifulScore" Type="int" />
+          <Property Name="CommentTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Quests">
+          <Key>
+            <PropertyRef Name="QuestId" />
+          </Key>
+          <Property Name="QuestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReceiverId" Type="int" />
+          <Property Name="CheckId" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" />
+          <Property Name="ReleaseTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Things">
+          <Key>
+            <PropertyRef Name="ThingId" />
+          </Key>
+          <Property Name="ThingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GiverId" Type="int" />
+          <Property Name="CheckId" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhotoURL" Type="nvarchar" MaxLength="500" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" />
+          <Property Name="ReleaseTime" Type="datetime" />
+          <Property Name="DealTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ThingsQuests">
+          <Key>
+            <PropertyRef Name="ThingId" />
+            <PropertyRef Name="QuestId" />
+          </Key>
+          <Property Name="ThingId" Type="int" Nullable="false" />
+          <Property Name="QuestId" Type="int" Nullable="false" />
+          <Property Name="Time" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="30" />
+          <Property Name="Password" Type="varchar" MaxLength="20" />
+          <Property Name="RegTime" Type="datetime" />
+          <Property Name="Province" Type="nvarchar" MaxLength="20" />
+          <Property Name="School" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="QQ" Type="varchar" MaxLength="15" />
+          <Property Name="Sex" Type="char" MaxLength="1" />
+          <Property Name="IsAdmin" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityContainer Name="SSModelStoreContainer">
+          <EntitySet Name="Assess" EntityType="Self.Assess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Checks" EntityType="Self.Checks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Quests" EntityType="Self.Quests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Things" EntityType="Self.Things" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ThingsQuests" EntityType="Self.ThingsQuests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Assess">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CheckedNum" Type="Int32" />
+          <Property Name="CreditPoint" Type="Int32" />
+          <Property Name="CreditLevel" Type="Int32" />
+          <Property Name="GiveNum" Type="Int32" />
+          <Property Name="ReceiveNum" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Checks">
+          <Key>
+            <PropertyRef Name="CheckId" />
+          </Key>
+          <Property Name="CheckId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdminId" Type="Int32" />
+          <Property Name="Result" Type="Int32" />
+          <Property Name="RefuseReason" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CheckedTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="ThingId" />
+            <PropertyRef Name="ReceiverId" />
+          </Key>
+          <Property Name="ThingId" Type="Int32" Nullable="false" />
+          <Property Name="ReceiverId" Type="Int32" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ReplyText" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="NewScore" Type="Int32" />
+          <Property Name="SimilarScore" Type="Int32" />
+          <Property Name="UsefulScore" Type="Int32" />
+          <Property Name="SpeedScore" Type="Int32" />
+          <Property Name="BeautifulScore" Type="Int32" />
+          <Property Name="CommentTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Quests">
+          <Key>
+            <PropertyRef Name="QuestId" />
+          </Key>
+          <Property Name="QuestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReceiverId" Type="Int32" />
+          <Property Name="CheckId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Reason" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ReleaseTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Things">
+          <Key>
+            <PropertyRef Name="ThingId" />
+          </Key>
+          <Property Name="ThingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GiverId" Type="Int32" />
+          <Property Name="CheckId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Reason" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhotoURL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ReleaseTime" Type="DateTime" Precision="3" />
+          <Property Name="DealTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ThingsQuests">
+          <Key>
+            <PropertyRef Name="ThingId" />
+            <PropertyRef Name="QuestId" />
+          </Key>
+          <Property Name="ThingId" Type="Int32" Nullable="false" />
+          <Property Name="QuestId" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RegTime" Type="DateTime" Precision="3" />
+          <Property Name="Province" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="School" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="QQ" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Sex" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IsAdmin" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Assess" EntityType="Self.Assess" />
+          <EntitySet Name="Checks" EntityType="Self.Checks" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" />
+          <EntitySet Name="Quests" EntityType="Self.Quests" />
+          <EntitySet Name="Things" EntityType="Self.Things" />
+          <EntitySet Name="ThingsQuests" EntityType="Self.ThingsQuests" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SSModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Assess">
+            <EntityTypeMapping TypeName="SSModel.Assess">
+              <MappingFragment StoreEntitySet="Assess">
+                <ScalarProperty Name="ReceiveNum" ColumnName="ReceiveNum" />
+                <ScalarProperty Name="GiveNum" ColumnName="GiveNum" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CheckedNum" ColumnName="CheckedNum" />
+                <ScalarProperty Name="CreditPoint" ColumnName="CreditPoint" />
+                <ScalarProperty Name="CreditLevel" ColumnName="CreditLevel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Checks">
+            <EntityTypeMapping TypeName="SSModel.Checks">
+              <MappingFragment StoreEntitySet="Checks">
+                <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="RefuseReason" ColumnName="RefuseReason" />
+                <ScalarProperty Name="CheckedTime" ColumnName="CheckedTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="SSModel.Comments">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="ThingId" ColumnName="ThingId" />
+                <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="ReplyText" ColumnName="ReplyText" />
+                <ScalarProperty Name="NewScore" ColumnName="NewScore" />
+                <ScalarProperty Name="SimilarScore" ColumnName="SimilarScore" />
+                <ScalarProperty Name="UsefulScore" ColumnName="UsefulScore" />
+                <ScalarProperty Name="SpeedScore" ColumnName="SpeedScore" />
+                <ScalarProperty Name="BeautifulScore" ColumnName="BeautifulScore" />
+                <ScalarProperty Name="CommentTime" ColumnName="CommentTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Quests">
+            <EntityTypeMapping TypeName="SSModel.Quests">
+              <MappingFragment StoreEntitySet="Quests">
+                <ScalarProperty Name="QuestId" ColumnName="QuestId" />
+                <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
+                <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Things">
+            <EntityTypeMapping TypeName="SSModel.Things">
+              <MappingFragment StoreEntitySet="Things">
+                <ScalarProperty Name="ThingId" ColumnName="ThingId" />
+                <ScalarProperty Name="GiverId" ColumnName="GiverId" />
+                <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PhotoURL" ColumnName="PhotoURL" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
+                <ScalarProperty Name="DealTime" ColumnName="DealTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ThingsQuests">
+            <EntityTypeMapping TypeName="SSModel.ThingsQuests">
+              <MappingFragment StoreEntitySet="ThingsQuests">
+                <ScalarProperty Name="ThingId" ColumnName="ThingId" />
+                <ScalarProperty Name="QuestId" ColumnName="QuestId" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SSModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="RegTime" ColumnName="RegTime" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="School" ColumnName="School" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

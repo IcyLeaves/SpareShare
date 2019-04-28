@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="A">
+    <Key>
+      <PropertyRef Name="AID" />
+    </Key>
+    <Property Name="AID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="RegTime" Type="DateTime" Precision="3" />
+    <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="GT" Relationship="Self.FK_GT_A" FromRole="A" ToRole="GT" />
+    <NavigationProperty Name="RT" Relationship="Self.FK_RT_A" FromRole="A" ToRole="RT" />
+  </EntityType>
+  <EntityType Name="AGP">
+    <Key>
+      <PropertyRef Name="GPID" />
+    </Key>
+    <Property Name="GPID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FailedNum" Type="Int32" />
+    <Property Name="SuccessNum" Type="Int32" />
+    <NavigationProperty Name="GP" Relationship="Self.FK_AGP_GP" FromRole="AGP" ToRole="GP" />
+  </EntityType>
+  <EntityType Name="ARP">
+    <Key>
+      <PropertyRef Name="RPID" />
+    </Key>
+    <Property Name="RPID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FailedNum" Type="Int32" />
+    <Property Name="SuccessNum" Type="Int32" />
+    <NavigationProperty Name="RP" Relationship="Self.FK_ARP_RP" FromRole="ARP" ToRole="RP" />
+  </EntityType>
+  <EntityType Name="GP">
+    <Key>
+      <PropertyRef Name="GPID" />
+    </Key>
+    <Property Name="GPID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Sex" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AGP" Relationship="Self.FK_AGP_GP" FromRole="GP" ToRole="AGP" />
+    <NavigationProperty Name="GT" Relationship="Self.FK_GT_GP" FromRole="GP" ToRole="GT" />
+  </EntityType>
+  <EntityType Name="GT">
+    <Key>
+      <PropertyRef Name="GPID" />
+      <PropertyRef Name="AID" />
+    </Key>
+    <Property Name="GPID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Amount" Type="Int32" />
+    <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="A" Relationship="Self.FK_GT_A" FromRole="GT" ToRole="A" />
+    <NavigationProperty Name="GP" Relationship="Self.FK_GT_GP" FromRole="GT" ToRole="GP" />
+  </EntityType>
+  <EntityType Name="RP">
+    <Key>
+      <PropertyRef Name="RPID" />
+    </Key>
+    <Property Name="RPID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="RegTime" Type="DateTime" Precision="3" />
+    <Property Name="Sex" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ARP" Relationship="Self.FK_ARP_RP" FromRole="RP" ToRole="ARP" />
+    <NavigationProperty Name="RT" Relationship="Self.FK_RT_RP" FromRole="RP" ToRole="RT" />
+  </EntityType>
+  <EntityType Name="RT">
+    <Key>
+      <PropertyRef Name="RPID" />
+      <PropertyRef Name="AID" />
+    </Key>
+    <Property Name="RPID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Amount" Type="Int32" />
+    <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="A" Relationship="Self.FK_RT_A" FromRole="RT" ToRole="A" />
+    <NavigationProperty Name="RP" Relationship="Self.FK_RT_RP" FromRole="RT" ToRole="RP" />
+  </EntityType>
+  <Association Name="FK_GT_A">
+    <End Role="A" Type="Self.A" Multiplicity="1" />
+    <End Role="GT" Type="Self.GT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="A">
+        <PropertyRef Name="AID" />
+      </Principal>
+      <Dependent Role="GT">
+        <PropertyRef Name="AID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RT_A">
+    <End Role="A" Type="Self.A" Multiplicity="1" />
+    <End Role="RT" Type="Self.RT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="A">
+        <PropertyRef Name="AID" />
+      </Principal>
+      <Dependent Role="RT">
+        <PropertyRef Name="RPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AGP_GP">
+    <End Role="GP" Type="Self.GP" Multiplicity="1" />
+    <End Role="AGP" Type="Self.AGP" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="GP">
+        <PropertyRef Name="GPID" />
+      </Principal>
+      <Dependent Role="AGP">
+        <PropertyRef Name="GPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ARP_RP">
+    <End Role="RP" Type="Self.RP" Multiplicity="1" />
+    <End Role="ARP" Type="Self.ARP" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="RP">
+        <PropertyRef Name="RPID" />
+      </Principal>
+      <Dependent Role="ARP">
+        <PropertyRef Name="RPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GT_GP">
+    <End Role="GP" Type="Self.GP" Multiplicity="1" />
+    <End Role="GT" Type="Self.GT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GP">
+        <PropertyRef Name="GPID" />
+      </Principal>
+      <Dependent Role="GT">
+        <PropertyRef Name="GPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RT_RP">
+    <End Role="RP" Type="Self.RP" Multiplicity="1" />
+    <End Role="RT" Type="Self.RT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RP">
+        <PropertyRef Name="RPID" />
+      </Principal>
+      <Dependent Role="RT">
+        <PropertyRef Name="RPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SSEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="A" EntityType="Self.A" />
+    <EntitySet Name="AGP" EntityType="Self.AGP" />
+    <EntitySet Name="ARP" EntityType="Self.ARP" />
+    <EntitySet Name="GP" EntityType="Self.GP" />
+    <EntitySet Name="GT" EntityType="Self.GT" />
+    <EntitySet Name="RP" EntityType="Self.RP" />
+    <EntitySet Name="RT" EntityType="Self.RT" />
+    <AssociationSet Name="FK_GT_A" Association="Self.FK_GT_A">
+      <End Role="A" EntitySet="A" />
+      <End Role="GT" EntitySet="GT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RT_A" Association="Self.FK_RT_A">
+      <End Role="A" EntitySet="A" />
+      <End Role="RT" EntitySet="RT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AGP_GP" Association="Self.FK_AGP_GP">
+      <End Role="GP" EntitySet="GP" />
+      <End Role="AGP" EntitySet="AGP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ARP_RP" Association="Self.FK_ARP_RP">
+      <End Role="RP" EntitySet="RP" />
+      <End Role="ARP" EntitySet="ARP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GT_GP" Association="Self.FK_GT_GP">
+      <End Role="GP" EntitySet="GP" />
+      <End Role="GT" EntitySet="GT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RT_RP" Association="Self.FK_RT_RP">
+      <End Role="RP" EntitySet="RP" />
+      <End Role="RT" EntitySet="RT" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

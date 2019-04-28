@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="A">
+    <Key>
+      <PropertyRef Name="AID" />
+    </Key>
+    <Property Name="AID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Username" Type="nvarchar(max)" />
+    <Property Name="RegTime" Type="datetime" />
+    <Property Name="Password" Type="nvarchar" MaxLength="20" />
+    <Property Name="Name" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="AGP">
+    <Key>
+      <PropertyRef Name="GPID" />
+    </Key>
+    <Property Name="GPID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="FailedNum" Type="int" />
+    <Property Name="SuccessNum" Type="int" />
+  </EntityType>
+  <EntityType Name="ARP">
+    <Key>
+      <PropertyRef Name="RPID" />
+    </Key>
+    <Property Name="RPID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="FailedNum" Type="int" />
+    <Property Name="SuccessNum" Type="int" />
+  </EntityType>
+  <EntityType Name="GP">
+    <Key>
+      <PropertyRef Name="GPID" />
+    </Key>
+    <Property Name="GPID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Username" Type="nvarchar(max)" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="Sex" Type="char" MaxLength="1" />
+    <Property Name="Password" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="GT">
+    <Key>
+      <PropertyRef Name="GPID" />
+      <PropertyRef Name="AID" />
+    </Key>
+    <Property Name="GPID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="AID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="Amount" Type="int" />
+    <Property Name="Reason" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="RP">
+    <Key>
+      <PropertyRef Name="RPID" />
+    </Key>
+    <Property Name="RPID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Username" Type="nvarchar(max)" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="RegTime" Type="datetime" />
+    <Property Name="Sex" Type="char" MaxLength="1" />
+    <Property Name="Password" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="RT">
+    <Key>
+      <PropertyRef Name="RPID" />
+      <PropertyRef Name="AID" />
+    </Key>
+    <Property Name="RPID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="AID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="Amount" Type="int" />
+    <Property Name="Reason" Type="nvarchar(max)" />
+  </EntityType>
+  <Association Name="FK_AGP_GP">
+    <End Role="GP" Type="Self.GP" Multiplicity="1" />
+    <End Role="AGP" Type="Self.AGP" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="GP">
+        <PropertyRef Name="GPID" />
+      </Principal>
+      <Dependent Role="AGP">
+        <PropertyRef Name="GPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ARP_RP">
+    <End Role="RP" Type="Self.RP" Multiplicity="1" />
+    <End Role="ARP" Type="Self.ARP" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="RP">
+        <PropertyRef Name="RPID" />
+      </Principal>
+      <Dependent Role="ARP">
+        <PropertyRef Name="RPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GT_A">
+    <End Role="A" Type="Self.A" Multiplicity="1" />
+    <End Role="GT" Type="Self.GT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="A">
+        <PropertyRef Name="AID" />
+      </Principal>
+      <Dependent Role="GT">
+        <PropertyRef Name="AID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GT_GP">
+    <End Role="GP" Type="Self.GP" Multiplicity="1" />
+    <End Role="GT" Type="Self.GT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GP">
+        <PropertyRef Name="GPID" />
+      </Principal>
+      <Dependent Role="GT">
+        <PropertyRef Name="GPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RT_A">
+    <End Role="A" Type="Self.A" Multiplicity="1" />
+    <End Role="RT" Type="Self.RT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="A">
+        <PropertyRef Name="AID" />
+      </Principal>
+      <Dependent Role="RT">
+        <PropertyRef Name="RPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RT_RP">
+    <End Role="RP" Type="Self.RP" Multiplicity="1" />
+    <End Role="RT" Type="Self.RT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RP">
+        <PropertyRef Name="RPID" />
+      </Principal>
+      <Dependent Role="RT">
+        <PropertyRef Name="RPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SSModelStoreContainer">
+    <EntitySet Name="A" EntityType="Self.A" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AGP" EntityType="Self.AGP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ARP" EntityType="Self.ARP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP" EntityType="Self.GP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GT" EntityType="Self.GT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RP" EntityType="Self.RP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RT" EntityType="Self.RT" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_AGP_GP" Association="Self.FK_AGP_GP">
+      <End Role="GP" EntitySet="GP" />
+      <End Role="AGP" EntitySet="AGP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ARP_RP" Association="Self.FK_ARP_RP">
+      <End Role="RP" EntitySet="RP" />
+      <End Role="ARP" EntitySet="ARP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GT_A" Association="Self.FK_GT_A">
+      <End Role="A" EntitySet="A" />
+      <End Role="GT" EntitySet="GT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GT_GP" Association="Self.FK_GT_GP">
+      <End Role="GP" EntitySet="GP" />
+      <End Role="GT" EntitySet="GT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RT_A" Association="Self.FK_RT_A">
+      <End Role="A" EntitySet="A" />
+      <End Role="RT" EntitySet="RT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RT_RP" Association="Self.FK_RT_RP">
+      <End Role="RP" EntitySet="RP" />
+      <End Role="RT" EntitySet="RT" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

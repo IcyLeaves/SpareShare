@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 大学生闲置物品捐助系统</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/MyScripts/echarts.min.js"></script>
+    @*<script src="~/Scripts/MyScripts/china.js"></script>*@
+    <style>
+        #SS
+        {
+            height:40px;
+            display:inline; 
+            opacity:0.4;
+        }
+        #SS:hover
+        {
+            opacity:1;
+        }
+    </style>
+    @RenderSection("head", required: false)
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/SSHome/Index" class="nav navbar-brand" style="padding:5px 15px 5px 15px;"><img id="SS" src="~/Files/SpareShare.png" /></a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("我的主页", "Index", "SSUser")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            我的捐赠<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("查询受助请求", "SearchReceiveThings", "SSGiven")</li>
+                            <li>@Html.ActionLink("上传捐赠物品", "UploadGivenThings", "SSGiven")</li>
+                            <li>@Html.ActionLink("查看我的捐赠", "SelectGivenThings", "SSGiven")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            我的受助<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("查询捐赠物品", "SearchGivenThings", "SSReceive")</li>
+                            <li>@Html.ActionLink("发布受助请求", "UploadReceiveThings", "SSReceive")</li>
+                            <li>@Html.ActionLink("查看我的受助", "SelectReceiveThings", "SSReceive")</li>
+                            @*<li>@Html.ActionLink("确认领取物品", "SelectHistoryThings", "SSReceive")</li>*@
+                        </ul>
+                    </li>
+                    @if ((string)Session["isAdmin"] == "Y")
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                管理平台<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("审核捐赠物品", "AssessGivenThings", "SSAdministor")</li>
+                                <li>@Html.ActionLink("审核受助请求", "AssessReceiveThings", "SSAdministor")</li>
+                                <li>@Html.ActionLink("管理报表", "AdminCharts", "SSAdministor")</li>
+                            </ul>
+                        </li>
+                    }
+                    @*<li>@Html.ActionLink("个人信誉评价", "CreditGivenPeople", "SSGiven")</li>*@
+                </ul>
+                @Html.Partial("_SSLoginPartial")
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer style="text-align:center;">
+            <p>&copy; @DateTime.Now.Year - 大学生闲置物品捐助系统</p>
+        </footer>
+    </div>
+
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

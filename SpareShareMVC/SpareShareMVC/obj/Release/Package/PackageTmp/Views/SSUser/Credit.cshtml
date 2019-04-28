@@ -1,0 +1,151 @@
+﻿@model SpareShareMVC.Models.Assess
+@{
+    ViewBag.Title = "个人信誉评价";
+    int progress=CreditsCal.ExpInProgress(Model.CreditPoint.Value);
+}
+@section head{
+    <style>
+        .panel-body{
+            text-align:center;
+            font-size:25px;
+        }
+        .panel-success {
+            color: #67b425;
+        }
+        .panel-warning{
+            color:#b19d2f;
+        }
+        .panel-danger{
+            color:#ce7474;
+        }
+        .panel-info{
+            color:#4597c1;
+        }
+        .oneline *{
+            vertical-align:middle;
+            display:inline;
+        }
+        .oneline img{
+            height:17px;
+            width:17px;
+            margin-left:5px;
+        }
+            .oneline img:hover {
+                cursor:pointer;
+            }
+        .dl-horizontal dt{
+            width:auto;
+            text-align:left;
+            font-weight:normal;
+        }
+    </style>
+}
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+            </div>
+            <div class="panel-body">
+                审核成功数<br />
+                <strong>@Model.CheckedNum</strong>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+            </div>
+            <div class="panel-body">
+                捐赠完成数<br />
+                <strong>@Model.GiveNum</strong>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+            </div>
+            <div class="panel-body">
+                受助完成数<br />
+                <strong>@Model.ReceiveNum</strong>
+            </div>
+        </div>
+    </div>
+</div>
+<blockquote>
+    <p>信誉等级：Lv.@Model.CreditLevel</p>
+    <div class="oneline"><p>到达下一级还需@(progress)信誉点数</p><img src="~/Files/info.png" data-toggle="modal" data-target="#myModal"/></div>
+</blockquote>
+<blockquote>
+    <p>QQ:@ViewBag.QQ</p>
+    @if (ViewBag.Email != null)
+    {
+        <p>Email:@ViewBag.Email</p>
+    }
+</blockquote>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">信誉等级说明</h4>
+            </div>
+            <div class="modal-body">
+                <h4><strong>什么是信誉等级？</strong></h4>
+                信誉等级是用户在网站活跃度的表现，不同的信誉等级会赋予不同的系统特权（待更新）。<br />
+                信誉等级通过一定的信誉点数来增加。一共分为6级，对应的信誉点数为：<br />
+                Lv.1 0-4<br />
+                Lv.2 5-19<br />
+                Lv.3 20-49<br />
+                Lv.4 50-99<br />
+                Lv.5 100-199<br />
+                Lv.6 200以上<br />
+                <h4><strong>如何获得信誉点数？</strong></h4>
+                <dl class="dl-horizontal">
+                    <dt>
+                        上传的捐赠物品通过审核 
+                    </dt>
+                    <dd>
+                        +2
+                    </dd>
+                    <dt>
+                        发布的受助请求通过审核
+                    </dt>
+                    <dd>
+                        +2
+                    </dd>
+                    <dt>
+                        删除已经过审的物品或请求
+                    </dt>
+                    <dd>
+                        -2
+                    </dd>
+                    <dt>
+                        捐赠成功
+                    </dt>
+                    <dd>
+                        +5
+                    </dd>
+                    <dt>
+                        受助成功
+                    </dt>
+                    <dd>
+                        +1
+                    </dd>
+                    <dt>
+                        受助成功后评论捐赠物品
+                    </dt>
+                    <dd>
+                        +1
+                    </dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>

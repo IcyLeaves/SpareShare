@@ -1,0 +1,99 @@
+﻿@model SpareShareMVC.Models.Things
+@{
+    ViewBag.Title = "捐赠物品详细信息";
+    Layout = "~/Views/Shared/_SSDetailsLayout.cshtml";
+    ViewBag.isRefuse = false;
+    ViewBag.isThing = true;
+    ViewBag.isComment = false;
+    ViewBag.isQuest = false;
+}
+
+@section head{
+    <script>
+        $(function () {
+            images();
+            $(window).resize(function () {
+                images();
+            })
+        });
+        function images() {
+            var imgwidth = $('.jqthumb:first').width() * 0.7;
+            $('.jqthumb img').jqthumb({
+                classname: "img-thumbnail",
+                width: imgwidth,//宽度
+                height: imgwidth,//高度
+            });
+        }
+    </script>
+}
+
+@section Thing{
+    @{
+        TimeSpan span = (TimeSpan)(DateTime.Now - Model.ReleaseTime);
+        var ThingTime = "";
+        if (span.TotalDays > 60)
+        {
+            ThingTime = Model.ReleaseTime.Value.ToShortDateString();
+        }
+        else if (span.TotalDays > 30)
+        {
+            ThingTime = "1个月前";
+        }
+        else if (span.TotalDays > 14)
+        {
+            ThingTime = "2周前";
+        }
+        else if (span.TotalDays > 7)
+        {
+            ThingTime = "1周前";
+        }
+        else if (span.TotalDays > 1)
+        {
+            ThingTime = string.Format("{0}天前", (int)Math.Floor(span.TotalDays));
+        }
+        else if (span.TotalHours > 1)
+        {
+            ThingTime = string.Format("{0}小时前", (int)Math.Floor(span.TotalHours));
+        }
+        else if (span.TotalMinutes > 1)
+        {
+            ThingTime = string.Format("{0}分钟前", (int)Math.Floor(span.TotalMinutes));
+        }
+        else if (span.TotalSeconds >= 1)
+        {
+            ThingTime = string.Format("{0}秒前", (int)Math.Floor(span.TotalSeconds));
+        }
+        else
+        {
+            ThingTime = "1秒前";
+        }
+    }
+<div class="col-md-8 thing-left">
+    <dl class="dl-horizontal">
+        <dt style="margin-bottom:10px">物品名称</dt>
+        <dd style="font-size:20px"><strong>@Model.Name</strong></dd>
+        <dt>物品类别</dt>
+        <dd>@Model.Type</dd>
+        <dt>备&nbsp;&nbsp;注</dt>
+        <dd>@Model.Reason</dd>
+    </dl><br />
+    <a href="~/SSUser/Credit/@(ViewBag.tUserId)"><span class="glyphicon glyphicon-user"></span> @ViewBag.tUserName</a>
+    <span class="info">发布于@(ThingTime)</span>
+</div>
+<div class="col-md-4 jqthumb thing-right" style="text-align:center">
+    @if (Model.PhotoURL != null)
+    {
+        <img src="~/Upload/ThingsImages/@Model.PhotoURL" onerror="this.src='/Files/1.png';this.onerror=null" class="img-thumbnail" style="width:70%; height:300px;" />
+    }
+    else
+    {
+        <img src="/Files/1.png" class="img-thumbnail" style="width:70%; height:300px;" />
+    }
+</div>
+}
+@using (Html.BeginForm("DetailsGivenThings", "SSReceive", new { id = Model.ThingId }, FormMethod.Post, new { id = "AssessForm" }))
+{
+    <input type="submit" value="接受" name="action" class="btn btn-success" />
+    <input type="submit" value="取消" name="action" class="btn btn-link" />
+}
+

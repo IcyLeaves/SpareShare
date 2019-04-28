@@ -1,0 +1,251 @@
+﻿@model SpareShareMVC.Models.Things
+@{
+    ViewBag.Title = "捐赠物品详细信息";
+    Layout = "~/Views/Shared/_SSDetailsLayout.cshtml";
+    ViewBag.isRefuse = Model.Status == "审核未通过" ? true : false;
+    ViewBag.isThing = true;
+    ViewBag.isComment = ViewBag.cReceiverId != null ? true : false;
+    ViewBag.isQuest = ViewBag.qId != null ? true : false;
+}
+@section head{
+    <script>
+        $(function(){
+            images();
+            $(window).resize(function () {
+                images();
+            })
+        });
+        function images(){
+            var imgwidth=$('.jqthumb:first').width()*0.7;
+            $('.jqthumb img').jqthumb({
+                classname:"img-thumbnail",
+                width : imgwidth,//宽度
+                height : imgwidth,//高度
+            });
+        }
+    </script>
+}
+@if (ViewBag.isQuest)
+{
+    TimeSpan span = (TimeSpan)(DateTime.Now - (DateTime)ViewBag.qTime);
+    var result = "";
+    if (span.TotalDays > 60)
+    {
+        result = ViewBag.qTime.Value.ToShortDateString();
+    }
+    else if (span.TotalDays > 30)
+    {
+        result = "1个月前";
+    }
+    else if (span.TotalDays > 14)
+    {
+        result = "2周前";
+    }
+    else if (span.TotalDays > 7)
+    {
+        result = "1周前";
+    }
+    else if (span.TotalDays > 1)
+    {
+        result = string.Format("{0}天前", (int)Math.Floor(span.TotalDays));
+    }
+    else if (span.TotalHours > 1)
+    {
+        result = string.Format("{0}小时前", (int)Math.Floor(span.TotalHours));
+    }
+    else if (span.TotalMinutes > 1)
+    {
+        result = string.Format("{0}分钟前", (int)Math.Floor(span.TotalMinutes));
+    }
+    else if (span.TotalSeconds >= 1)
+    {
+        result = string.Format("{0}秒前", (int)Math.Floor(span.TotalSeconds));
+    }
+    else
+    {
+        result = "1秒前";
+    }
+
+    @section Quest{
+        <div class="quest">
+            <span class="quest-name">@ViewBag.qName</span>
+        </div>
+        <div class="reason">
+            <span class="reason-text">@ViewBag.qReason</span>
+        </div>
+        <p></p>
+        <div class="info">
+            <span>
+                类别：@ViewBag.qType
+            </span><br />
+            <span style="float:right;margin-left:3px;">发布于@(result)</span>
+            <a href="~/SSUser/Credit/@(ViewBag.qUserId)" style="float:right"><span class="glyphicon glyphicon-user"></span> @ViewBag.qUserName </a>
+        </div>
+    }
+}
+@section Thing{
+    @{
+        TimeSpan span1 = (TimeSpan)(DateTime.Now - Model.ReleaseTime);
+        var ThingTime = "";
+        if (span1.TotalDays > 60)
+        {
+            ThingTime = Model.ReleaseTime.Value.ToShortDateString();
+        }
+        else if (span1.TotalDays > 30)
+        {
+            ThingTime = "1个月前";
+        }
+        else if (span1.TotalDays > 14)
+        {
+            ThingTime = "2周前";
+        }
+        else if (span1.TotalDays > 7)
+        {
+            ThingTime = "1周前";
+        }
+        else if (span1.TotalDays > 1)
+        {
+            ThingTime = string.Format("{0}天前", (int)Math.Floor(span1.TotalDays));
+        }
+        else if (span1.TotalHours > 1)
+        {
+            ThingTime = string.Format("{0}小时前", (int)Math.Floor(span1.TotalHours));
+        }
+        else if (span1.TotalMinutes > 1)
+        {
+            ThingTime = string.Format("{0}分钟前", (int)Math.Floor(span1.TotalMinutes));
+        }
+        else if (span1.TotalSeconds >= 1)
+        {
+            ThingTime = string.Format("{0}秒前", (int)Math.Floor(span1.TotalSeconds));
+        }
+        else
+        {
+            ThingTime = "1秒前";
+        }
+    }
+    <div class="col-md-8 thing-left">
+        <dl class="dl-horizontal">
+            <dt style="margin-bottom:10px">物品名称</dt>
+            <dd style="font-size:20px"><strong>@Model.Name</strong></dd>
+            <dt>物品类别</dt>
+            <dd>@Model.Type</dd>
+            <dt>备&nbsp;&nbsp;注</dt>
+            <dd>@Model.Reason</dd>
+        </dl><br />
+        <a href="~/SSUser/Credit/@(ViewBag.tUserId)"><span class="glyphicon glyphicon-user"></span> @ViewBag.tUserName</a>
+        <span class="info">发布于@(ThingTime)</span>
+    </div>
+    <div class="col-md-4 jqthumb thing-right" style="text-align:center">
+        @if (Model.PhotoURL != null)
+    {
+        <img src="~/Upload/ThingsImages/@Model.PhotoURL" onerror="this.src='/Files/1.png';this.onerror=null" class="img-thumbnail" style="width:70%; height:300px;" />
+        }
+        else
+        {
+        <img src="/Files/1.png" class="img-thumbnail" style="width:70%; height:300px;" />
+        }
+    </div>
+}
+@if (ViewBag.isRefuse)
+{
+    @section Refuse{
+        <p class="refuse">@ViewBag.RefuseReason</p>
+    }
+}
+@if (ViewBag.isComment)
+{
+    @section Comment{
+        <div class="col-md-4">
+            <div id="radar-chart" style="width:100%;height:300px;"></div>
+        </div>
+        <div class="col-md-8" height="300px">
+            <h2 style="margin-top:0;">评论</h2>
+            <p>
+                @ViewBag.cText
+            </p><br />
+            <a href="~/SSUser/Credit/@(ViewBag.qUserId)"><span class="glyphicon glyphicon-user"></span> @ViewBag.qUserName </a>
+            <span class="info" style="margin-left:5px">| @ViewBag.cTime</span>
+        </div>
+    }
+}
+@using (Html.BeginForm("DetailsGivenThings", "SSGiven", new { id = Model.ThingId }, FormMethod.Post, new { id = "AssessForm" }))
+{
+    if (Model.Status == "正在审核中" || Model.Status == "物品闲置中")
+    {
+        <input type="submit" value="删除" name="action" class="btn btn-danger" />
+    }
+    <input type="submit" value="返回到列表" name="action" class="btn btn-link" />
+}
+<script type="text/javascript">
+    $(function () {
+        var result;
+        $.ajax({
+            url: "/SSCharts/CommentStatis?thingId="+@(Model.ThingId)+"&receiverId="+@(ViewBag.cReceiverId),    //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true,//请求是否异步，默认为异步，这也是ajax重要特性
+            data: {},    //参数值,键值对
+            type: "GET",   //请求方式
+            success: function (req) {
+                result = req;
+                loadRadarEcharts(result);
+            },
+            complete: function () {
+                //请求完成的处理
+            },
+            error: function () {
+                //请求出错处理
+            }
+        });
+    });
+    function loadRadarEcharts(dataset) {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('radar-chart'));
+        var indicator = JSON.parse(dataset.Indicator);
+        // 指定图表的配置项和数据
+        var option = {
+            tooltip: {
+                formatter:function(params)
+                {
+                    var New = [ "很旧", "比较旧", "半新不旧", "比较新", "很新" ];
+                    var Similar = ["完全不符合", "有一点符合", "比较符合", "非常符合", "完全符合"];
+                    var Useful = ["无用", "有一点用", "比较有用", "非常有用", "正中下怀"];
+                    var Speed=["很慢","有点慢","不慢不快","有点快","很快"];
+                    var Beautiful = ["很丑", "有点丑", "普通", "挺好看", "非常好看"];
+                    return "物品评价</br>"+
+                        "新旧程度:"+New[params.value[0]-1]+"</br>"+
+                        "符合描述程度:"+Similar[params.value[1]-1]+"</br>"+
+                        "实用程度:"+Useful[params.value[2]-1]+"</br>"+
+                        "送达速度:"+Speed[params.value[3]-1]+"</br>"+
+                        "美观程度:"+Beautiful[params.value[4]-1];
+                }
+            },
+            legend: {
+                x:'left',
+                data: ['物品评价']
+            },
+            radar: {
+                // shape: 'circle',
+                name: {
+                    textStyle: {
+                        color: '#999999',
+                        padding: [3, 5]
+                    }
+                },
+                indicator: indicator
+            },
+            series: [{
+                type: 'radar',
+                areaStyle: {normal: {}},
+                data: [
+                    {
+                        value: dataset.SeriesData,
+                        name: '物品评价'
+                    }
+                ]
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+</script>

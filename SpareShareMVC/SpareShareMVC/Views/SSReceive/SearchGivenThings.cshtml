@@ -1,0 +1,300 @@
+﻿@model IEnumerable<SpareShareMVC.Models.SSSeachGivenThingsViewModel>
+@{
+    ViewBag.Title = "查询捐赠物品";
+    ViewBag.DetailsURL = "/SSReceive/DetailsGivenThings/";
+}
+@section head
+{
+    @Scripts.Render("~/Scripts/MyScripts/jqthumb.min.js")
+    <script>
+        $(function(){
+            images();
+            $(window).resize(function () {
+                images();
+            })
+        });
+        function images(){
+            var imgwidth=$('.thumbnail:first').width();
+            $('.thumbnail img').jqthumb({
+                classname:"img-thumbnail",
+                width : imgwidth,//宽度
+                height : 200,//高度
+            });
+        }
+    </script>
+    <style>
+        .myclass {
+            margin-bottom: 15px;
+        }
+        .form-control{
+            display:inline;
+        }
+         .caption .badge{
+            color:#ffffff;
+        }
+        .caption .sameprovince{
+            background-color:#ff6a00;
+        }
+        .caption .sameschool{
+            background-color:forestgreen;
+        }
+    </style>
+}
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("SearchGivenThings","SSReceive",FormMethod.Get))
+{
+    <p>
+        查询物品: @Html.TextBox("SearchString","",new { @class="form-control"})
+        <button type="submit" class="btn btn-default">搜索</button>
+    </p>
+}
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(0).Take(4))
+        {
+            string StatusStyle = "<strong><font color='red'>This is bold!</font></strong>";
+            string SameSch = "<span class='badge sameschool'>同校</span>";
+            string SamePro = "<span class='badge sameprovince'>同省</span>";
+            if (item.Thing.Status.ToString().Equals("正在审核中")) { StatusStyle = "<span style='color:Orange'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("物品闲置中")) { StatusStyle = "<span style='color:cadetblue'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("已接受捐赠")) { StatusStyle = "<span style='color:forestgreen'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("审核未通过")) { StatusStyle = "<span style='color:firebrick'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("捐赠已成功")) { StatusStyle = "<span style='color:mediumPurple'>" + item.Thing.Status + "</span>"; }
+
+            if (item.prior >= 300) {; }
+            else if (item.prior >= 200) { SameSch = ""; }
+            else if (item.prior >= 100) { SameSch = ""; SamePro = ""; }
+            TimeSpan span = (TimeSpan)(DateTime.Now - item.Thing.ReleaseTime);
+            var result = "";
+            if (span.TotalDays > 60)
+            {
+                result = item.Thing.ReleaseTime.Value.ToShortDateString();
+            }
+            else if (span.TotalDays > 30)
+            {
+                result = "1个月前";
+            }
+            else if (span.TotalDays > 14)
+            {
+                result = "2周前";
+            }
+            else if (span.TotalDays > 7)
+            {
+                result = "1周前";
+            }
+            else if (span.TotalDays > 1)
+            {
+                result = string.Format("{0}天前", (int)Math.Floor(span.TotalDays));
+            }
+            else if (span.TotalHours > 1)
+            {
+                result = string.Format("{0}小时前", (int)Math.Floor(span.TotalHours));
+            }
+            else if (span.TotalMinutes > 1)
+            {
+                result = string.Format("{0}分钟前", (int)Math.Floor(span.TotalMinutes));
+            }
+            else if (span.TotalSeconds >= 1)
+            {
+                result = string.Format("{0}秒前", (int)Math.Floor(span.TotalSeconds));
+            }
+            else
+            {
+                result = "1秒前";
+            }
+            <div class="col-sm-6 col-md-3 myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.ThingId)" class="thumbnail" style="text-decoration: none">
+                    @if (item.Thing.PhotoURL == null)
+                    {
+                        <img src="~/Files/1.png" class="img-thumbnail" style="width:100%; height:200px;">
+                    }
+                    else
+                    {
+                        <img src="~/Upload/ThingsImages/@item.Thing.PhotoURL" onerror="this.src='/Files/1.png';this.onerror=null" class="img-thumbnail" style="width:100%; height:200px;">
+                    }
+                    <div class="caption">
+                        <p>@item.Thing.Name @Html.Raw(SameSch)@Html.Raw(SamePro)</p>
+                        @Html.Raw(StatusStyle)
+                        <span style="float:right; color:#808080">发布于@(result)</span>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(4).Take(4))
+        {
+            string StatusStyle = "<strong><font color='red'>This is bold!</font></strong>";
+            string SameSch = "<span class='badge sameschool'>同校</span>";
+            string SamePro = "<span class='badge sameprovince'>同省</span>";
+            if (item.Thing.Status.ToString().Equals("正在审核中")) { StatusStyle = "<span style='color:Orange'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("物品闲置中")) { StatusStyle = "<span style='color:cadetblue'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("已接受捐赠")) { StatusStyle = "<span style='color:forestgreen'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("审核未通过")) { StatusStyle = "<span style='color:firebrick'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("捐赠已成功")) { StatusStyle = "<span style='color:mediumPurple'>" + item.Thing.Status + "</span>"; }
+
+            if (item.prior >= 300) {; }
+            else if (item.prior >= 200) { SameSch = ""; }
+            else if (item.prior >= 100) { SameSch = ""; SamePro = ""; }
+            TimeSpan span = (TimeSpan)(DateTime.Now - item.Thing.ReleaseTime);
+            var result = "";
+            if (span.TotalDays > 60)
+            {
+                result = item.Thing.ReleaseTime.Value.ToShortDateString();
+            }
+            else if (span.TotalDays > 30)
+            {
+                result = "1个月前";
+            }
+            else if (span.TotalDays > 14)
+            {
+                result = "2周前";
+            }
+            else if (span.TotalDays > 7)
+            {
+                result = "1周前";
+            }
+            else if (span.TotalDays > 1)
+            {
+                result = string.Format("{0}天前", (int)Math.Floor(span.TotalDays));
+            }
+            else if (span.TotalHours > 1)
+            {
+                result = string.Format("{0}小时前", (int)Math.Floor(span.TotalHours));
+            }
+            else if (span.TotalMinutes > 1)
+            {
+                result = string.Format("{0}分钟前", (int)Math.Floor(span.TotalMinutes));
+            }
+            else if (span.TotalSeconds >= 1)
+            {
+                result = string.Format("{0}秒前", (int)Math.Floor(span.TotalSeconds));
+            }
+            else
+            {
+                result = "1秒前";
+            }
+            <div class="col-sm-6 col-md-3  myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.ThingId)" class="thumbnail" style="text-decoration: none">
+                    @if (item.Thing.PhotoURL == null)
+                    {
+                        <img src="~/Files/1.png" class="img-thumbnail" style="width:100%; height:200px;">
+                    }
+                    else
+                    {
+                        <img src="~/Upload/ThingsImages/@item.Thing.PhotoURL" onerror="this.src='/Files/1.png';this.onerror=null" class="img-thumbnail" style="width:100%; height:200px;">
+                    }
+                    <div class="caption">
+                        <p>@item.Thing.Name @Html.Raw(SameSch)@Html.Raw(SamePro)</p>
+                        @Html.Raw(StatusStyle)
+                        <span style="float:right; color:#808080">发布于@(result)</span>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(8).Take(4))
+        {
+            string StatusStyle = "<strong><font color='red'>This is bold!</font></strong>";
+            string SameSch = "<span class='badge sameschool'>同校</span>";
+            string SamePro = "<span class='badge sameprovince'>同省</span>";
+            if (item.Thing.Status.ToString().Equals("正在审核中")) { StatusStyle = "<span style='color:Orange'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("物品闲置中")) { StatusStyle = "<span style='color:cadetblue'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("已接受捐赠")) { StatusStyle = "<span style='color:forestgreen'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("审核未通过")) { StatusStyle = "<span style='color:firebrick'>" + item.Thing.Status + "</span>"; }
+            else if (item.Thing.Status.ToString().Equals("捐赠已成功")) { StatusStyle = "<span style='color:mediumPurple'>" + item.Thing.Status + "</span>"; }
+
+            if (item.prior >= 300) {; }
+            else if (item.prior >= 200) { SameSch = ""; }
+            else if (item.prior >= 100) { SameSch = ""; SamePro = ""; }
+            TimeSpan span = (TimeSpan)(DateTime.Now - item.Thing.ReleaseTime);
+            var result = "";
+            if (span.TotalDays > 60)
+            {
+                result = item.Thing.ReleaseTime.Value.ToShortDateString();
+            }
+            else if (span.TotalDays > 30)
+            {
+                result = "1个月前";
+            }
+            else if (span.TotalDays > 14)
+            {
+                result = "2周前";
+            }
+            else if (span.TotalDays > 7)
+            {
+                result = "1周前";
+            }
+            else if (span.TotalDays > 1)
+            {
+                result = string.Format("{0}天前", (int)Math.Floor(span.TotalDays));
+            }
+            else if (span.TotalHours > 1)
+            {
+                result = string.Format("{0}小时前", (int)Math.Floor(span.TotalHours));
+            }
+            else if (span.TotalMinutes > 1)
+            {
+                result = string.Format("{0}分钟前", (int)Math.Floor(span.TotalMinutes));
+            }
+            else if (span.TotalSeconds >= 1)
+            {
+                result = string.Format("{0}秒前", (int)Math.Floor(span.TotalSeconds));
+            }
+            else
+            {
+                result = "1秒前";
+            }
+            <div class="col-sm-6 col-md-3  myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.ThingId)" class="thumbnail" style="text-decoration: none">
+                    @if (item.Thing.PhotoURL == null)
+                    {
+                        <img src="~/Files/1.png" class="img-thumbnail" style="width:100%; height:200px;">
+                    }
+                    else
+                    {
+                        <img src="~/Upload/ThingsImages/@item.Thing.PhotoURL" onerror="this.src='/Files/1.png';this.onerror=null" class="img-thumbnail" style="width:100%; height:200px;">
+                    }
+                    <div class="caption">
+                        <p>@item.Thing.Name @Html.Raw(SameSch)@Html.Raw(SamePro)</p>
+                        @Html.Raw(StatusStyle)
+                        <span style="float:right; color:#808080">发布于@(result)</span>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<div style="text-align:center">
+    <ul id="page"></ul>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/MyScripts/bootstrap-paginator.js")
+    <script>
+        $(function () {
+            var currentPage = @(ViewBag.currentPage);
+            var totalPages = @(ViewBag.totalPages);
+            $("#page").bootstrapPaginator({
+                bootstrapMajorVersion: 3, //对应的bootstrap版本
+                currentPage: currentPage, //当前页数
+                numberOfPages: 5, //每次显示页数
+                totalPages: totalPages, //总页数
+                shouldShowPage: true, //是否显示该按钮
+                useBootstrapTooltip: true,
+                onPageClicked: function (event, originalEvent, type, page) {
+                    var urlSearch="@ViewBag.searchString";
+                    window.location.href = "http://"+window.location.host+"/SSReceive/SearchGivenThings?searchString="+urlSearch+"&currentPage="+page;
+                    //console.log(window.location.host);
+                    //console.log(window.location.href);
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SSModelStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="Assess">
+      <EntityTypeMapping TypeName="SSModel.Assess">
+        <MappingFragment StoreEntitySet="Assess">
+          <ScalarProperty Name="ReceiveNum" ColumnName="ReceiveNum" />
+          <ScalarProperty Name="GiveNum" ColumnName="GiveNum" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="CheckedNum" ColumnName="CheckedNum" />
+          <ScalarProperty Name="CreditPoint" ColumnName="CreditPoint" />
+          <ScalarProperty Name="CreditLevel" ColumnName="CreditLevel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Checks">
+      <EntityTypeMapping TypeName="SSModel.Checks">
+        <MappingFragment StoreEntitySet="Checks">
+          <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+          <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="RefuseReason" ColumnName="RefuseReason" />
+          <ScalarProperty Name="CheckedTime" ColumnName="CheckedTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="SSModel.Comments">
+        <MappingFragment StoreEntitySet="Comments">
+          <ScalarProperty Name="ThingId" ColumnName="ThingId" />
+          <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="ReplyText" ColumnName="ReplyText" />
+          <ScalarProperty Name="NewScore" ColumnName="NewScore" />
+          <ScalarProperty Name="SimilarScore" ColumnName="SimilarScore" />
+          <ScalarProperty Name="UsefulScore" ColumnName="UsefulScore" />
+          <ScalarProperty Name="SpeedScore" ColumnName="SpeedScore" />
+          <ScalarProperty Name="BeautifulScore" ColumnName="BeautifulScore" />
+          <ScalarProperty Name="CommentTime" ColumnName="CommentTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Quests">
+      <EntityTypeMapping TypeName="SSModel.Quests">
+        <MappingFragment StoreEntitySet="Quests">
+          <ScalarProperty Name="QuestId" ColumnName="QuestId" />
+          <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
+          <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Things">
+      <EntityTypeMapping TypeName="SSModel.Things">
+        <MappingFragment StoreEntitySet="Things">
+          <ScalarProperty Name="ThingId" ColumnName="ThingId" />
+          <ScalarProperty Name="GiverId" ColumnName="GiverId" />
+          <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="PhotoURL" ColumnName="PhotoURL" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
+          <ScalarProperty Name="DealTime" ColumnName="DealTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ThingsQuests">
+      <EntityTypeMapping TypeName="SSModel.ThingsQuests">
+        <MappingFragment StoreEntitySet="ThingsQuests">
+          <ScalarProperty Name="ThingId" ColumnName="ThingId" />
+          <ScalarProperty Name="QuestId" ColumnName="QuestId" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="SSModel.Users">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="RegTime" ColumnName="RegTime" />
+          <ScalarProperty Name="Province" ColumnName="Province" />
+          <ScalarProperty Name="School" ColumnName="School" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="QQ" ColumnName="QQ" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "主页";
+}
+@section head{
+    @Scripts.Render("~/Scripts/MyScripts/jqthumb.min.js")
+    <style>
+        .row{
+            margin-top:50px;
+            text-align:center;
+        }
+        .imgbox{
+            text-align:center;
+            margin-bottom:30px;
+        }
+        .row img{
+            width:100px;
+            height:100px;
+
+        }
+        .row p{
+            font-size:17px;
+        }
+        .left  {
+            margin:30px auto;
+            
+        }
+        .right{
+            margin:30px auto;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-md-6">
+        <div class="imgbox">
+            <img src="~/Files/aixin.png" />
+            <h2>捐赠者</h2>
+        </div>
+        <div class="left">
+            <p>
+                如果你的手上有某件闲置物品需要捐赠..<br />
+                <br />
+                你可以单独上传你的捐赠物品，<br />
+                在通过审核后，别人就能看到你的捐赠了。
+            </p>
+        </div>
+        <div class="left">
+            <p>
+                或者你也可以先查询别人的受助请求，<br />
+                找到自己感兴趣的一条进行捐助，<br />
+                这样能让你更快地捐出闲置物品。
+            </p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="imgbox">
+            <img src="~/Files/wenhao.png" />
+            <h2>受助方</h2>
+        </div>
+        <div class="right">
+            <p>
+                如果你需要某件特定的物品..<br />
+                <br />
+                你可以单独发布你的受助请求，<br />
+                在通过审核后，别人就能看到你的请求了。
+             </p>
+        </div>
+        <div class="right">
+            <p>
+                或者你也可以先查询别人的捐赠物品，<br />
+                找到自己感兴趣的一条接受物品，<br />
+                这样能让你更快地获得别人的捐赠。
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+﻿@using SpareShareMVC.Models
+@model SSLoginViewModel
+@{
+    Layout = "~/Views/Shared/_SSMainLayout.cshtml";
+    ViewBag.Title = "登录";
+}
+@section head{
+    <style>
+
+        .back{
+            height:40vh;
+        }
+    .main{
+    background-color: #fff;
+    border-radius: 20px;
+    width: 450px;
+    height: 350px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+    .main h2{
+        margin:30px 0;
+    }
+    .title
+    {
+        width:100%;
+        text-align:center;
+    }
+
+</style>
+}
+<div class="container-fluid back" style="background-color: #af544c;">
+    <div class="main">
+        <div class="row row-centered">
+            <div class="well col-centered">
+                <div class="title">
+                    <h2>登录</h2>
+                </div>
+                @using (Html.BeginForm("Login", "SSAccount", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Username, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="登录" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="container-fluid back"></div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+
+    }

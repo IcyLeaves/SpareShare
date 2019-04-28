@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpareShareMVC", "SpareShareMVC\SpareShareMVC.csproj", "{72058A81-03FD-4068-A3BB-3F5656433736}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AD3B3A82-3473-4896-B9F6-999BE2496A3B}"
+	ProjectSection(SolutionItems) = preProject
+		Future.txt = Future.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpareShare", "SpareShare\SpareShare.csproj", "{3818D5C6-5DA1-43C6-AA03-19CBA560FA11}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72058A81-03FD-4068-A3BB-3F5656433736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72058A81-03FD-4068-A3BB-3F5656433736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72058A81-03FD-4068-A3BB-3F5656433736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72058A81-03FD-4068-A3BB-3F5656433736}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3818D5C6-5DA1-43C6-AA03-19CBA560FA11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3818D5C6-5DA1-43C6-AA03-19CBA560FA11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3818D5C6-5DA1-43C6-AA03-19CBA560FA11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3818D5C6-5DA1-43C6-AA03-19CBA560FA11}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

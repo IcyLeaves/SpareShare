@@ -1,0 +1,184 @@
+﻿@model IEnumerable<SpareShareMVC.Models.SSSearchReceiveThingsViewModel>
+@{
+    ViewBag.Title = "查询受助请求";
+}
+@section head{
+
+    <style>
+        .table:hover {
+            cursor: pointer;
+        }
+
+        .quest img {
+            height: 15px;
+            width: 15px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        .quest a {
+            vertical-align: middle;
+        }
+
+        .quest span {
+            color: #999999;
+            vertical-align: middle;
+            margin-left: 20px;
+        }
+        .quest .badge{
+            color:#ffffff;
+        }
+        .quest .sameprovince{
+            background-color:#ff6a00;
+        }
+        .quest .sameschool{
+            background-color:forestgreen;
+        }
+        .reason span {
+            color: #999999;
+            vertical-align: middle;
+        }
+
+        .form-control{
+            display:inline;
+        }
+    </style>
+}
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm())
+{
+    <p>
+        查询物品: @Html.TextBox("SearchString", "", new { @class = "form-control" })
+        <button type="submit" class="btn btn-default">搜索</button>
+    </p>
+}
+@*<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("物品名称")
+        </th>
+        <th>
+            @Html.DisplayName("物品类别")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.ActionLink("查看请求", "DetailsReceiveThings", new { id = item.QuestId })
+            </td>
+        </tr>
+    }
+
+</table>*@
+<table class="table table-hover">
+    @foreach (var item in Model)
+    {
+        string StatusStyle = "<strong><font color='red'>This is bold!</font></strong>";
+        string SameSch = "<span class='badge sameschool'>同校</span>";
+        string SamePro = "<span class='badge sameprovince'>同省</span>";
+        if (item.Quest.Status.ToString().Equals("正在审核中")) { StatusStyle = "<span style='color:Orange;float:right;'>" + item.Quest.Status + "</span>"; }
+        else if (item.Quest.Status.ToString().Equals("等待受助中")) { StatusStyle = "<span style='color:cadetblue;float:right;'>" + item.Quest.Status + "</span>"; }
+        else if (item.Quest.Status.ToString().Equals("已接受受助")) { StatusStyle = "<span style='color:forestgreen;float:right;'>" + item.Quest.Status + "</span>"; }
+        else if (item.Quest.Status.ToString().Equals("审核未通过")) { StatusStyle = "<span style='color:firebrick;float:right;'>" + item.Quest.Status + "</span>"; }
+        else if (item.Quest.Status.ToString().Equals("受助已成功")) { StatusStyle = "<span style='color:mediumPurple;float:right;'>" + item.Quest.Status + "</span>"; }
+
+        if(item.prior>=300) {; }
+        else if(item.prior >= 200){ SameSch = ""; }
+        else if (item.prior >= 100) { SameSch = ""; SamePro = ""; }
+        TimeSpan span = (TimeSpan)(DateTime.Now - item.Quest.ReleaseTime);
+        var result = "";
+        if (span.TotalDays > 60)
+        {
+            result = item.Quest.ReleaseTime.Value.ToShortDateString();
+        }
+        else if (span.TotalDays > 30)
+        {
+            result = "1个月前";
+        }
+        else if (span.TotalDays > 14)
+        {
+            result = "2周前";
+        }
+        else if (span.TotalDays > 7)
+        {
+            result = "1周前";
+        }
+        else if (span.TotalDays > 1)
+        {
+            result = string.Format("{0}天前", (int)Math.Floor(span.TotalDays));
+        }
+        else if (span.TotalHours > 1)
+        {
+            result = string.Format("{0}小时前", (int)Math.Floor(span.TotalHours));
+        }
+        else if (span.TotalMinutes > 1)
+        {
+            result = string.Format("{0}分钟前", (int)Math.Floor(span.TotalMinutes));
+        }
+        else if (span.TotalSeconds >= 1)
+        {
+            result = string.Format("{0}秒前", (int)Math.Floor(span.TotalSeconds));
+        }
+        else
+        {
+            result = "1秒前";
+        }
+        <tr onclick="doLink(@(item.Quest.QuestId))">
+            <td>
+                <div class="quest">
+                    <img src="~/Files/wenhao.png" />
+                    <a>@item.Quest.Name</a>
+                    <span>@item.Quest.Type</span>
+                    @Html.Raw(SameSch)
+                    @Html.Raw(SamePro)
+                    @Html.Raw(StatusStyle)
+                </div>
+                <div class="reason">
+                    <span>@item.Quest.Reason</span>
+                    <span style="float:right">发布于@(result)</span>
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+
+<div style="text-align:center">
+    <ul id="page"></ul>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/MyScripts/bootstrap-paginator.js")
+<script>
+        $(function () {
+            var currentPage = @(ViewBag.currentPage);
+            var totalPages = @(ViewBag.totalPages);
+            $("#page").bootstrapPaginator({
+                bootstrapMajorVersion: 3, //对应的bootstrap版本
+                currentPage: currentPage, //当前页数
+                numberOfPages: 5, //每次显示页数
+                totalPages: totalPages, //总页数
+                shouldShowPage: true, //是否显示该按钮
+                useBootstrapTooltip: true,
+                onPageClicked: function (event, originalEvent, type, page) {
+                    var urlSearch="@ViewBag.searchString";
+                    var urlStatus="@ViewBag.status";
+                    window.location.href = "http://"+window.location.host+"/SSGiven/SearchReceiveThings?searchString="+urlSearch+"&currentPage="+page;
+                    //console.log(window.location.host);
+                    //console.log(window.location.href);
+                }
+            });
+        });
+    function doLink(idx){
+        window.location.href="http://"+window.location.host+"/SSGiven/DetailsReceiveThings/"+idx;
+    }
+</script>
+}

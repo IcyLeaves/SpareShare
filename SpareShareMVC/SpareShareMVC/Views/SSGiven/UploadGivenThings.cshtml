@@ -1,0 +1,154 @@
+﻿@model SpareShareMVC.Models.SSUploadGivenThingsViewModel
+@{
+    ViewBag.Title = "上传捐赠物品";
+    Layout = "~/Views/Shared/_SSDetailsLayout.cshtml";
+    ViewBag.isRefuse = false;
+    ViewBag.isThing = false;
+    ViewBag.isComment = false;
+    ViewBag.isQuest = ViewBag.qId != null ? true : false;
+}
+@section head{
+    <script>
+        $(function(){
+            images();
+            $(window).resize(function () {
+                images();
+            })
+            $("#file1").on("change", function () {
+                var file = this.files[0];
+                if (this.files && file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#img1").attr("src", e.target.result);
+                        images();
+                    }
+                    reader.readAsDataURL(file);
+                }
+            })
+            $("#Name").val("@(ViewBag.qName)");
+            $("#Type").val("@(ViewBag.qType)")
+        });
+        function images(){
+            //var imgwidth=$('.jqthumb:first').width()*0.7;
+            $('.jqthumb img').jqthumb({
+                classname:"img-thumbnail",
+                width : 200,//宽度
+                height : 200,//高度
+            });
+        }
+    </script>
+}
+
+@if (ViewBag.isQuest)
+{
+    TimeSpan span = (TimeSpan)(DateTime.Now - (DateTime)ViewBag.qTime);
+    var result = "";
+    if (span.TotalDays > 60)
+    {
+        result = ViewBag.qTime.Value.ToShortDateString();
+    }
+    else if (span.TotalDays > 30)
+    {
+        result = "1个月前";
+    }
+    else if (span.TotalDays > 14)
+    {
+        result = "2周前";
+    }
+    else if (span.TotalDays > 7)
+    {
+        result = "1周前";
+    }
+    else if (span.TotalDays > 1)
+    {
+        result = string.Format("{0}天前", (int)Math.Floor(span.TotalDays));
+    }
+    else if (span.TotalHours > 1)
+    {
+        result = string.Format("{0}小时前", (int)Math.Floor(span.TotalHours));
+    }
+    else if (span.TotalMinutes > 1)
+    {
+        result = string.Format("{0}分钟前", (int)Math.Floor(span.TotalMinutes));
+    }
+    else if (span.TotalSeconds >= 1)
+    {
+        result = string.Format("{0}秒前", (int)Math.Floor(span.TotalSeconds));
+    }
+    else
+    {
+        result = "1秒前";
+    }
+    @section Quest{
+        <div class="quest">
+            <span class="quest-name">@ViewBag.qName</span>
+        </div>
+        <div class="reason">
+            <span class="reason-text">@ViewBag.qReason</span>
+        </div>
+        <p></p>
+        <div class="info">
+            <span>
+                类别：@ViewBag.qType
+            </span><br />
+            <span style="float:right;margin-left:3px;">发布于@(result)</span>
+            <a href="~/SSUser/Credit/@(ViewBag.qUserId)" style="float:right"><span class="glyphicon glyphicon-user"></span> @ViewBag.qUserName </a>
+        </div>
+    }
+}
+
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("UploadGivenThings", "SSGiven", new { id = ViewBag.qId }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+    </div>
+    //下拉列表的值
+    List<SelectListItem> selectList = new List<SelectListItem>();
+    selectList.Add(new SelectListItem { Value = "书籍", Text = "书籍" });
+    selectList.Add(new SelectListItem { Value = "工具", Text = "工具" });
+    selectList.Add(new SelectListItem { Value = "日用", Text = "日用" });
+    selectList.Add(new SelectListItem { Value = "服饰", Text = "服饰" });
+    selectList.Add(new SelectListItem { Value = "杂物", Text = "杂物" });
+    selectList.Add(new SelectListItem { Value = "娱乐", Text = "娱乐" });
+    selectList.Add(new SelectListItem { Value = "配件", Text = "配件" });
+    selectList.Add(new SelectListItem { Value = "其他", Text = "其他" });
+    <div class="form-group">
+        @Html.LabelFor(m => m.Type, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Type, new SelectList(selectList.AsEnumerable(), "Value", "Text"), new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Reason, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(m => m.Reason, new { @class = "form-control", rows = 3 })
+            @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10 jqthumb">
+            <img src="~/Files/1.png" alt="" class="img-thumbnail" id="img1" style="width:200px; height:200px" />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Image, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <input type="file" name="Image" id="file1" />
+            @Html.ValidationMessageFor(m => m.Image, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="提交" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

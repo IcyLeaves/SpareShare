@@ -1,0 +1,95 @@
+﻿@model SpareShareMVC.Models.Quests
+@{
+    ViewBag.Title = "受助请求详细信息";
+    Layout = "~/Views/Shared/_SSDetailsLayout.cshtml";
+    ViewBag.isRefuse = false;
+    ViewBag.isThing = false;
+    ViewBag.isComment = false;
+    ViewBag.isQuest = true;
+}
+@{
+    TimeSpan span = (TimeSpan)(DateTime.Now - Model.ReleaseTime);
+    var result = "";
+    if (span.TotalDays > 60)
+    {
+        result = Model.ReleaseTime.Value.ToShortDateString();
+    }
+    else if (span.TotalDays > 30)
+    {
+        result = "1个月前";
+    }
+    else if (span.TotalDays > 14)
+    {
+        result = "2周前";
+    }
+    else if (span.TotalDays > 7)
+    {
+        result = "1周前";
+    }
+    else if (span.TotalDays > 1)
+    {
+        result = string.Format("{0}天前", (int)Math.Floor(span.TotalDays));
+    }
+    else if (span.TotalHours > 1)
+    {
+        result = string.Format("{0}小时前", (int)Math.Floor(span.TotalHours));
+    }
+    else if (span.TotalMinutes > 1)
+    {
+        result = string.Format("{0}分钟前", (int)Math.Floor(span.TotalMinutes));
+    }
+    else if (span.TotalSeconds >= 1)
+    {
+        result = string.Format("{0}秒前", (int)Math.Floor(span.TotalSeconds));
+    }
+    else
+    {
+        result = "1秒前";
+    }
+}
+
+@section Quest{
+    <div class="quest">
+        <span class="quest-name">@Model.Name</span>
+    </div>
+    <div class="reason">
+        <span class="reason-text">@Model.Reason</span>
+    </div>
+    <p></p>
+    <div class="info">
+        <span>
+            类别：@Model.Type
+        </span><br />
+        <span style="float:right;margin-left:3px;">发布于@(result)</span>
+        <a href="~/SSUser/Credit/@(ViewBag.qUserId)" style="float:right"><span class="glyphicon glyphicon-user"></span> @ViewBag.qUserName </a>
+    </div>
+}
+@using (Html.BeginForm("DetailsReceiveThings", "SSAdministor", new { id = Model.QuestId }, FormMethod.Post, new { id = "AssessForm" }))
+{
+    <input type="submit" value="通过" name="action" class="btn btn-success"/>
+    <!-- 按钮触发模态框 -->
+    <button class="btn btn-danger" name="action" data-toggle="modal" data-target="#myModal">拒绝</button>
+    <input type="submit" value="取消" name="action" class="btn btn-link"/>
+}
+<!-- 模态框（Modal） -->
+@using (Html.BeginForm("DetailsReceiveThings", "SSAdministor", new { id = Model.QuestId }, FormMethod.Post, new { id = "AssessForm" }))
+{
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">说明拒绝理由</h4>
+                </div>
+                <div class="modal-body form-group">
+                    <label class="control-label">拒绝理由</label>
+                    <textarea class="form-control" name="reason" rows="3" style="max-width:none"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <input type="submit" value="提交" name="action" class="btn btn-primary" />
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+}

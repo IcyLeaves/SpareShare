@@ -1,0 +1,74 @@
+﻿@using SpareShareMVC.Models
+@model SSEditManageViewModel
+@{
+    ViewBag.Title = "编辑个人资料";
+    Users user = (Users)ViewBag.User;
+}
+@section head{
+    <script>
+        $(function(){
+            $("#Sex").val("@(user.Sex)");
+            $("#Email").val("@(user.Email)");
+            $("#QQ").val("@(user.QQ)");
+            $("#Province").val("@(user.Province)");
+            $("#School").val("@(user.School)");
+
+        });
+
+</script>
+    }
+
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("EditManage", "SSUser", new { id = Session["usrId"] }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    //下拉列表的值
+    List<SelectListItem> selectList = new List<SelectListItem>();
+    selectList.Add(new SelectListItem { Value = "M", Text = "男" });
+    selectList.Add(new SelectListItem { Value = "F", Text = "女" });
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Sex, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Sex, new SelectList(selectList.AsEnumerable(), "Value", "Text"), new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.QQ, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.QQ, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.QQ, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Province, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Province, new SelectList(((List<SelectListItem>)ViewBag.selectProvince).AsEnumerable(), "Value", "Text"), new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Province, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.School, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.School, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.School, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="提交" class="btn btn-default" />
+        </div>
+    </div>
+}
+<p>
+    @Html.ActionLink("放弃编辑", "Manage")
+</p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

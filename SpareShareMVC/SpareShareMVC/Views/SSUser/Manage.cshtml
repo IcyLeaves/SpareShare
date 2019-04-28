@@ -1,0 +1,96 @@
+﻿@model SpareShareMVC.Models.Users
+@{
+    ViewBag.Title = "个人资料";
+}
+@section head{
+    <style>
+        dl{
+            font-size:16px;
+        }
+
+        dl dt{
+            margin-bottom:40px;
+        }
+    </style>
+    }
+<h2>@ViewBag.Title</h2>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("ID")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("用户名")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayName("性别")
+        </dt>
+
+        @{
+            if (Model.Sex == "M")
+            {
+                <dd>男</dd> }
+            else
+            {
+                <dd>女</dd>
+            }
+        }
+
+        <dt>
+            @Html.DisplayName("邮箱")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("QQ")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QQ)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("省份")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Province)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("学校")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.School)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("注册时间")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RegTime)
+        </dd>
+    </dl>
+</div>
+@if ((int)Session["usrId"] == Model.UserId)
+{
+    <p>
+        @Html.ActionLink("编辑个人资料", "EditManage", new { id = Model.UserId })
+    </p>
+}

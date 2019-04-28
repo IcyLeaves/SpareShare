@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SSModelStoreContainer" CdmEntityContainer="SSEntities">
+    <EntitySetMapping Name="A">
+      <EntityTypeMapping TypeName="SSModel.A">
+        <MappingFragment StoreEntitySet="A">
+          <ScalarProperty Name="AID" ColumnName="AID" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="RegTime" ColumnName="RegTime" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AGP">
+      <EntityTypeMapping TypeName="SSModel.AGP">
+        <MappingFragment StoreEntitySet="AGP">
+          <ScalarProperty Name="GPID" ColumnName="GPID" />
+          <ScalarProperty Name="FailedNum" ColumnName="FailedNum" />
+          <ScalarProperty Name="SuccessNum" ColumnName="SuccessNum" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ARP">
+      <EntityTypeMapping TypeName="SSModel.ARP">
+        <MappingFragment StoreEntitySet="ARP">
+          <ScalarProperty Name="RPID" ColumnName="RPID" />
+          <ScalarProperty Name="FailedNum" ColumnName="FailedNum" />
+          <ScalarProperty Name="SuccessNum" ColumnName="SuccessNum" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP">
+      <EntityTypeMapping TypeName="SSModel.GP">
+        <MappingFragment StoreEntitySet="GP">
+          <ScalarProperty Name="GPID" ColumnName="GPID" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GT">
+      <EntityTypeMapping TypeName="SSModel.GT">
+        <MappingFragment StoreEntitySet="GT">
+          <ScalarProperty Name="GPID" ColumnName="GPID" />
+          <ScalarProperty Name="AID" ColumnName="AID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RP">
+      <EntityTypeMapping TypeName="SSModel.RP">
+        <MappingFragment StoreEntitySet="RP">
+          <ScalarProperty Name="RPID" ColumnName="RPID" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="RegTime" ColumnName="RegTime" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RT">
+      <EntityTypeMapping TypeName="SSModel.RT">
+        <MappingFragment StoreEntitySet="RT">
+          <ScalarProperty Name="RPID" ColumnName="RPID" />
+          <ScalarProperty Name="AID" ColumnName="AID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
