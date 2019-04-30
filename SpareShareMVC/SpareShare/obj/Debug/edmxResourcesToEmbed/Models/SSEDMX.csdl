@@ -10,5 +10,16 @@
   </EntityType>
   <EntityContainer Name="SSDBEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Users" EntityType="Self.Users" />
+    <EntitySet Name="Things" EntityType="SSDBModel.Things" />
   </EntityContainer>
+  <EntityType Name="Things">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Detail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="DonatorId" Type="Int32" Nullable="false" />
+  </EntityType>
 </Schema>

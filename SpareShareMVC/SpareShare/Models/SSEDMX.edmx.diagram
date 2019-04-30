@@ -6,6 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="3b7d9d69f20649e4b216649c75b2d246" Name="Diagram1">
         <EntityTypeShape EntityType="SSDBModel.Users" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SSDBModel.Things" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
