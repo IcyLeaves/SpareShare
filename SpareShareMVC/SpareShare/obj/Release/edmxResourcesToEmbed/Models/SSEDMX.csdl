@@ -11,6 +11,7 @@
   <EntityContainer Name="SSDBEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Users" EntityType="Self.Users" />
     <EntitySet Name="Things" EntityType="SSDBModel.Things" />
+    <EntitySet Name="Quests" EntityType="SSDBModel.Quests" />
   </EntityContainer>
   <EntityType Name="Things">
     <Key>
@@ -21,5 +22,15 @@
     <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="Detail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="DonatorId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Quests">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ReceiverId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Detail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

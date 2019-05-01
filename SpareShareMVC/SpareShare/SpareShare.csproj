@@ -172,9 +172,14 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DonateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReceiveController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Quests.cs">
+      <DependentUpon>SSEDMX.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReceiveViewModel.cs" />
     <Compile Include="Models\DonateViewModel.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -261,6 +266,8 @@
     <Content Include="Views\Donate\UploadThings.cshtml" />
     <Content Include="Views\Shared\_UserPartial.cshtml" />
     <Content Include="Views\Donate\MyThingsList.cshtml" />
+    <Content Include="Views\Receive\MyQuestsList.cshtml" />
+    <Content Include="Views\Receive\UploadQuests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
