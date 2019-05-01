@@ -20,4 +20,16 @@ namespace SpareShare.Models
         [Display(Name = "物品描述")]
         public string Detail { get; set; }
     }
+
+    public class MyThingsListViewModel
+    {
+        [Display(Name = "物品名称")]
+        public string Name { get; set; }
+
+        [Display(Name = "物品类别")]
+        public string Type { get; set; }
+
+        [Display(Name = "物品描述")]
+        public string Detail { get; set; }
+    }
 }

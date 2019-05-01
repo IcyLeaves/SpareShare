@@ -229,6 +229,7 @@
       <DependentUpon>SSEDMX.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\DeploySS.pubxml" />
+    <None Include="Properties\PublishProfiles\SpareShareRelease.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -258,6 +259,8 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Donate\UploadThings.cshtml" />
+    <Content Include="Views\Shared\_UserPartial.cshtml" />
+    <Content Include="Views\Donate\MyThingsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

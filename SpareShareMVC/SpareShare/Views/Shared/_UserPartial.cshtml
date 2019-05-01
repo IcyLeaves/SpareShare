@@ -1,0 +1,39 @@
+﻿@if (Session["usrId"] != null)
+{
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("主页", "Index", "Home")</li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    我的捐赠<span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    @*<li>@Html.ActionLink("查询受助请求", "SearchReceiveThings", "SSGiven")</li>*@
+                    <li>@Html.ActionLink("上传捐赠物品", "UploadThings", "Donate")</li>
+                    <li>@Html.ActionLink("查看我的捐赠", "MyThingsList", "Donate")</li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    我的受助<span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    @*<li>@Html.ActionLink("查询捐赠物品", "SearchGivenThings", "SSReceive")</li>*@
+                    @*<li>@Html.ActionLink("发布受助请求", "UploadReceiveThings", "SSReceive")</li>*@
+                    @*<li>@Html.ActionLink("查看我的受助", "SelectReceiveThings", "SSReceive")</li>*@
+                    @*<li>@Html.ActionLink("确认领取物品", "SelectHistoryThings", "SSReceive")</li>*@
+                </ul>
+            </li>
+        </ul>
+        @Html.Partial("_LoginPartial")
+    </div>
+}
+else
+{
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("主页", "Index", "Home")</li>
+        </ul>
+        @Html.Partial("_LoginPartial")
+    </div>
+}
