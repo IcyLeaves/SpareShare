@@ -23,6 +23,8 @@ namespace SpareShare.Models
 
     public class MyQuestsListViewModel
     {
+        public int QuestId { get; set; }
+
         [Display(Name = "请求名称")]
         public string Name { get; set; }
 

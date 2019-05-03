@@ -70,11 +70,25 @@ namespace SpareShare.Controllers
                     tmp.Name = t.Name;
                     tmp.Type = t.Type;
                     tmp.Detail = t.Detail;
+                    tmp.ThingId = t.Id;
                     //添加到列表中
                     res.Add(tmp);
                 }
             }
             return View(res);
         }
+
+        // GET: 显示捐赠物品详细信息
+        // 修改时间: 2019年5月3日 13点00分
+        public ActionResult ThingsDetail(int id)
+        {
+            using (SSDBEntities db = new SSDBEntities())
+            {
+                var t = db.Things.Where(x => x.Id == id).FirstOrDefault();
+                return View(t);
+            }
+        }
+
+        
     }
 }

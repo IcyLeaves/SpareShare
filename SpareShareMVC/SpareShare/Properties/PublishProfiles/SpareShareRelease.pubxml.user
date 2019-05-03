@@ -103,7 +103,7 @@
       <publishTime>06/18/2015 20:19:46</publishTime>
     </File>
     <File Include="bin/SpareShare.dll">
-      <publishTime>05/01/2019 17:47:11</publishTime>
+      <publishTime>05/03/2019 13:27:07</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>01/28/2015 04:04:30</publishTime>
@@ -265,7 +265,10 @@
       <publishTime>05/01/2019 12:11:31</publishTime>
     </File>
     <File Include="Views/Donate/MyThingsList.cshtml">
-      <publishTime>05/01/2019 13:32:54</publishTime>
+      <publishTime>05/03/2019 12:10:38</publishTime>
+    </File>
+    <File Include="Views/Donate/ThingsDetail.cshtml">
+      <publishTime>05/03/2019 12:05:42</publishTime>
     </File>
     <File Include="Views/Donate/UploadThings.cshtml">
       <publishTime>04/30/2019 21:27:54</publishTime>
@@ -274,7 +277,10 @@
       <publishTime>04/28/2019 21:10:23</publishTime>
     </File>
     <File Include="Views/Receive/MyQuestsList.cshtml">
-      <publishTime>05/01/2019 15:28:07</publishTime>
+      <publishTime>05/03/2019 13:21:38</publishTime>
+    </File>
+    <File Include="Views/Receive/QuestsDetail.cshtml">
+      <publishTime>05/03/2019 13:09:48</publishTime>
     </File>
     <File Include="Views/Receive/UploadQuests.cshtml">
       <publishTime>05/01/2019 17:37:58</publishTime>

@@ -23,6 +23,8 @@ namespace SpareShare.Models
 
     public class MyThingsListViewModel
     {
+        public int ThingId { get; set; }
+
         [Display(Name = "物品名称")]
         public string Name { get; set; }
 

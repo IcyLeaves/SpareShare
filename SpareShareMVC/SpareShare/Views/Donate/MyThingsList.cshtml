@@ -16,6 +16,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Detail)
         </th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -28,6 +29,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Detail)
+        </td>
+        <td>
+            @Html.ActionLink("详情","ThingsDetail",new { id =item.ThingId})
         </td>
     </tr>
 }

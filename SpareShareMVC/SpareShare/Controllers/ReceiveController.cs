@@ -46,7 +46,7 @@ namespace SpareShare.Controllers
 
 
         // GET: 显示用户受助请求列表
-        // 修改时间: 2019年5月1日 15点28分
+        // 修改时间: 2019年5月3日 13点23分
         public ActionResult MyQuestsList()
         {
             //获取当前用户id
@@ -65,11 +65,23 @@ namespace SpareShare.Controllers
                     tmp.Name = q.Name;
                     tmp.Type = q.Type;
                     tmp.Detail = q.Detail;
+                    tmp.QuestId = q.Id;
                     //添加到列表中
                     res.Add(tmp);
                 }
             }
             return View(res);
+        }
+
+        // GET: 显示受助请求详细信息
+        // 修改时间: 2019年5月3日 13点02分
+        public ActionResult QuestsDetail(int id)
+        {
+            using (SSDBEntities db = new SSDBEntities())
+            {
+                var q = db.Quests.Where(x => x.Id == id).FirstOrDefault();
+                return View(q);
+            }
         }
     }
 }
