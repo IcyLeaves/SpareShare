@@ -170,6 +170,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\DonateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReceiveController.cs" />
@@ -270,6 +271,10 @@
     <Content Include="Views\Receive\UploadQuests.cshtml" />
     <Content Include="Views\Donate\ThingsDetail.cshtml" />
     <Content Include="Views\Receive\QuestsDetail.cshtml" />
+    <Content Include="Views\Admin\CheckThings.cshtml" />
+    <Content Include="Views\Admin\CheckQuests.cshtml" />
+    <Content Include="Views\Admin\ThingsDetail.cshtml" />
+    <Content Include="Views\Admin\QuestsDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -21,7 +21,7 @@ namespace SpareShare.Models
         public string Detail { get; set; }
     }
 
-    public class MyThingsListViewModel
+    public class ThingsListViewModel
     {
         public int ThingId { get; set; }
 
@@ -33,5 +33,8 @@ namespace SpareShare.Models
 
         [Display(Name = "物品描述")]
         public string Detail { get; set; }
+
+        [Display(Name = "物品状态")]
+        public string Status { get; set; }
     }
 }

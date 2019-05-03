@@ -13,6 +13,7 @@
     <EntitySetMapping Name="Things">
       <EntityTypeMapping TypeName="SSDBModel.Things">
         <MappingFragment StoreEntitySet="Things">
+          <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="DonatorId" ColumnName="DonatorId" />
           <ScalarProperty Name="Detail" ColumnName="Detail" />
           <ScalarProperty Name="Type" ColumnName="Type" />
@@ -24,6 +25,7 @@
     <EntitySetMapping Name="Quests">
       <EntityTypeMapping TypeName="SSDBModel.Quests">
         <MappingFragment StoreEntitySet="Quests">
+          <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="Detail" ColumnName="Detail" />
           <ScalarProperty Name="Type" ColumnName="Type" />
           <ScalarProperty Name="Name" ColumnName="Name" />

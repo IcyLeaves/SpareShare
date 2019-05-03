@@ -17,7 +17,7 @@ namespace SpareShare.Controllers
         }
 
         // POST: 提交表单，发布受助请求信息
-        // 修改时间: 2019年5月1日 15点25分
+        // 修改时间: 2019年5月3日 14点06分
         [HttpPost]
         public ActionResult UploadQuests(UploadQuestsViewModel model)
         {
@@ -31,6 +31,7 @@ namespace SpareShare.Controllers
                 q.Name = model.Name;
                 q.Type = model.Type;
                 q.Detail = model.Detail;
+                q.Status = "正在审核中";
                 //向数据库新建元组
                 using (SSDBEntities db = new SSDBEntities())
                 {
@@ -52,7 +53,7 @@ namespace SpareShare.Controllers
             //获取当前用户id
             int usrId = (int)HttpContext.Session["usrId"];
             //新建视图模型列表
-            var res = new List<MyQuestsListViewModel>();
+            var res = new List<QuestsListViewModel>();
             using (SSDBEntities db = new SSDBEntities())
             {
                 //查找该用户发布的所有受助请求
@@ -61,11 +62,12 @@ namespace SpareShare.Controllers
                 foreach (var q in qs)
                 {
                     //新建一个视图模型并赋值
-                    var tmp = new MyQuestsListViewModel();
+                    var tmp = new QuestsListViewModel();
                     tmp.Name = q.Name;
                     tmp.Type = q.Type;
                     tmp.Detail = q.Detail;
                     tmp.QuestId = q.Id;
+                    tmp.Status = q.Status;
                     //添加到列表中
                     res.Add(tmp);
                 }
@@ -79,6 +81,7 @@ namespace SpareShare.Controllers
         {
             using (SSDBEntities db = new SSDBEntities())
             {
+                //找出对应id的受助请求
                 var q = db.Quests.Where(x => x.Id == id).FirstOrDefault();
                 return View(q);
             }

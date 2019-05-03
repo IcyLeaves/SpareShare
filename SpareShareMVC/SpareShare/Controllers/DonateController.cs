@@ -23,7 +23,7 @@ namespace SpareShare.Controllers
         }
 
         // POST: 提交表单，上传捐赠物品信息
-        // 修改时间: 2019年4月30日 21点22分
+        // 修改时间: 2019年5月3日 14点05分
         [HttpPost]
         public ActionResult UploadThings(UploadThingsViewModel model)
         {
@@ -37,6 +37,7 @@ namespace SpareShare.Controllers
                 t.Name = model.Name;
                 t.Type = model.Type;
                 t.Detail = model.Detail;
+                t.Status = "正在审核中";
                 //向数据库新建元组
                 using (SSDBEntities db = new SSDBEntities())
                 {
@@ -57,7 +58,7 @@ namespace SpareShare.Controllers
             //获取当前用户id
             int usrId = (int)HttpContext.Session["usrId"];
             //新建视图模型列表
-            var res = new List<MyThingsListViewModel>();
+            var res = new List<ThingsListViewModel>();
             using (SSDBEntities db = new SSDBEntities())
             {
                 //查找该用户发布的所有捐赠物品
@@ -66,11 +67,12 @@ namespace SpareShare.Controllers
                 foreach (var t in ts)
                 {
                     //新建一个视图模型并赋值
-                    var tmp = new MyThingsListViewModel();
+                    var tmp = new ThingsListViewModel();
                     tmp.Name = t.Name;
                     tmp.Type = t.Type;
                     tmp.Detail = t.Detail;
                     tmp.ThingId = t.Id;
+                    tmp.Status = t.Status;
                     //添加到列表中
                     res.Add(tmp);
                 }
@@ -79,16 +81,27 @@ namespace SpareShare.Controllers
         }
 
         // GET: 显示捐赠物品详细信息
-        // 修改时间: 2019年5月3日 13点00分
+        // 修改时间: 2019年5月3日 15点10分
         public ActionResult ThingsDetail(int id)
         {
             using (SSDBEntities db = new SSDBEntities())
             {
+                //找出对应id的捐赠物品
                 var t = db.Things.Where(x => x.Id == id).FirstOrDefault();
                 return View(t);
             }
         }
 
-        
+        // GET: 显示受助请求详细信息
+        // 修改时间: 2019年5月3日 15点10分
+        public ActionResult QuestsDetail(int id)
+        {
+            using (SSDBEntities db = new SSDBEntities())
+            {
+                //找出对应id的受助请求
+                var q = db.Quests.Where(x => x.Id == id).FirstOrDefault();
+                return View(q);
+            }
+        }
     }
 }

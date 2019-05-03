@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SpareShare.Models.MyQuestsListViewModel>
+﻿@model IEnumerable<SpareShare.Models.QuestsListViewModel>
 @{
     ViewBag.Title = "我的受助请求";
 }
@@ -15,6 +15,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Detail)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
         <th></th>
     </tr>
 
@@ -30,9 +33,11 @@
             @Html.DisplayFor(modelItem => item.Detail)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+
+        <td>
             @Html.ActionLink("详情", "QuestsDetail", new { id = item.QuestId })
-
-
         </td>
     </tr>
 }

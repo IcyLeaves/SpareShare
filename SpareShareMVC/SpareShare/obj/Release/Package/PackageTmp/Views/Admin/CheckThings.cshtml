@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<SpareShare.Models.ThingsListViewModel>
 
 @{
-    ViewBag.Title = "我的捐赠物品";
+    ViewBag.Title = "审核捐赠物品";
 }
 
-<h2>我的捐赠物品</h2>
+<h2>审核捐赠物品</h2>
+
 <table class="table">
     <tr>
         <th>
@@ -15,9 +16,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Detail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
         </th>
         <th></th>
     </tr>
@@ -34,11 +32,9 @@
             @Html.DisplayFor(modelItem => item.Detail)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.ActionLink("详情","ThingsDetail",new { id =item.ThingId})
+            @Html.ActionLink("审核", "ThingsDetail", new { id=item.ThingId })
         </td>
     </tr>
 }
+
 </table>

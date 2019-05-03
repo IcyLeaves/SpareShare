@@ -9,6 +9,7 @@
     <Property Name="Name" Type="nvarchar" MaxLength="50" />
     <Property Name="Type" Type="nvarchar" MaxLength="20" />
     <Property Name="Detail" Type="nvarchar" MaxLength="500" />
+    <Property Name="Status" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="Things">
     <Key>
@@ -19,6 +20,7 @@
     <Property Name="Name" Type="nvarchar" MaxLength="50" />
     <Property Name="Type" Type="nvarchar" MaxLength="20" />
     <Property Name="Detail" Type="nvarchar" MaxLength="500" />
+    <Property Name="Status" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="Users">
     <Key>

@@ -21,7 +21,7 @@ namespace SpareShare.Models
         public string Detail { get; set; }
     }
 
-    public class MyQuestsListViewModel
+    public class QuestsListViewModel
     {
         public int QuestId { get; set; }
 
@@ -33,5 +33,8 @@ namespace SpareShare.Models
 
         [Display(Name = "请求描述")]
         public string Detail { get; set; }
+
+        [Display(Name = "物品状态")]
+        public string Status { get; set; }
     }
 }
