@@ -50,6 +50,9 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("返回", "CheckQuests")
-</p>
+@using (Html.BeginForm("QuestsDetail", "Admin", new { id = Model.Id }, FormMethod.Post, new { id = "AssessForm" }))
+{
+    <input type="submit" value="通过" name="action" class="btn btn-success" />
+    <button type="submit" value="拒绝" class="btn btn-danger" name="action" >拒绝</button>
+    <input type="submit" value="取消" name="action" class="btn btn-link" />
+}

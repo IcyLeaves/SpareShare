@@ -8,7 +8,7 @@
                     我的捐赠<span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    @*<li>@Html.ActionLink("查询受助请求", "SearchReceiveThings", "SSGiven")</li>*@
+                    <li>@Html.ActionLink("查询受助请求", "SearchQuests", "Donate")</li>
                     <li>@Html.ActionLink("上传捐赠物品", "UploadThings", "Donate")</li>
                     <li>@Html.ActionLink("查看我的捐赠", "MyThingsList", "Donate")</li>
                 </ul>
@@ -18,7 +18,7 @@
                     我的受助<span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    @*<li>@Html.ActionLink("查询捐赠物品", "SearchGivenThings", "SSReceive")</li>*@
+                    <li>@Html.ActionLink("查询捐赠物品", "SearchThings", "Receive")</li>
                     <li>@Html.ActionLink("发布受助请求", "UploadQuests", "Receive")</li>
                     <li>@Html.ActionLink("查看我的受助", "MyQuestsList", "Receive")</li>
                     @*<li>@Html.ActionLink("确认领取物品", "SelectHistoryThings", "SSReceive")</li>*@

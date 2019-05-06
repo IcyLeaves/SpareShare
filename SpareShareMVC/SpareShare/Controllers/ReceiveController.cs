@@ -86,5 +86,46 @@ namespace SpareShare.Controllers
                 return View(q);
             }
         }
+
+        // GET: 显示捐赠物品详细信息
+        // 修改时间: 2019年5月6日 20点00分
+        public ActionResult ThingsDetail(int id)
+        {
+            using (SSDBEntities db = new SSDBEntities())
+            {
+                //找出对应id的捐赠物品
+                var t = db.Things.Where(x => x.Id == id).FirstOrDefault();
+                return View(t);
+            }
+        }
+
+        // GET: 查询其他用户的捐赠物品
+        // 修改时间: 2019年5月6日 19点36分
+        public ActionResult SearchThings()
+        {
+            //获取当前用户id
+            int usrId = (int)HttpContext.Session["usrId"];
+            //新建视图模型列表
+            var res = new List<ThingsListViewModel>();
+            using (SSDBEntities db = new SSDBEntities())
+            {
+                //查找[其他用户的][闲置的]物品
+                var ts = db.Things.Where(x => x.Id != usrId && x.Status == "物品闲置中");
+                //给视图模型赋值
+                foreach (var t in ts)
+                {
+                    //新建一个视图模型并赋值
+                    var tmp = new ThingsListViewModel();
+                    tmp.Name = t.Name;
+                    tmp.Type = t.Type;
+                    tmp.Detail = t.Detail;
+                    tmp.ThingId = t.Id;
+                    tmp.Status = t.Status;
+                    //添加到列表中
+                    res.Add(tmp);
+                }
+            }
+            return View(res);
+        }
     }
 }

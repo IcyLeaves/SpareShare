@@ -103,5 +103,34 @@ namespace SpareShare.Controllers
                 return View(q);
             }
         }
+
+        // GET: 查询其他用户的受助请求
+        // 修改时间: 2019年5月6日 15点22分
+        public ActionResult SearchQuests()
+        {
+            //获取当前用户id
+            int usrId = (int)HttpContext.Session["usrId"];
+            //新建视图模型列表
+            var res = new List<QuestsListViewModel>();
+            using (SSDBEntities db = new SSDBEntities())
+            {
+                //查找[其他用户的][闲置的]请求
+                var qs = db.Quests.Where(x => x.Id != usrId && x.Status == "等待受助中");
+                //给视图模型赋值
+                foreach (var q in qs)
+                {
+                    //新建一个视图模型并赋值
+                    var tmp = new QuestsListViewModel();
+                    tmp.Name = q.Name;
+                    tmp.Type = q.Type;
+                    tmp.Detail = q.Detail;
+                    tmp.QuestId =q.Id;
+                    tmp.Status = q.Status;
+                    //添加到列表中
+                    res.Add(tmp);
+                }
+            }
+            return View(res);
+        }
     }
 }

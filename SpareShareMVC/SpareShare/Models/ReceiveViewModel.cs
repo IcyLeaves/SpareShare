@@ -34,7 +34,7 @@ namespace SpareShare.Models
         [Display(Name = "请求描述")]
         public string Detail { get; set; }
 
-        [Display(Name = "物品状态")]
+        [Display(Name = "请求状态")]
         public string Status { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using SpareShare.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -79,6 +80,39 @@ namespace SpareShare.Controllers
             }
         }
 
+        // POST: 提交捐赠物品的审核信息表单
+        // 修改时间: 2019年5月6日 14点55分
+        [HttpPost]
+        public ActionResult ThingsDetail(int id, string action)
+        {
+            using (SSDBEntities db = new SSDBEntities())
+            {
+                switch (action)
+                {
+                    case "通过":
+                        //找出对应id的捐赠物品
+                        var t1 = db.Things.Where(x => x.Id == id).FirstOrDefault();
+                        //修改捐赠物品的状态
+                        t1.Status = "物品闲置中";
+                        db.Entry(t1).State = EntityState.Modified;
+                        db.SaveChanges();
+                        break;
+                    case "拒绝":
+                        //找出对应id的捐赠物品
+                        var t2 = db.Things.Where(x => x.Id == id).FirstOrDefault();
+                        //修改捐赠物品的状态
+                        t2.Status = "审核未通过";
+                        db.Entry(t2).State = EntityState.Modified;
+                        db.SaveChanges();
+                        break;
+                    case "取消":
+                        break;
+                }
+            }
+            //跳转至物品列表
+            return RedirectToAction("CheckThings");
+        }
+
         // GET: 显示审核受助请求界面
         // 修改时间: 2019年5月3日 14点57分
         public ActionResult QuestsDetail(int id)
@@ -89,6 +123,39 @@ namespace SpareShare.Controllers
                 var q = db.Quests.Where(x => x.Id == id).FirstOrDefault();
                 return View(q);
             }
+        }
+
+        // POST: 提交受助请求的审核信息表单
+        // 修改时间: 2019年5月6日 14点56分
+        [HttpPost]
+        public ActionResult QuestsDetail(int id, string action)
+        {
+            using (SSDBEntities db = new SSDBEntities())
+            {
+                switch (action)
+                {
+                    case "通过":
+                        //找出对应id的受助请求
+                        var q1 = db.Quests.Where(x => x.Id == id).FirstOrDefault();
+                        //修改受助请求的状态
+                        q1.Status = "等待受助中";
+                        db.Entry(q1).State = EntityState.Modified;
+                        db.SaveChanges();
+                        break;
+                    case "拒绝":
+                        //找出对应id的受助请求
+                        var q2 = db.Quests.Where(x => x.Id == id).FirstOrDefault();
+                        //修改受助请求的状态
+                        q2.Status = "审核未通过";
+                        db.Entry(q2).State = EntityState.Modified;
+                        db.SaveChanges();
+                        break;
+                    case "取消":
+                        break;
+                }
+            }
+            //跳转至请求列表
+            return RedirectToAction("CheckQuests");
         }
     }
 }

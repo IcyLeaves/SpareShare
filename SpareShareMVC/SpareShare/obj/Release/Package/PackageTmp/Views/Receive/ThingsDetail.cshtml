@@ -1,10 +1,10 @@
 ﻿@model SpareShare.Models.Things
 
 @{
-    ViewBag.Title = "捐赠物品信息";
+    ViewBag.Title = "查看捐赠物品";
 }
 
-<h2>捐赠物品信息</h2>
+<h2>查看捐赠物品</h2>
 
 <div>
     <dl class="dl-horizontal">
@@ -47,12 +47,8 @@
         <dd>
             @Html.DisplayFor(model => model.Status)
         </dd>
-
     </dl>
 </div>
-@using (Html.BeginForm("ThingsDetail", "Admin", new { id = Model.Id }, FormMethod.Post, new { id = "AssessForm" }))
-{
-    <input type="submit" value="通过" name="action" class="btn btn-success" />
-    <button  type="submit" value="拒绝" class="btn btn-danger" name="action">拒绝</button>
-    <input type="submit" value="取消" name="action" class="btn btn-link" />
-}
+<p>
+    @Html.ActionLink("返回", "SearchThings")
+</p>

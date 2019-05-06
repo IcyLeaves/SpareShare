@@ -275,6 +275,10 @@
     <Content Include="Views\Admin\CheckQuests.cshtml" />
     <Content Include="Views\Admin\ThingsDetail.cshtml" />
     <Content Include="Views\Admin\QuestsDetail.cshtml" />
+    <Content Include="Views\Donate\SearchQuests.cshtml" />
+    <Content Include="Views\Receive\SearchThings.cshtml" />
+    <Content Include="Views\Donate\QuestsDetail.cshtml" />
+    <Content Include="Views\Receive\ThingsDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
