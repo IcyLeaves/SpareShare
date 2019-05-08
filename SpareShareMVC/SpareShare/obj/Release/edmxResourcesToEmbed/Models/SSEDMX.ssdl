@@ -22,6 +22,14 @@
     <Property Name="Detail" Type="nvarchar" MaxLength="500" />
     <Property Name="Status" Type="nvarchar" MaxLength="10" />
   </EntityType>
+  <EntityType Name="ThingsQuests">
+    <Key>
+      <PropertyRef Name="ThingId" />
+      <PropertyRef Name="QuestId" />
+    </Key>
+    <Property Name="ThingId" Type="int" Nullable="false" />
+    <Property Name="QuestId" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="Users">
     <Key>
       <PropertyRef Name="UserId" />
@@ -33,6 +41,7 @@
   <EntityContainer Name="SSDBModelStoreContainer">
     <EntitySet Name="Quests" EntityType="Self.Quests" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Things" EntityType="Self.Things" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ThingsQuests" EntityType="Self.ThingsQuests" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

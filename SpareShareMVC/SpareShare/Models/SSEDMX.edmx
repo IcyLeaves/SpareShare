@@ -27,6 +27,14 @@
           <Property Name="Detail" Type="nvarchar" MaxLength="500" />
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
         </EntityType>
+        <EntityType Name="ThingsQuests">
+          <Key>
+            <PropertyRef Name="ThingId" />
+            <PropertyRef Name="QuestId" />
+          </Key>
+          <Property Name="ThingId" Type="int" Nullable="false" />
+          <Property Name="QuestId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="UserId" />
@@ -38,6 +46,7 @@
         <EntityContainer Name="SSDBModelStoreContainer">
           <EntitySet Name="Quests" EntityType="Self.Quests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Things" EntityType="Self.Things" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ThingsQuests" EntityType="Self.ThingsQuests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -56,6 +65,7 @@
           <EntitySet Name="Users" EntityType="Self.Users" />
           <EntitySet Name="Things" EntityType="SSDBModel.Things" />
           <EntitySet Name="Quests" EntityType="SSDBModel.Quests" />
+          <EntitySet Name="ThingsQuests" EntityType="SSDBModel.ThingsQuests" />
         </EntityContainer>
         <EntityType Name="Things">
           <Key>
@@ -78,6 +88,14 @@
           <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Detail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ThingsQuests">
+          <Key>
+            <PropertyRef Name="ThingId" />
+            <PropertyRef Name="QuestId" />
+          </Key>
+          <Property Name="ThingId" Type="Int32" Nullable="false" />
+          <Property Name="QuestId" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -115,6 +133,14 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ThingsQuests">
+            <EntityTypeMapping TypeName="SSDBModel.ThingsQuests">
+              <MappingFragment StoreEntitySet="ThingsQuests">
+                <ScalarProperty Name="QuestId" ColumnName="QuestId" />
+                <ScalarProperty Name="ThingId" ColumnName="ThingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

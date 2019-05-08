@@ -1,6 +1,7 @@
 ﻿using SpareShare.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,33 +11,71 @@ namespace SpareShare.Controllers
     public class ReceiveController : Controller
     {
         // GET: 显示发布请求的表单
-        // 修改时间: 2019年5月1日 15点07分
-        public ActionResult UploadQuests()
+        // 修改时间: 2019年5月8日 16点09分
+        public ActionResult UploadQuests(int? id)
         {
+            if (id != null)
+            {
+                using (SSDBEntities db = new SSDBEntities())
+                {
+                    //查找id对应的捐赠物品
+                    Things t = db.Things.Where(x => x.Id == id.Value).FirstOrDefault();
+                    //新建视图模型
+                    UploadQuestsViewModel res = new UploadQuestsViewModel();
+                    //给视图模型赋值
+                    res.tId = t.Id;
+                    res.tName = t.Name;
+                    res.tType = t.Type;
+                    res.tDetail = t.Detail;
+                    res.qName = t.Name;
+                    res.qType = t.Type;
+                    return View(res);
+                }
+            }
             return View();
         }
 
         // POST: 提交表单，发布受助请求信息
-        // 修改时间: 2019年5月3日 14点06分
+        // 修改时间: 2019年5月8日 16点11分
         [HttpPost]
         public ActionResult UploadQuests(UploadQuestsViewModel model)
         {
             //获取当前用户的Id
             int usrId = (int)HttpContext.Session["usrId"];
+            int qId = 0;
             if (ModelState.IsValid)
             {
                 //新建Quests
                 Quests q = new Quests();
                 q.ReceiverId = usrId;
-                q.Name = model.Name;
-                q.Type = model.Type;
-                q.Detail = model.Detail;
-                q.Status = "正在审核中";
-                //向数据库新建元组
+                q.Name = model.qName;
+                q.Type = model.qType;
+                q.Detail = model.qDetail;
+                q.Status = model.tId > 0 ? "已接受受助" : "正在审核中";
+                //向数据库新建元组，并获取新Quests的id
                 using (SSDBEntities db = new SSDBEntities())
                 {
                     db.Quests.Add(q);
                     db.SaveChanges();
+                    qId = q.Id;
+                }
+                //如果当前有匹配捐赠物品，再新建一条匹配元组
+                if (model.tId > 0)
+                {
+                    //新建ThingsQuests
+                    ThingsQuests tq = new ThingsQuests();
+                    tq.ThingId = model.tId;
+                    tq.QuestId = qId;
+                    //向数据库新建元组
+                    using (SSDBEntities db = new SSDBEntities())
+                    {
+                        db.ThingsQuests.Add(tq);
+
+                        Things t = db.Things.Where(x => x.Id == model.tId).FirstOrDefault();
+                        t.Status = "已接受捐赠";
+                        db.Entry(t).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
                 }
                 //提交成功，跳转至用户主页
                 return RedirectToAction("Index", "Home");
@@ -97,6 +136,23 @@ namespace SpareShare.Controllers
                 var t = db.Things.Where(x => x.Id == id).FirstOrDefault();
                 return View(t);
             }
+        }
+
+        // POST: 接受其他用户的受助请求
+        // 修改时间: 2019年5月8日 16点18分
+        [HttpPost]
+        public ActionResult ThingsDetail(int id, string action)
+        {
+            switch (action)
+            {
+                case "接受":
+                    //跳转至匹配发布界面，id为对应请求的id
+                    return RedirectToAction("UploadQuests", new { id = id });
+                case "返回":
+                    //跳转回请求列表
+                    return RedirectToAction("SearchThings");
+            }
+            return View();
         }
 
         // GET: 查询其他用户的捐赠物品

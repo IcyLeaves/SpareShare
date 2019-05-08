@@ -34,5 +34,13 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ThingsQuests">
+      <EntityTypeMapping TypeName="SSDBModel.ThingsQuests">
+        <MappingFragment StoreEntitySet="ThingsQuests">
+          <ScalarProperty Name="QuestId" ColumnName="QuestId" />
+          <ScalarProperty Name="ThingId" ColumnName="ThingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

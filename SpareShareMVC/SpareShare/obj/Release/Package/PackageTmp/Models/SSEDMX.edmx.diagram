@@ -8,6 +8,7 @@
         <EntityTypeShape EntityType="SSDBModel.Users" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SSDBModel.Things" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="SSDBModel.Quests" Width="1.5" PointX="5.875" PointY="0.75" />
+        <EntityTypeShape EntityType="SSDBModel.ThingsQuests" Width="1.5" PointX="8.125" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

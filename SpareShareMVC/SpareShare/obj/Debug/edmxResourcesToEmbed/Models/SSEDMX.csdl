@@ -12,6 +12,7 @@
     <EntitySet Name="Users" EntityType="Self.Users" />
     <EntitySet Name="Things" EntityType="SSDBModel.Things" />
     <EntitySet Name="Quests" EntityType="SSDBModel.Quests" />
+    <EntitySet Name="ThingsQuests" EntityType="SSDBModel.ThingsQuests" />
   </EntityContainer>
   <EntityType Name="Things">
     <Key>
@@ -34,5 +35,13 @@
     <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="Detail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="ThingsQuests">
+    <Key>
+      <PropertyRef Name="ThingId" />
+      <PropertyRef Name="QuestId" />
+    </Key>
+    <Property Name="ThingId" Type="Int32" Nullable="false" />
+    <Property Name="QuestId" Type="Int32" Nullable="false" />
   </EntityType>
 </Schema>

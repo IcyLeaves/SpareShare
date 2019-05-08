@@ -3,16 +3,51 @@
     ViewBag.Title = "上传捐赠物品";
 }
 
+@* 受助请求信息 *@
+@if (Model!=null)
+{
+    <h2>
+        受助请求信息
+    </h2>
+    <div>
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.qName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.qName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.qType)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.qType)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.qDetail)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.qDetail)
+            </dd>
+        </dl>
+    </div>
+}
 <h2>上传捐赠物品</h2>
 @* 上传物品表单 *@
 @using (Html.BeginForm("UploadThings", "Donate", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.tName, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(m => m.tName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.tName, "", new { @class = "text-danger" })
         </div>
     </div>
     //下拉列表的值
@@ -26,19 +61,24 @@
     selectList.Add(new SelectListItem { Value = "配件", Text = "配件" });
     selectList.Add(new SelectListItem { Value = "其他", Text = "其他" });
     <div class="form-group">
-        @Html.LabelFor(m => m.Type, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.tType, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DropDownListFor(m => m.Type, new SelectList(selectList.AsEnumerable(), "Value", "Text"), new { @class = "form-control" })
+            @Html.DropDownListFor(m => m.tType, new SelectList(selectList.AsEnumerable(), "Value", "Text"), new { @class = "form-control" })
         </div>
     </div>
+    
     <div class="form-group">
-        @Html.LabelFor(m => m.Detail, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.tDetail, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextAreaFor(m => m.Detail, new { @class = "form-control", rows = 3 })
-            @Html.ValidationMessageFor(m => m.Detail, "", new { @class = "text-danger" })
+            @Html.TextAreaFor(m => m.tDetail, new { @class = "form-control", rows = 3 })
+            @Html.ValidationMessageFor(m => m.tDetail, "", new { @class = "text-danger" })
         </div>
     </div>
-
+    if (Model != null)
+    {
+        //hidden提交QuestId
+        <input name="qId" id="qId" type="hidden" value="@Model.qId">
+    }
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="提交" class="btn btn-default" />

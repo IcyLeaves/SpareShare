@@ -202,6 +202,9 @@
     <Compile Include="Models\Things.cs">
       <DependentUpon>SSEDMX.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ThingsQuests.cs">
+      <DependentUpon>SSEDMX.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Users.cs">
       <DependentUpon>SSEDMX.tt</DependentUpon>
     </Compile>
