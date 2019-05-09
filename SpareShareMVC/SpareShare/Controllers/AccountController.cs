@@ -42,7 +42,7 @@ namespace SpareShare.Controllers
                 }
                 else//如果找到Users,给Session赋值
                 {
-                    HttpContext.Session["usrName"] = model.Username;
+                    HttpContext.Session["usrName"] = User.Username;
                     HttpContext.Session["usrId"] = User.UserId;
                 }
             }

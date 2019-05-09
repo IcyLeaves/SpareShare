@@ -162,7 +162,7 @@ namespace SpareShare.Controllers
         }
 
         // GET: 查询其他用户的受助请求
-        // 修改时间: 2019年5月6日 15点22分
+        // 修改时间: 2019年5月9日 13点18分
         public ActionResult SearchQuests()
         {
             //获取当前用户id
@@ -172,7 +172,7 @@ namespace SpareShare.Controllers
             using (SSDBEntities db = new SSDBEntities())
             {
                 //查找[其他用户的][闲置的]请求
-                var qs = db.Quests.Where(x => x.Id != usrId && x.Status == "等待受助中");
+                var qs = db.Quests.Where(x => x.ReceiverId != usrId && x.Status == "等待受助中");
                 //给视图模型赋值
                 foreach (var q in qs)
                 {

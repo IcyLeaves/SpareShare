@@ -126,6 +126,40 @@ namespace SpareShare.Controllers
             }
         }
 
+        // POST: 提交对受助请求的操作
+        // 修改时间: 2019年5月9日 13点52分
+        [HttpPost]
+        public ActionResult QuestsDetail(int id,string action)
+        {
+            using (SSDBEntities db = new SSDBEntities())
+            {
+                //找到id对应的Quests
+                Quests q = db.Quests.Where(x => x.Id == id).FirstOrDefault();
+                switch (action)
+                {
+                    case "确认送达":
+                        //找到匹配的ThingId
+                        ThingsQuests tq = db.ThingsQuests.Where(x => x.QuestId == id).FirstOrDefault();
+                        var tId = tq.ThingId;
+                        //找到ThingId对应的Things
+                        Things t = db.Things.Where(x => x.Id == tId).FirstOrDefault();
+                        //修改Things状态
+                        t.Status = "捐赠已完成";
+                        db.Entry(t).State = EntityState.Modified;
+                        //修改Quests状态
+                        q.Status = "受助已完成";
+                        db.Entry(q).State = EntityState.Modified;
+                        //执行操作
+                        db.SaveChanges();
+                        return RedirectToAction("MyQuestsList");
+                    case "返回":
+                        //跳转至“我的受助请求”
+                        return RedirectToAction("MyQuestsList");
+                }
+                return View(q);
+            }
+        }
+
         // GET: 显示捐赠物品详细信息
         // 修改时间: 2019年5月6日 20点00分
         public ActionResult ThingsDetail(int id)
@@ -156,7 +190,7 @@ namespace SpareShare.Controllers
         }
 
         // GET: 查询其他用户的捐赠物品
-        // 修改时间: 2019年5月6日 19点36分
+        // 修改时间: 2019年5月9日 13点18分
         public ActionResult SearchThings()
         {
             //获取当前用户id
@@ -166,7 +200,7 @@ namespace SpareShare.Controllers
             using (SSDBEntities db = new SSDBEntities())
             {
                 //查找[其他用户的][闲置的]物品
-                var ts = db.Things.Where(x => x.Id != usrId && x.Status == "物品闲置中");
+                var ts = db.Things.Where(x => x.DonatorId != usrId && x.Status == "物品闲置中");
                 //给视图模型赋值
                 foreach (var t in ts)
                 {
