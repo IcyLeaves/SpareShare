@@ -30,6 +30,9 @@ namespace SpareShare.Models
         [Required(ErrorMessage = "请输入物品描述")]
         [Display(Name = "物品描述")]
         public string tDetail { get; set; }
+
+        [Display(Name ="实物图")]
+        public HttpPostedFileBase Image { get; set; }
     }
 
     public class ThingsListViewModel

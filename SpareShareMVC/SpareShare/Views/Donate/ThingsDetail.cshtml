@@ -39,9 +39,19 @@
         <dd>
             @Html.DisplayFor(model => model.DonatorId)
         </dd>
-
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </dt>
+        <dd>
+            <img src="@PublicFunction.GetImgSrc(Model.ImageUrl)" class="img-thumbnail" style="width:200px; height:200px;" />
+        </dd>
     </dl>
 </div>
-<p>
-    @Html.ActionLink("返回", "MyThingsList")
-</p>
+@using (Html.BeginForm("ThingsDetail", "Donate", new { id = Model.Id }, FormMethod.Post, new { id = "AssessForm" }))
+{
+    if (Model.Status == "审核未通过" || Model.Status == "正在审核中")
+    {
+        <input type="submit" value="删除" name="action" class="btn btn-danger" />
+    }    
+    <input type="submit" value="返回" name="action" class="btn btn-link" />
+}

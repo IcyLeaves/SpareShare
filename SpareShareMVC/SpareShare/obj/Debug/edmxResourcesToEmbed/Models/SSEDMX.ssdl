@@ -21,6 +21,7 @@
     <Property Name="Type" Type="nvarchar" MaxLength="20" />
     <Property Name="Detail" Type="nvarchar" MaxLength="500" />
     <Property Name="Status" Type="nvarchar" MaxLength="10" />
+    <Property Name="ImageUrl" Type="nvarchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="ThingsQuests">
     <Key>

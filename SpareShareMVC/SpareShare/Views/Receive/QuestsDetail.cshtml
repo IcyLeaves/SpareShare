@@ -43,6 +43,13 @@
 </div>
 @using (Html.BeginForm("QuestsDetail", "Receive", new { id = Model.Id }, FormMethod.Post, new { id = "AssessForm" }))
 {
-    <input type="submit" value="确认送达" name="action" class="btn btn-success" />
+    if (Model.Status == "已接受受助")
+    {
+        <input type="submit" value="确认送达" name="action" class="btn btn-success" />
+    }
+    if (Model.Status == "审核未通过" || Model.Status == "正在审核中")
+    {
+        <input type="submit" value="删除" name="action" class="btn btn-danger" />
+    }
     <input type="submit" value="返回" name="action" class="btn btn-link" />
 }

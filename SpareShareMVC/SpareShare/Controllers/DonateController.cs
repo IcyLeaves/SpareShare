@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 
 namespace SpareShare.Controllers
@@ -42,7 +44,7 @@ namespace SpareShare.Controllers
         }
 
         // POST: 提交表单，上传捐赠物品信息
-        // 修改时间: 2019年5月8日 18点23分
+        // 修改时间: 2019年5月12日 18点56分
         [HttpPost]
         public ActionResult UploadThings(UploadThingsViewModel model)
         {
@@ -58,6 +60,31 @@ namespace SpareShare.Controllers
                 t.Type = model.tType;
                 t.Detail = model.tDetail;
                 t.Status = model.qId > 0 ? "已接受捐赠" : "正在审核中";//如果当前有匹配受助请求，则跳过审核
+                //文件存储到目录下
+                var imgFile = model.Image;
+                if(imgFile!=null && imgFile.ContentLength>0)
+                {
+                    var root = "~/Upload/Images/";
+                    //主机存储图片的文件目录
+                    var phicyPath = HostingEnvironment.MapPath(root);
+                    //创建Upload文件夹，如果有则不创建
+                    Directory.CreateDirectory(phicyPath);
+                    //文件名与路径
+                    var fileName = imgFile.FileName;
+                    var filePath = phicyPath + fileName;
+                    //防止文件重名
+                    while (System.IO.File.Exists(filePath))
+                    {
+                        Random rand = new Random();
+                        fileName = rand.Next().ToString() + "-" + imgFile.FileName;
+                        filePath = phicyPath + fileName;
+                    }
+                    //存储文件到文件目录
+                    imgFile.SaveAs(filePath);
+                    //保存提交的图片URL至数据库
+                    t.ImageUrl = fileName;
+                }
+
                 //向数据库新建元组，并获取新Things的id
                 using (SSDBEntities db = new SSDBEntities())
                 {
@@ -128,6 +155,30 @@ namespace SpareShare.Controllers
             {
                 //找出对应id的捐赠物品
                 var t = db.Things.Where(x => x.Id == id).FirstOrDefault();
+                return View(t);
+            }
+        }
+
+        // POST: 提交对捐赠物品的操作
+        // 修改时间: 2019年5月12日 13点58分
+        [HttpPost]
+        public ActionResult ThingsDetail(int id,string action)
+        {
+            using (SSDBEntities db = new SSDBEntities())
+            {
+                //找出对应id的捐赠物品
+                Things t = db.Things.Where(x => x.Id == id).FirstOrDefault();
+                switch (action)
+                {
+                    case "删除":
+                        //移除Things元组
+                        db.Things.Remove(t);
+                        db.SaveChanges();
+                        return RedirectToAction("MyThingsList");
+                    case "返回":
+                        //跳转至“我的捐赠物品”
+                        return RedirectToAction("MyThingsList"); ;
+                }
                 return View(t);
             }
         }

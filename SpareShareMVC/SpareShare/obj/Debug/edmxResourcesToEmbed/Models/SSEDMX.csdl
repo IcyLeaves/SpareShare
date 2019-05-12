@@ -24,6 +24,7 @@
     <Property Name="Detail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="DonatorId" Type="Int32" Nullable="false" />
     <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ImageUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Quests">
     <Key>

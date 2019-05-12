@@ -20,5 +20,6 @@ namespace SpareShare.Models
         public string Detail { get; set; }
         public int DonatorId { get; set; }
         public string Status { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

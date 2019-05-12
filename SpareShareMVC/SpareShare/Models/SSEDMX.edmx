@@ -26,6 +26,7 @@
           <Property Name="Type" Type="nvarchar" MaxLength="20" />
           <Property Name="Detail" Type="nvarchar" MaxLength="500" />
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="ThingsQuests">
           <Key>
@@ -77,6 +78,7 @@
           <Property Name="Detail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="DonatorId" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Quests">
           <Key>
@@ -115,6 +117,7 @@
           <EntitySetMapping Name="Things">
             <EntityTypeMapping TypeName="SSDBModel.Things">
               <MappingFragment StoreEntitySet="Things">
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="DonatorId" ColumnName="DonatorId" />
                 <ScalarProperty Name="Detail" ColumnName="Detail" />

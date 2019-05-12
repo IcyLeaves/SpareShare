@@ -2,6 +2,23 @@
 @{
     ViewBag.Title = "上传捐赠物品";
 }
+@section head{
+    <script>
+        $(function(){
+            $("#file1").on("change", function () {
+                var file = this.files[0];
+                if (this.files && file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#img1").attr("src", e.target.result);
+                        images();
+                    }
+                    reader.readAsDataURL(file);
+                }
+            })
+        });
+    </script>
+}
 
 @* 受助请求信息 *@
 @if (Model!=null)
@@ -72,6 +89,18 @@
         <div class="col-md-10">
             @Html.TextAreaFor(m => m.tDetail, new { @class = "form-control", rows = 3 })
             @Html.ValidationMessageFor(m => m.tDetail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <img src="~/Files/1.png" alt="" class="img-thumbnail" id="img1" style="width:200px; height:200px" />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Image, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <input type="file" name="Image" id="file1" />
+            @Html.ValidationMessageFor(m => m.Image, "", new { @class = "text-danger" })
         </div>
     </div>
     if (Model != null)

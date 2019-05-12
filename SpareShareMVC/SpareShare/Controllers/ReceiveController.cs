@@ -84,7 +84,6 @@ namespace SpareShare.Controllers
             return View(model);
         }
 
-
         // GET: 显示用户受助请求列表
         // 修改时间: 2019年5月3日 13点23分
         public ActionResult MyQuestsList()
@@ -127,7 +126,7 @@ namespace SpareShare.Controllers
         }
 
         // POST: 提交对受助请求的操作
-        // 修改时间: 2019年5月9日 13点52分
+        // 修改时间: 2019年5月12日 13点55分
         [HttpPost]
         public ActionResult QuestsDetail(int id,string action)
         {
@@ -150,6 +149,11 @@ namespace SpareShare.Controllers
                         q.Status = "受助已完成";
                         db.Entry(q).State = EntityState.Modified;
                         //执行操作
+                        db.SaveChanges();
+                        return RedirectToAction("MyQuestsList");
+                    case "删除":
+                        //从数据库中移除Quests元组
+                        db.Quests.Remove(q);
                         db.SaveChanges();
                         return RedirectToAction("MyQuestsList");
                     case "返回":
