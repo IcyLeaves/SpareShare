@@ -5,6 +5,14 @@
 }
 
 <h2>查询受助请求</h2>
+@*关键字查询表单*@
+@using (Html.BeginForm("SearchQuests", "Donate", FormMethod.Get))
+{
+    <p>
+        查询请求: @Html.TextBox("keywords", "", new { @class = "form-control" })
+        <button type="submit" class="btn btn-default">搜索</button>
+    </p>
+}
 <table class="table">
     <tr>
         <th>

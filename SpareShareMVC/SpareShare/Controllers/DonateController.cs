@@ -7,6 +7,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using OpenCvSharp;
+using System.Collections;
 
 namespace SpareShare.Controllers
 {
@@ -44,7 +46,7 @@ namespace SpareShare.Controllers
         }
 
         // POST: 提交表单，上传捐赠物品信息
-        // 修改时间: 2019年5月12日 18点56分
+        // 修改时间: 2019年5月21日 15点45分
         [HttpPost]
         public ActionResult UploadThings(UploadThingsViewModel model)
         {
@@ -62,7 +64,7 @@ namespace SpareShare.Controllers
                 t.Status = model.qId > 0 ? "已接受捐赠" : "正在审核中";//如果当前有匹配受助请求，则跳过审核
                 //文件存储到目录下
                 var imgFile = model.Image;
-                if(imgFile!=null && imgFile.ContentLength>0)
+                if (imgFile != null && imgFile.ContentLength > 0)
                 {
                     var root = "~/Upload/Images/";
                     //主机存储图片的文件目录
@@ -117,10 +119,94 @@ namespace SpareShare.Controllers
             //模型报错，返回当前页面
             return View(model);
         }
+        ////计算哈希值
+        //// 修改时间: 2019年5月16日 22点08分
+        //void MainHash()
+        //{
+        //    Mat image1 = Cv2.ImRead("example1.jpg",ImreadModes.Color);
+        //    Mat image2 = Cv2.ImRead("example3.jpg",ImreadModes.Color);
+        //    string imgPrint1 = ImageHashValue(image1);
+        //    string imgPrint2 = ImageHashValue(image2);
+        //    double similarity = ImageSimilarity(imgPrint1, imgPrint2);
+        //    //cout << "The similarity of two images is " << similarity * 100 << "%" << endl;
+        //    //if (similarity >= 0.9) cout << "The two images are extremely similar." << endl;
+        //    //else if (similarity >= 0.8 && similarity < 0.9) cout << "The two images are pretty similar." << endl;
+        //    //else if (similarity >= 0.7 && similarity < 0.8) cout << "The two images are a little similar." << endl;
+        //    //else if (similarity < 0.7) cout << "The two image are not similar." << endl; cout << endl;
+        //    Cv2.WaitKey(0);
+        //}
+        ////计算图片的指纹信息
+        //string ImageHashValue(Mat src)
+        //{
+        //    string resStr=new string('\0',64);
+        //    Mat image = new Mat(src.Height, src.Width,MatType.CV_8UC3);
+        //    //1.灰度化
+        //    if(src.Channels()==3)
+        //    {
+        //        Cv2.CvtColor(src, image, ColorConversionCodes.BGR2GRAY);
+        //    }
+        //    else
+        //    {
+        //        src.CopyTo(image);
+        //    }
+        //    //2.缩小尺寸 8*8
+        //    Mat temp = new Mat(8, 8, MatType.CV_8UC1);
+        //    Cv2.Resize(image,temp,new Size(8,8));
+        //    ////3.简化色彩
+        //    //ArrayList pData = new ArrayList();
+        //    //pData.Capacity = 64;
+        //    //for(int i=0;i<temp.Height;i++)
+        //    //{
+        //    //    for(int j=0;j<temp.Width;j++)
+        //    //    {
+        //    //        pData
+        //    //    }
+        //    //    temp.GetArray(i,)
+        //    //    pData = (temp.GetArray + i * temp.widthStep);
+        //    //    for(int j=0;j<temp.Width;j++)
+        //    //    {
+        //    //        pData[j] = (int)pData[j] / 4;
+        //    //    }
+        //    //}
+        //    //3.计算平均灰度值
+        //    double average = Cv2.Mean(temp).Val0;
+        //    //4.计算哈希值
+        //    int index = 0;
+        //    for(int i=0;i<temp.Height;i++)
+        //    {
+        //        pData = (temp.imageData + i * temp.widthStep);
+        //        for(int j=0;j<temp.Width;j++)
+        //        {
+        //            if(pData[j]>=average)
+        //            {
+        //                resStr[index++] = '1';
+        //            }
+        //            else
+        //            {
+        //                resStr[index++] = '0';
+        //            }
+        //        }
+        //    }
+        //    return resStr;
+        //}
+        ////根据指纹信息计算两幅图像的相似度
+        //double ImageSimilarity(string str1,string str2)
+        //{
+        //    double similarity = 1.0;
+        //    for(int i=1;i<64;i++)
+        //    {
+        //        if(str1[i]!=str2[i])
+        //        {
+        //            similarity -= 1.0 / 64;
+        //        }
+        //    }
+        //    return similarity;
+        //}
+
 
         // GET: 显示用户捐赠物品列表
         // 修改时间: 2019年5月1日 13点29分
-        public ActionResult MyThingsList()
+        public ActionResult MyThingsList(string keywords,string status)
         {
             //获取当前用户id
             int usrId = (int)HttpContext.Session["usrId"];
@@ -129,7 +215,34 @@ namespace SpareShare.Controllers
             using (SSDBEntities db = new SSDBEntities())
             {
                 //查找该用户发布的所有捐赠物品
-                var ts = db.Things.Where(x => x.DonatorId == usrId).ToList();
+                var ts = db.Things.Where(x => x.DonatorId == usrId);
+                //1.按照关键字搜索
+                if (keywords != null)
+                {
+                    ts = ts.Where(x => x.Name.Contains(keywords));
+                }
+                //2.按照状态筛选
+                switch (status)
+                {
+                    case "All":
+                        break;
+                    case "1":
+                        ts = ts.Where(x => x.Status == "正在审核中");
+                        break;
+                    case "2":
+                        ts = ts.Where(x => x.Status == "审核未通过");
+                        break;
+                    case "3":
+                        ts = ts.Where(x => x.Status == "物品闲置中");
+                        break;
+                    case "4":
+                        ts = ts.Where(x => x.Status == "已接受捐赠");
+                        break;
+                    case "5":
+                        ts = ts.Where(x => x.Status == "捐赠已成功");
+                        break;
+                }
+                ViewBag.Status = status;//保存status以便再传回这里
                 //给视图模型赋值
                 foreach (var t in ts)
                 {
@@ -162,7 +275,7 @@ namespace SpareShare.Controllers
         // POST: 提交对捐赠物品的操作
         // 修改时间: 2019年5月12日 13点58分
         [HttpPost]
-        public ActionResult ThingsDetail(int id,string action)
+        public ActionResult ThingsDetail(int id, string action)
         {
             using (SSDBEntities db = new SSDBEntities())
             {
@@ -213,8 +326,8 @@ namespace SpareShare.Controllers
         }
 
         // GET: 查询其他用户的受助请求
-        // 修改时间: 2019年5月9日 13点18分
-        public ActionResult SearchQuests()
+        // 修改时间: 2019年5月21日 14点58分
+        public ActionResult SearchQuests(string keywords)
         {
             //获取当前用户id
             int usrId = (int)HttpContext.Session["usrId"];
@@ -224,6 +337,11 @@ namespace SpareShare.Controllers
             {
                 //查找[其他用户的][闲置的]请求
                 var qs = db.Quests.Where(x => x.ReceiverId != usrId && x.Status == "等待受助中");
+                //1.按照关键字搜索
+                if(keywords!=null)
+                {
+                    qs = qs.Where(x => x.Name.Contains(keywords));
+                }
                 //给视图模型赋值
                 foreach (var q in qs)
                 {
@@ -240,5 +358,6 @@ namespace SpareShare.Controllers
             }
             return View(res);
         }
+        
     }
 }

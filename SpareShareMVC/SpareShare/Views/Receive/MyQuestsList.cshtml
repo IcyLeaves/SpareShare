@@ -2,8 +2,68 @@
 @{
     ViewBag.Title = "我的受助请求";
 }
-
+@section head{
+    <script>
+         $(function () {
+             $("#statusFilter").children().click(setStatus);
+             $("#status").val("@ViewBag.Status");
+         });
+         function setStatus()
+         {
+             var btn = $(this).children().eq(0);
+             //alert("this.val="+btn.val());
+             $("#status").val(btn.val());
+             //alert("status.val="+$("#status").val());
+             $("SearchForm").submit();
+         }
+    </script>
+}
 <h2>我的受助请求</h2>
+@using (Html.BeginForm("MyQuestsList", "Receive", FormMethod.Get))
+{
+    @*关键字查询表单*@
+    <p>
+        查询物品: @Html.TextBox("keywords", "", new { @class = "form-control" })
+        @*存放status的隐藏控件*@
+        <input hidden="hidden" id="status" name="status" value="" />
+        <button type="submit" class="btn btn-default">搜索</button>
+    </p>
+
+   @*状态筛选按钮组*@
+    <div id="statusFilter" class="row" style="text-align:center">
+        <div class="col-md-2">
+            <button value="0" class="btn btn-default" style="width:96px;">
+                全部
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button value="1" class="btn btn-default" style='color:Orange'>
+                正在审核中
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" value="2" class="btn btn-default" style='color:firebrick'>
+                审核未通过
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" value="3" class="btn btn-default" style='color:cadetblue'>
+                等待受助中
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" value="4" class="btn btn-default" style='color:forestgreen'>
+                已接受受助
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" value="5" class="btn btn-default" style='color:mediumPurple'>
+                受助已成功
+            </button>
+        </div>
+    </div>
+}
+
 <table class="table">
     <tr>
         <th>

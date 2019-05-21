@@ -85,8 +85,8 @@ namespace SpareShare.Controllers
         }
 
         // GET: 显示用户受助请求列表
-        // 修改时间: 2019年5月3日 13点23分
-        public ActionResult MyQuestsList()
+        // 修改时间: 2019年5月21日 15点49分
+        public ActionResult MyQuestsList(string keywords,string status)
         {
             //获取当前用户id
             int usrId = (int)HttpContext.Session["usrId"];
@@ -95,7 +95,34 @@ namespace SpareShare.Controllers
             using (SSDBEntities db = new SSDBEntities())
             {
                 //查找该用户发布的所有受助请求
-                var qs = db.Quests.Where(x => x.ReceiverId == usrId).ToList();
+                var qs = db.Quests.Where(x => x.ReceiverId == usrId);
+                //1.按照关键字搜索
+                if (keywords != null)
+                {
+                    qs = qs.Where(x => x.Name.Contains(keywords));
+                }
+                //2.按照状态筛选
+                switch (status)
+                {
+                    case "All":
+                        break;
+                    case "1":
+                        qs = qs.Where(x => x.Status == "正在审核中");
+                        break;
+                    case "2":
+                        qs = qs.Where(x => x.Status == "审核未通过");
+                        break;
+                    case "3":
+                        qs = qs.Where(x => x.Status == "等待受助中");
+                        break;
+                    case "4":
+                        qs = qs.Where(x => x.Status == "已接受受助");
+                        break;
+                    case "5":
+                        qs = qs.Where(x => x.Status == "受助已成功");
+                        break;
+                }
+                ViewBag.Status = status;//保存status以便再传回这里
                 //给视图模型赋值
                 foreach (var q in qs)
                 {
@@ -143,10 +170,10 @@ namespace SpareShare.Controllers
                         //找到ThingId对应的Things
                         Things t = db.Things.Where(x => x.Id == tId).FirstOrDefault();
                         //修改Things状态
-                        t.Status = "捐赠已完成";
+                        t.Status = "捐赠已成功";
                         db.Entry(t).State = EntityState.Modified;
                         //修改Quests状态
-                        q.Status = "受助已完成";
+                        q.Status = "受助已成功";
                         db.Entry(q).State = EntityState.Modified;
                         //执行操作
                         db.SaveChanges();
@@ -194,8 +221,8 @@ namespace SpareShare.Controllers
         }
 
         // GET: 查询其他用户的捐赠物品
-        // 修改时间: 2019年5月9日 13点18分
-        public ActionResult SearchThings()
+        // 修改时间: 2019年5月9日 15点04分
+        public ActionResult SearchThings(string keywords)
         {
             //获取当前用户id
             int usrId = (int)HttpContext.Session["usrId"];
@@ -205,6 +232,11 @@ namespace SpareShare.Controllers
             {
                 //查找[其他用户的][闲置的]物品
                 var ts = db.Things.Where(x => x.DonatorId != usrId && x.Status == "物品闲置中");
+                //1.按照关键字搜索
+                if (keywords != null)
+                {
+                    ts = ts.Where(x => x.Name.Contains(keywords));
+                }
                 //给视图模型赋值
                 foreach (var t in ts)
                 {

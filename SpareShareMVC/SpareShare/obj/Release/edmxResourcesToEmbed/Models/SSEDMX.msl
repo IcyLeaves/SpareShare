@@ -13,6 +13,7 @@
     <EntitySetMapping Name="Things">
       <EntityTypeMapping TypeName="SSDBModel.Things">
         <MappingFragment StoreEntitySet="Things">
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="DonatorId" ColumnName="DonatorId" />
           <ScalarProperty Name="Detail" ColumnName="Detail" />
