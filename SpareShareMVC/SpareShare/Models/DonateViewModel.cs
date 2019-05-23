@@ -32,7 +32,7 @@ namespace SpareShare.Models
         public string tDetail { get; set; }
 
         [Display(Name ="实物图")]
-        public HttpPostedFileBase Image { get; set; }
+        public IEnumerable<HttpPostedFileBase> Image { get; set; }
     }
 
     public class ThingsListViewModel

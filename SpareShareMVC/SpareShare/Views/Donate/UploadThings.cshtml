@@ -57,7 +57,7 @@
 }
 <h2>上传捐赠物品</h2>
 @* 上传物品表单 *@
-@using (Html.BeginForm("UploadThings", "Donate", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("UploadThings", "Donate", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">

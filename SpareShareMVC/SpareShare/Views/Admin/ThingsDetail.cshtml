@@ -39,7 +39,12 @@
         <dd>
             @Html.DisplayFor(model => model.DonatorId)
         </dd>
-
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </dt>
+        <dd>
+            <img src="@PublicFunction.GetImgSrc(Model.ImageUrl)" class="img-thumbnail" style="width:200px; height:200px;" />
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Status)
         </dt>

@@ -1,4 +1,5 @@
-﻿using SpareShare.Models;
+﻿using SpareShare.Filter;
+using SpareShare.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,8 +9,10 @@ using System.Web.Mvc;
 
 namespace SpareShare.Controllers
 {
+    [MyAuthorize]
     public class ReceiveController : Controller
     {
+        int numPerPage = 12;//每页显示条目
         // GET: 显示发布请求的表单
         // 修改时间: 2019年5月8日 16点09分
         public ActionResult UploadQuests(int? id)
@@ -85,8 +88,8 @@ namespace SpareShare.Controllers
         }
 
         // GET: 显示用户受助请求列表
-        // 修改时间: 2019年5月21日 15点49分
-        public ActionResult MyQuestsList(string keywords,string status)
+        // 修改时间: 2019年5月23日 14点19分
+        public ActionResult MyQuestsList(string keywords,string status,int currentPage=1)
         {
             //获取当前用户id
             int usrId = (int)HttpContext.Session["usrId"];
@@ -122,7 +125,14 @@ namespace SpareShare.Controllers
                         qs = qs.Where(x => x.Status == "受助已成功");
                         break;
                 }
-                ViewBag.Status = status;//保存status以便再传回这里
+                //3.分页
+                int totalThings = qs.Count();//总共条目数目
+                ViewBag.totalPages = (int)Math.Ceiling(totalThings / (double)numPerPage);//总共页数
+                int start = (currentPage - 1) * numPerPage;//开始的条目
+                qs = qs.OrderBy(x => x.Id).Skip(start).Take(numPerPage);
+                ViewBag.searchString = keywords;
+                ViewBag.Status = status;
+                ViewBag.currentPage = currentPage;
                 //给视图模型赋值
                 foreach (var q in qs)
                 {
@@ -222,7 +232,7 @@ namespace SpareShare.Controllers
 
         // GET: 查询其他用户的捐赠物品
         // 修改时间: 2019年5月9日 15点04分
-        public ActionResult SearchThings(string keywords)
+        public ActionResult SearchThings(string keywords,int currentPage=1)
         {
             //获取当前用户id
             int usrId = (int)HttpContext.Session["usrId"];
@@ -237,6 +247,13 @@ namespace SpareShare.Controllers
                 {
                     ts = ts.Where(x => x.Name.Contains(keywords));
                 }
+                //2.分页
+                int totalThings = ts.Count();//总共条目数目
+                ViewBag.totalPages = (int)Math.Ceiling(totalThings / (double)numPerPage);//总共页数
+                int start = (currentPage - 1) * numPerPage;//开始的条目
+                ts = ts.OrderBy(x => x.Id).Skip(start).Take(numPerPage);
+                ViewBag.searchString = keywords;
+                ViewBag.currentPage = currentPage;
                 //给视图模型赋值
                 foreach (var t in ts)
                 {

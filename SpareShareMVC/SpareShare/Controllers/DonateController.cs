@@ -9,11 +9,14 @@ using System.Web.Hosting;
 using System.Web.Mvc;
 using OpenCvSharp;
 using System.Collections;
+using SpareShare.Filter;
 
 namespace SpareShare.Controllers
 {
+    [MyAuthorize]
     public class DonateController : Controller
     {
+        int numPerPage = 12;//每页显示条目数
         // GET: Donate
         public ActionResult Index()
         {
@@ -63,30 +66,29 @@ namespace SpareShare.Controllers
                 t.Detail = model.tDetail;
                 t.Status = model.qId > 0 ? "已接受捐赠" : "正在审核中";//如果当前有匹配受助请求，则跳过审核
                 //文件存储到目录下
-                var imgFile = model.Image;
-                if (imgFile != null && imgFile.ContentLength > 0)
+                foreach (var imgFile in model.Image)
                 {
-                    var root = "~/Upload/Images/";
-                    //主机存储图片的文件目录
-                    var phicyPath = HostingEnvironment.MapPath(root);
-                    //创建Upload文件夹，如果有则不创建
-                    Directory.CreateDirectory(phicyPath);
-                    //文件名与路径
-                    var fileName = imgFile.FileName;
-                    var filePath = phicyPath + fileName;
-                    //防止文件重名
-                    while (System.IO.File.Exists(filePath))
+                    if (imgFile != null && imgFile.ContentLength > 0)
                     {
-                        Random rand = new Random();
-                        fileName = rand.Next().ToString() + "-" + imgFile.FileName;
-                        filePath = phicyPath + fileName;
+                        string phicyPath = PublicFunction.GetPhicyPath();
+                        //创建Upload文件夹，如果有则不创建
+                        Directory.CreateDirectory(phicyPath);
+                        //文件名与路径
+                        var fileName = Path.GetFileName(imgFile.FileName);
+                        var filePath = phicyPath + fileName;
+                        //防止文件重名
+                        while (System.IO.File.Exists(filePath))
+                        {
+                            Random rand = new Random();
+                            fileName = rand.Next().ToString() + "-" + imgFile.FileName;
+                            filePath = phicyPath + fileName;
+                        }
+                        //存储文件到文件目录
+                        imgFile.SaveAs(filePath);
+                        //保存提交的图片URL至数据库
+                        t.ImageUrl = fileName;
                     }
-                    //存储文件到文件目录
-                    imgFile.SaveAs(filePath);
-                    //保存提交的图片URL至数据库
-                    t.ImageUrl = fileName;
                 }
-
                 //向数据库新建元组，并获取新Things的id
                 using (SSDBEntities db = new SSDBEntities())
                 {
@@ -206,7 +208,7 @@ namespace SpareShare.Controllers
 
         // GET: 显示用户捐赠物品列表
         // 修改时间: 2019年5月1日 13点29分
-        public ActionResult MyThingsList(string keywords,string status)
+        public ActionResult MyThingsList(string keywords,string status,int currentPage=1)
         {
             //获取当前用户id
             int usrId = (int)HttpContext.Session["usrId"];
@@ -242,7 +244,14 @@ namespace SpareShare.Controllers
                         ts = ts.Where(x => x.Status == "捐赠已成功");
                         break;
                 }
-                ViewBag.Status = status;//保存status以便再传回这里
+                //3.分页
+                int totalThings = ts.Count();//总共条目数目
+                ViewBag.totalPages = (int)Math.Ceiling(totalThings / (double)numPerPage);//总共页数
+                int start = (currentPage - 1) * numPerPage;//开始的条目
+                ts = ts.OrderBy(x=>x.Id).Skip(start).Take(numPerPage);
+                ViewBag.searchString = keywords;
+                ViewBag.Status = status;
+                ViewBag.currentPage = currentPage;
                 //给视图模型赋值
                 foreach (var t in ts)
                 {
@@ -327,7 +336,7 @@ namespace SpareShare.Controllers
 
         // GET: 查询其他用户的受助请求
         // 修改时间: 2019年5月21日 14点58分
-        public ActionResult SearchQuests(string keywords)
+        public ActionResult SearchQuests(string keywords,int currentPage=1)
         {
             //获取当前用户id
             int usrId = (int)HttpContext.Session["usrId"];
@@ -342,6 +351,13 @@ namespace SpareShare.Controllers
                 {
                     qs = qs.Where(x => x.Name.Contains(keywords));
                 }
+                //2.分页
+                int totalThings = qs.Count();//总共条目数目
+                ViewBag.totalPages = (int)Math.Ceiling(totalThings / (double)numPerPage);//总共页数
+                int start = (currentPage - 1) * numPerPage;//开始的条目
+                qs = qs.OrderBy(x => x.Id).Skip(start).Take(numPerPage);
+                ViewBag.searchString = keywords;
+                ViewBag.currentPage = currentPage;
                 //给视图模型赋值
                 foreach (var q in qs)
                 {

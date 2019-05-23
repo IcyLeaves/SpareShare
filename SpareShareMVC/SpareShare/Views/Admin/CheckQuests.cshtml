@@ -38,3 +38,28 @@
 }
 
 </table>
+<div style="text-align:center">
+    <ul id="page"></ul>
+</div>
+@section Scripts{
+    @Scripts.Render("~/Scripts/MyScripts/bootstrap-paginator.js")
+    <script>
+        $(function () {
+            var currentPage = @(ViewBag.currentPage);
+            var totalPages = @(ViewBag.totalPages);
+            $("#page").bootstrapPaginator({
+                bootstrapMajorVersion: 3, //对应的bootstrap版本
+                currentPage: currentPage, //当前页数
+                numberOfPages: 5, //每次显示页数
+                totalPages: totalPages, //总页数
+                shouldShowPage: true, //是否显示该按钮
+                useBootstrapTooltip: true,
+                onPageClicked: function (event, originalEvent, type, page) {
+                    window.location.href = "http://"+window.location.host+"/Admin/MyQuestsList?currentPage="+page;
+                    //console.log(window.location.host);
+                    //console.log(window.location.href);
+                }
+            });
+        });
+    </script>
+}

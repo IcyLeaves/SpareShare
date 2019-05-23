@@ -1,4 +1,5 @@
-﻿using SpareShare.Models;
+﻿using SpareShare.Filter;
+using SpareShare.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,8 +9,10 @@ using System.Web.Mvc;
 
 namespace SpareShare.Controllers
 {
+    [MyAuthorize]
     public class AdminController : Controller
     {
+        int numPerPage = 12;//每页显示条目
         // GET: Admin
         public ActionResult Index()
         {
@@ -18,7 +21,7 @@ namespace SpareShare.Controllers
 
         // GET: 查看待审核的捐赠物品列表
         // 修改时间: 2019年5月3日 15点06分
-        public ActionResult CheckThings()
+        public ActionResult CheckThings(int currentPage=1)
         {
             //新建视图模型列表
             var res = new List<ThingsListViewModel>();
@@ -26,6 +29,12 @@ namespace SpareShare.Controllers
             {
                 //所有待审核的捐赠物品
                 var ts = db.Things.Where(x => x.Status == "正在审核中");
+                //1.分页
+                int totalThings = ts.Count();//总共条目数目
+                ViewBag.totalPages = (int)Math.Ceiling(totalThings / (double)numPerPage);//总共页数
+                int start = (currentPage - 1) * numPerPage;//开始的条目
+                ts = ts.OrderBy(x => x.Id).Skip(start).Take(numPerPage);
+                ViewBag.currentPage = currentPage;
                 //给视图模型赋值
                 foreach (var t in ts)
                 {
@@ -44,7 +53,7 @@ namespace SpareShare.Controllers
 
         // GET: 查看待审核的受助请求列表
         // 修改时间: 2019年5月3日 15点06分
-        public ActionResult CheckQuests()
+        public ActionResult CheckQuests(int currentPage=1)
         {
             //新建视图模型列表
             var res = new List<QuestsListViewModel>();
@@ -52,6 +61,12 @@ namespace SpareShare.Controllers
             {
                 //所有待审核的受助请求
                 var qs = db.Quests.Where(x => x.Status == "正在审核中");
+                //1.分页
+                int totalThings = qs.Count();//总共条目数目
+                ViewBag.totalPages = (int)Math.Ceiling(totalThings / (double)numPerPage);//总共页数
+                int start = (currentPage - 1) * numPerPage;//开始的条目
+                qs = qs.OrderBy(x => x.Id).Skip(start).Take(numPerPage);
+                ViewBag.currentPage = currentPage;
                 //给视图模型赋值
                 foreach (var q in qs)
                 {
