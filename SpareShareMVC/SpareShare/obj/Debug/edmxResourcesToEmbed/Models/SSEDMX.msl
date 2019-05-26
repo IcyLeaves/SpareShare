@@ -4,6 +4,13 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="SSDBModel.Users">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="QQ" ColumnName="QQ" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="School" ColumnName="School" />
+          <ScalarProperty Name="Province" ColumnName="Province" />
+          <ScalarProperty Name="RegTime" ColumnName="RegTime" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Username" ColumnName="Username" />
           <ScalarProperty Name="Password" ColumnName="Password" />

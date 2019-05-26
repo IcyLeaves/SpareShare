@@ -2,7 +2,22 @@
 @{
     ViewBag.Title = "注册";
 }
-
+@section head{
+    <script>
+        $(function () {
+            $('#hiddengroup').hide();
+            $('#isAdmin').change(function () {
+                var isadmin = $(this).val();
+                if (isadmin == "Y") {
+                    $('#hiddengroup').show();
+                }
+                else {
+                    $('#hiddengroup').hide();
+                }
+            })
+        });
+    </script>
+}
 <h2>注册</h2>
 @* 注册表单 *@
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -27,6 +42,61 @@
         <div class="col-md-6">
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    //下拉列表的值
+    List<SelectListItem> selectList = new List<SelectListItem>();
+    selectList.Add(new SelectListItem { Value = "M", Text = "男" });
+    selectList.Add(new SelectListItem { Value = "F", Text = "女" });
+    <div class="form-group">
+        @Html.LabelFor(m => m.Sex, new { @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            @Html.DropDownListFor(m => m.Sex, new SelectList(selectList.AsEnumerable(), "Value", "Text"), new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.QQ, new { @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(m => m.QQ, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.QQ, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Province, new { @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(m => m.Province, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Province, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.School, new { @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(m => m.School, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.School, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    //下拉列表的值
+    List<SelectListItem> selectList2 = new List<SelectListItem>();
+    selectList2.Add(new SelectListItem { Value = "N", Text = "否" });
+    selectList2.Add(new SelectListItem { Value = "Y", Text = "是" });
+    <div class="form-group">
+        @Html.LabelFor(m => m.isAdmin, new { @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            @Html.DropDownListFor(m => m.isAdmin, new SelectList(selectList2.AsEnumerable(), "Value", "Text"), new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group" id="hiddengroup">
+        @Html.LabelFor(m => m.AdminPassword, new { @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            @Html.PasswordFor(m => m.AdminPassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.AdminPassword, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">

@@ -17,5 +17,12 @@ namespace SpareShare.Models
         public int UserId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public Nullable<System.DateTime> RegTime { get; set; }
+        public string Province { get; set; }
+        public string School { get; set; }
+        public string Email { get; set; }
+        public string QQ { get; set; }
+        public string Sex { get; set; }
+        public string IsAdmin { get; set; }
     }
 }

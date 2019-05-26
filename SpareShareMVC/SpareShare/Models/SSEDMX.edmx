@@ -43,6 +43,13 @@
           <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Username" Type="nvarchar" MaxLength="20" />
           <Property Name="Password" Type="varchar" MaxLength="20" />
+          <Property Name="RegTime" Type="datetime" />
+          <Property Name="Province" Type="nvarchar" MaxLength="20" />
+          <Property Name="School" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="QQ" Type="varchar" MaxLength="15" />
+          <Property Name="Sex" Type="char" MaxLength="1" />
+          <Property Name="IsAdmin" Type="char" MaxLength="1" />
         </EntityType>
         <EntityContainer Name="SSDBModelStoreContainer">
           <EntitySet Name="Quests" EntityType="Self.Quests" Schema="dbo" store:Type="Tables" />
@@ -61,6 +68,13 @@
           <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RegTime" Type="DateTime" Precision="3" />
+          <Property Name="Province" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="School" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="QQ" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Sex" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IsAdmin" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityContainer Name="SSDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.Users" />
@@ -108,6 +122,13 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="SSDBModel.Users">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="School" ColumnName="School" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="RegTime" ColumnName="RegTime" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Password" ColumnName="Password" />

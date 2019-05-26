@@ -38,6 +38,13 @@
     <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Username" Type="nvarchar" MaxLength="20" />
     <Property Name="Password" Type="varchar" MaxLength="20" />
+    <Property Name="RegTime" Type="datetime" />
+    <Property Name="Province" Type="nvarchar" MaxLength="20" />
+    <Property Name="School" Type="nvarchar" MaxLength="100" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" />
+    <Property Name="QQ" Type="varchar" MaxLength="15" />
+    <Property Name="Sex" Type="char" MaxLength="1" />
+    <Property Name="IsAdmin" Type="char" MaxLength="1" />
   </EntityType>
   <EntityContainer Name="SSDBModelStoreContainer">
     <EntitySet Name="Quests" EntityType="Self.Quests" Schema="dbo" store:Type="Tables" />

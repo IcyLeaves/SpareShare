@@ -191,9 +191,11 @@
     <Compile Include="Controllers\DonateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReceiveController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\UsersViewModel.cs" />
     <Compile Include="Models\Quests.cs">
       <DependentUpon>SSEDMX.tt</DependentUpon>
     </Compile>
@@ -302,6 +304,8 @@
     <Content Include="Views\Receive\SearchThings.cshtml" />
     <Content Include="Views\Donate\QuestsDetail.cshtml" />
     <Content Include="Views\Receive\ThingsDetail.cshtml" />
+    <Content Include="Views\User\Manage.cshtml" />
+    <Content Include="Views\User\EditManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

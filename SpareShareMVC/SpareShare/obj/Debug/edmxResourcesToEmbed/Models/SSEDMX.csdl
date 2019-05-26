@@ -7,6 +7,13 @@
     <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="RegTime" Type="DateTime" Precision="3" />
+    <Property Name="Province" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="School" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="QQ" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="Sex" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="IsAdmin" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
   </EntityType>
   <EntityContainer Name="SSDBEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Users" EntityType="Self.Users" />
