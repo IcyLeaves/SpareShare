@@ -2,42 +2,154 @@
 @{
     ViewBag.Title = "我的受助请求";
 }
+@section head{
+<style>
+    .table:hover {
+        cursor: pointer;
+    }
 
-<h2>我的受助请求</h2>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Detail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
-    </tr>
+    .quest img {
+        height: 15px;
+        width: 15px;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Detail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.ActionLink("详情", "QuestsDetail", new { id = item.QuestId })
-        </td>
-    </tr>
+    .quest a {
+        vertical-align: middle;
+    }
+
+    .quest span {
+        color: #999999;
+        vertical-align: middle;
+        margin-left: 20px;
+    }
+
+    .reason span {
+        color: #999999;
+        vertical-align: middle;
+    }
+
+    .form-control {
+        display: inline;
+    }
+</style>
+    <script>
+         $(function () {
+             $("#statusFilter").children().click(setStatus);
+             $("#status").val("@ViewBag.Status");
+         });
+         function setStatus()
+         {
+             var btn = $(this).children().eq(0);
+             //alert("this.val="+btn.val());
+             $("#status").val(btn.val());
+             //alert("status.val="+$("#status").val());
+             $("SearchForm").submit();
+         }
+
+         function doLink(idx){
+             window.location.href="http://"+window.location.host+"/Receive/QuestsDetail/"+idx;
+         }
+    </script>
 }
+<h2>我的受助请求</h2>
+@using (Html.BeginForm("MyQuestsList", "Receive", FormMethod.Get))
+{
+    @*关键字查询表单*@
+    <p>
+        查询物品: @Html.TextBox("keywords", "", new { @class = "form-control" })
+        @*存放status的隐藏控件*@
+        <input hidden="hidden" id="status" name="status" value="" />
+        <button type="submit" class="btn btn-default">搜索</button>
+    </p>
+   @*状态筛选按钮组*@
+    <div id="statusFilter" class="row" style="text-align:center">
+        <div class="col-md-2">
+            <button value="0" class="btn btn-default" style="width:96px;">
+                <span class="glyphicon glyphicon-align-left" style="font-size:20px;"></span><br />
+                全部
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button value="1" class="btn btn-default" style='color:Orange'>
+                <span class="glyphicon glyphicon-paperclip" style="font-size:20px"></span><br />
+                正在审核中
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" value="2" class="btn btn-default" style='color:firebrick'>
+                <span class="glyphicon glyphicon-remove" style="font-size:20px"></span><br />
+                审核未通过
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" value="3" class="btn btn-default" style='color:cadetblue'>
+                <span class="glyphicon glyphicon-time" style="font-size:20px"></span><br />
+                等待受助中
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" value="4" class="btn btn-default" style='color:forestgreen'>
+                <span class="glyphicon glyphicon-transfer" style="font-size:20px"></span><br />
+                已接受受助
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" value="5" class="btn btn-default" style='color:mediumPurple'>
+                <span class="glyphicon glyphicon-ok" style="font-size:20px"></span><br />
+                受助已成功
+            </button>
+        </div>
+    </div>
+}
+<br />
+<table class="table table-hover">
+    @foreach (var item in Model)
+    {
+        <tr onclick="doLink(@(item.Quest.Id))">
+            <td>
+                <div class="quest">
+                    <img src="~/Files/wenhao.png" />
+                    <a>@item.Quest.Name</a>
+                    <span>@item.Quest.Type</span>
+                    @Html.Raw(PublicFunction.GetQuestStatus(item.Quest.Status))
+                </div>
+                <div class="reason">
+                    <span>@item.Quest.Detail</span>
+                    <span style="float:right">发布于@(PublicFunction.TransTime(item.Quest.ReleaseTime.Value))</span>
+                </div>
+            </td>
+        </tr>
+    }
 </table>
+
+<div style="text-align:center">
+    <ul id="page"></ul>
+</div>
+@section Scripts{
+    @Scripts.Render("~/Scripts/MyScripts/bootstrap-paginator.js")
+    <script>
+        $(function () {
+            var currentPage = @(ViewBag.currentPage);
+            var totalPages = @(ViewBag.totalPages);
+            $("#page").bootstrapPaginator({
+                bootstrapMajorVersion: 3, //对应的bootstrap版本
+                currentPage: currentPage, //当前页数
+                numberOfPages: 5, //每次显示页数
+                totalPages: totalPages, //总页数
+                shouldShowPage: true, //是否显示该按钮
+                useBootstrapTooltip: true,
+                onPageClicked: function (event, originalEvent, type, page) {
+                    var urlSearch="@ViewBag.searchString";
+                    var urlStatus="@ViewBag.status";
+                    window.location.href = "http://"+window.location.host+"/Receive/MyQuestsList?keywords="+urlSearch+"&status="+urlStatus+"&currentPage="+page;
+                    //console.log(window.location.host);
+                    //console.log(window.location.href);
+                }
+            });
+        });
+    </script>
+}
+
+

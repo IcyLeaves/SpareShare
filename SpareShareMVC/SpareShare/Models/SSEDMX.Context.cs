@@ -29,5 +29,8 @@ namespace SpareShare.Models
         public virtual DbSet<Things> Things { get; set; }
         public virtual DbSet<Quests> Quests { get; set; }
         public virtual DbSet<ThingsQuests> ThingsQuests { get; set; }
+        public virtual DbSet<Comments> Comments { get; set; }
+        public virtual DbSet<Assess> Assess { get; set; }
+        public virtual DbSet<Checks> Checks { get; set; }
     }
 }

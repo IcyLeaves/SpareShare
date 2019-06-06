@@ -1,27 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="SSDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Assess">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="CheckedNum" Type="int" />
+    <Property Name="DonateNum" Type="int" />
+    <Property Name="ReceiveNum" Type="int" />
+    <Property Name="CreditPoint" Type="int" />
+    <Property Name="CreditLevel" Type="int" />
+    <Property Name="Limit" Type="int" />
+  </EntityType>
+  <EntityType Name="Checks">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdminId" Type="int" />
+    <Property Name="Result" Type="int" />
+    <Property Name="RefuseReason" Type="nvarchar" MaxLength="500" />
+    <Property Name="CheckedTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Comments">
+    <Key>
+      <PropertyRef Name="ThingId" />
+      <PropertyRef Name="ReceiverId" />
+    </Key>
+    <Property Name="ThingId" Type="int" Nullable="false" />
+    <Property Name="ReceiverId" Type="int" Nullable="false" />
+    <Property Name="Text" Type="nvarchar" MaxLength="1000" />
+    <Property Name="NewScore" Type="int" />
+    <Property Name="SimilarScore" Type="int" />
+    <Property Name="UsefulScore" Type="int" />
+    <Property Name="SpeedScore" Type="int" />
+    <Property Name="BeautifulScore" Type="int" />
+    <Property Name="CommentTime" Type="datetime" />
+  </EntityType>
   <EntityType Name="Quests">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CheckId" Type="int" />
     <Property Name="ReceiverId" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="50" />
     <Property Name="Type" Type="nvarchar" MaxLength="20" />
     <Property Name="Detail" Type="nvarchar" MaxLength="500" />
     <Property Name="Status" Type="nvarchar" MaxLength="10" />
+    <Property Name="ReleaseTime" Type="datetime" />
   </EntityType>
   <EntityType Name="Things">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CheckId" Type="int" />
     <Property Name="DonatorId" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="50" />
     <Property Name="Type" Type="nvarchar" MaxLength="20" />
     <Property Name="Detail" Type="nvarchar" MaxLength="500" />
     <Property Name="Status" Type="nvarchar" MaxLength="10" />
     <Property Name="ImageUrl" Type="nvarchar" MaxLength="500" />
+    <Property Name="ReleaseTime" Type="datetime" />
+    <Property Name="ImageHash" Type="nchar" MaxLength="64" />
   </EntityType>
   <EntityType Name="ThingsQuests">
     <Key>
@@ -30,6 +72,7 @@
     </Key>
     <Property Name="ThingId" Type="int" Nullable="false" />
     <Property Name="QuestId" Type="int" Nullable="false" />
+    <Property Name="Time" Type="datetime" />
   </EntityType>
   <EntityType Name="Users">
     <Key>
@@ -38,8 +81,18 @@
     <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Username" Type="nvarchar" MaxLength="20" />
     <Property Name="Password" Type="varchar" MaxLength="20" />
+    <Property Name="RegTime" Type="datetime" />
+    <Property Name="Province" Type="nvarchar" MaxLength="20" />
+    <Property Name="School" Type="nvarchar" MaxLength="100" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" />
+    <Property Name="QQ" Type="varchar" MaxLength="15" />
+    <Property Name="Sex" Type="char" MaxLength="1" />
+    <Property Name="IsAdmin" Type="char" MaxLength="1" />
   </EntityType>
   <EntityContainer Name="SSDBModelStoreContainer">
+    <EntitySet Name="Assess" EntityType="Self.Assess" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Checks" EntityType="Self.Checks" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Quests" EntityType="Self.Quests" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Things" EntityType="Self.Things" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ThingsQuests" EntityType="Self.ThingsQuests" Schema="dbo" store:Type="Tables" />

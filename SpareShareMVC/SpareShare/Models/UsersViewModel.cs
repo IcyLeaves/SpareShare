@@ -29,5 +29,20 @@ namespace SpareShare.Models
         [Display(Name = "学校")]
         public string School { get; set; }
     }
-    
+    public class CreditViewModel
+    {
+        public string QQ { get; set; }
+        public string Email { get; set; }
+
+        public Assess assess { get; set; }
+    }
+
+    public class AdminChartsViewModel
+    {
+        [Display(Name = "起始日期")]
+        public DateTime StartTime { get; set; }
+
+        [Display(Name = "结束日期")]
+        public DateTime EndTime { get; set; }
+    }
 }

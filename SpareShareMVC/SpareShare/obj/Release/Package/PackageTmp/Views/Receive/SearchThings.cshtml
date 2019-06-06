@@ -2,45 +2,169 @@
 
 @{
     ViewBag.Title = "查询捐赠物品";
+    ViewBag.DetailsURL = "/Receive/ThingsDetail/";
 }
+@section head
+{
+    @Scripts.Render("~/Scripts/MyScripts/jqthumb.min.js")
+    <script>
+        $(function(){
+            images();
+            $(window).resize(function () {
+                images();
+            })
+            $("#file1").on("change", function () {
+                var file = this.files[0];
+                if (this.files && file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#img1").attr("src", e.target.result);
+                        images();
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
 
+        });
+        function images(){
+            var imgwidth=$('.thumbnail:first').width();
+            $('.thumbnail img').jqthumb({
+                classname:"img-thumbnail",
+                width : imgwidth,//宽度
+                height : 200,//高度
+            });
+        }
+    </script>
+    <style>
+        .myclass {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            display: inline;
+        }
+                 .caption .badge{
+            color:#ffffff;
+        }
+        .caption .sameprovince{
+            background-color:#ff6a00;
+        }
+        .caption .sameschool{
+            background-color:forestgreen;
+        }
+
+    </style>
+}
 <h2>查询捐赠物品</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Detail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Detail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.ActionLink("详情", "ThingsDetail", new {id=item.ThingId })
-        </td>
-    </tr>
+@*关键字查询表单*@
+@using (Html.BeginForm("SearchThings", "Receive", FormMethod.Get))
+{
+    <p>
+        查询物品: @Html.TextBox("keywords", "", new { @class = "form-control" })
+        <button type="submit" class="btn btn-default">搜索</button> &nbsp;&nbsp;| &nbsp;&nbsp;
+        <button data-toggle="modal" data-target="#myModal" class="btn btn-info">
+            <span class="glyphicon glyphicon-camera"></span> 以图搜图
+        </button>
+    </p>
 }
-
-</table>
+<!-- 模态框（Modal） -->
+@using (Html.BeginForm("SearchThings", "Receive", FormMethod.Post, new { @class="form-horizontal",role = "form", enctype = "multipart/form-data" }))
+{
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">上传图片</h4>
+                </div>
+                <div class="modal-body form-group">
+                        <div class="col-md-10 jqthumb">
+                            <img src="~/Files/1.png" alt="" class="img-thumbnail" id="img1" style="width:200px; height:200px" />
+                            <input type="file" name="Image" id="file1" />
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <input type="submit" value="提交" name="action" class="btn btn-primary" />
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+}
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(0).Take(4))
+        {
+            <div class="col-sm-6 col-md-3 myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+                    <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+                    <div class="caption">
+                        <p>@item.Thing.Name @Html.Raw(PublicFunction.GetSameSch(item.prior)) @Html.Raw(PublicFunction.GetSamePro(item.prior))</p>
+                        @Html.Raw(PublicFunction.GetThingStatus(item.Thing.Status))
+                        <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+                    </div>
+                </a>
+            </div>
+            }
+    }
+</div>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(4).Take(4))
+        {
+            <div class="col-sm-6 col-md-3 myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+                    <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+                    <div class="caption">
+                        <p>@item.Thing.Name @Html.Raw(PublicFunction.GetSameSch(item.prior)) @Html.Raw(PublicFunction.GetSamePro(item.prior))</p>
+                        @Html.Raw(PublicFunction.GetThingStatus(item.Thing.Status))
+                        <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(8).Take(4))
+        {
+            <div class="col-sm-6 col-md-3 myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+                    <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+                    <div class="caption">
+                        <p>@item.Thing.Name @Html.Raw(PublicFunction.GetSameSch(item.prior)) @Html.Raw(PublicFunction.GetSamePro(item.prior))</p>
+                        @Html.Raw(PublicFunction.GetThingStatus(item.Thing.Status))
+                        <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<div style="text-align:center">
+    <ul id="page"></ul>
+</div>
+@section Scripts{
+    @Scripts.Render("~/Scripts/MyScripts/bootstrap-paginator.js")
+    <script>
+        $(function () {
+            var currentPage = @(ViewBag.currentPage);
+            var totalPages = @(ViewBag.totalPages);
+            $("#page").bootstrapPaginator({
+                bootstrapMajorVersion: 3, //对应的bootstrap版本
+                currentPage: currentPage, //当前页数
+                numberOfPages: 5, //每次显示页数
+                totalPages: totalPages, //总页数
+                shouldShowPage: true, //是否显示该按钮
+                useBootstrapTooltip: true,
+                onPageClicked: function (event, originalEvent, type, page) {
+                    var urlSearch="@ViewBag.searchString";
+                    window.location.href = "http://"+window.location.host+"/Receive/SearchThings?keywords="+urlSearch+"&currentPage="+page;
+                    //console.log(window.location.host);
+                    //console.log(window.location.href);
+                }
+            });
+        });
+    </script>
+}

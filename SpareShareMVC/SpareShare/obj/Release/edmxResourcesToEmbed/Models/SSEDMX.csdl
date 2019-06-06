@@ -7,12 +7,22 @@
     <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="RegTime" Type="DateTime" Precision="3" />
+    <Property Name="Province" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="School" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="QQ" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="Sex" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="IsAdmin" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
   </EntityType>
   <EntityContainer Name="SSDBEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Users" EntityType="Self.Users" />
     <EntitySet Name="Things" EntityType="SSDBModel.Things" />
     <EntitySet Name="Quests" EntityType="SSDBModel.Quests" />
     <EntitySet Name="ThingsQuests" EntityType="SSDBModel.ThingsQuests" />
+    <EntitySet Name="Comments" EntityType="SSDBModel.Comments" />
+    <EntitySet Name="Assess" EntityType="SSDBModel.Assess" />
+    <EntitySet Name="Checks" EntityType="SSDBModel.Checks" />
   </EntityContainer>
   <EntityType Name="Things">
     <Key>
@@ -25,6 +35,9 @@
     <Property Name="DonatorId" Type="Int32" Nullable="false" />
     <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="ImageUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ReleaseTime" Type="DateTime" Precision="3" />
+    <Property Name="CheckId" Type="Int32" />
+    <Property Name="ImageHash" Type="String" MaxLength="64" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="Quests">
     <Key>
@@ -36,6 +49,8 @@
     <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="Detail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ReleaseTime" Type="DateTime" Precision="3" />
+    <Property Name="CheckId" Type="Int32" />
   </EntityType>
   <EntityType Name="ThingsQuests">
     <Key>
@@ -44,5 +59,43 @@
     </Key>
     <Property Name="ThingId" Type="Int32" Nullable="false" />
     <Property Name="QuestId" Type="Int32" Nullable="false" />
+    <Property Name="Time" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Comments">
+    <Key>
+      <PropertyRef Name="ThingId" />
+      <PropertyRef Name="ReceiverId" />
+    </Key>
+    <Property Name="ThingId" Type="Int32" Nullable="false" />
+    <Property Name="ReceiverId" Type="Int32" Nullable="false" />
+    <Property Name="Text" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="NewScore" Type="Int32" />
+    <Property Name="SimilarScore" Type="Int32" />
+    <Property Name="UsefulScore" Type="Int32" />
+    <Property Name="SpeedScore" Type="Int32" />
+    <Property Name="BeautifulScore" Type="Int32" />
+    <Property Name="CommentTime" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Assess">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="CheckedNum" Type="Int32" />
+    <Property Name="DonateNum" Type="Int32" />
+    <Property Name="ReceiveNum" Type="Int32" />
+    <Property Name="CreditPoint" Type="Int32" />
+    <Property Name="CreditLevel" Type="Int32" />
+    <Property Name="Limit" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Checks">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AdminId" Type="Int32" />
+    <Property Name="Result" Type="Int32" />
+    <Property Name="RefuseReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CheckedTime" Type="DateTime" Precision="3" />
   </EntityType>
 </Schema>

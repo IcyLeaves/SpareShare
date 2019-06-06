@@ -2,107 +2,151 @@
 
 @{
     ViewBag.Title = "我的捐赠物品";
+    ViewBag.DetailsURL = "/Donate/ThingsDetail/";
 }
 @section head{
-     <script>
-         $(function () {
-             $("#statusFilter").children().click(setStatus);
-             $("#status").val("@ViewBag.Status");
-         });
-         function setStatus()
-         {
-             var btn = $(this).children().eq(0);
-             //alert("this.val="+btn.val());
-             $("#status").val(btn.val());
-             //alert("status.val="+$("#status").val());
-             $("SearchForm").submit();
-         }
-     </script>
+    <script>
+        $(function(){
+            images();
+            $(window).resize(function () {
+                images();
+            })
+        });
+        function images(){
+            var imgwidth=$('.thumbnail:first').width();
+            $('.thumbnail img').jqthumb({
+                classname:"img-thumbnail",
+                width : imgwidth,//宽度
+                height : 200,//高度
+            });
+        }
+    </script>
+    <style>
+        .myclass {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            display: inline;
+        }
+    </style>
+    <script>
+        $(function () {
+            $("#statusFilter").children().click(setStatus);
+            $("#status").val("@ViewBag.Status");
+        });
+        function setStatus()
+        {
+            var btn = $(this).children().eq(0);
+            //alert("this.val="+btn.val());
+            $("#status").val(btn.val());
+            //alert("status.val="+$("#status").val());
+            $("SearchForm").submit();
+        }
+    </script>
 }
 <h2>我的捐赠物品</h2>
-@using (Html.BeginForm("MyThingsList", "Donate", FormMethod.Get,new { id = "SearchForm" }))
+@using (Html.BeginForm("MyThingsList", "Donate", FormMethod.Get, new { id = "SearchForm" }))
 {
     @*关键字查询表单*@
     <p>
         查询物品: @Html.TextBox("keywords", "", new { @class = "form-control" })
         @*存放status的隐藏控件*@
-        <input hidden="hidden" id="status" name="status" value=""/>
+        <input hidden="hidden" id="status" name="status" value="" />
         <button type="submit" class="btn btn-default">搜索</button>
     </p>
-
     @*状态筛选按钮组*@
     <div id="statusFilter" class="row" style="text-align:center">
         <div class="col-md-2">
             <button value="0" class="btn btn-default" style="width:96px;">
+                <span class="glyphicon glyphicon-align-left" style="font-size:20px;"></span><br />
                 全部
             </button>
         </div>
         <div class="col-md-2">
             <button value="1" class="btn btn-default" style='color:Orange'>
+                <span class="glyphicon glyphicon-paperclip" style="font-size:20px"></span><br />
                 正在审核中
             </button>
         </div>
         <div class="col-md-2">
-            <button type="submit" value="2"  class="btn btn-default" style='color:firebrick'>
+            <button type="submit" value="2" class="btn btn-default" style='color:firebrick'>
+                <span class="glyphicon glyphicon-remove" style="font-size:20px"></span><br />
                 审核未通过
             </button>
         </div>
         <div class="col-md-2">
-            <button type="submit" value="3"  class="btn btn-default" style='color:cadetblue'>
+            <button type="submit" value="3" class="btn btn-default" style='color:cadetblue'>
+                <span class="glyphicon glyphicon-time" style="font-size:20px"></span><br />
                 物品闲置中
             </button>
         </div>
         <div class="col-md-2">
-            <button type="submit" value="4"  class="btn btn-default" style='color:forestgreen'>
+            <button type="submit" value="4" class="btn btn-default" style='color:forestgreen'>
+                <span class="glyphicon glyphicon-transfer" style="font-size:20px"></span><br />
                 已接受捐赠
             </button>
         </div>
         <div class="col-md-2">
             <button type="submit" value="5" class="btn btn-default" style='color:mediumPurple'>
+                <span class="glyphicon glyphicon-ok" style="font-size:20px"></span><br />
                 捐赠已成功
             </button>
         </div>
     </div>
-
-
 }
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Detail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Detail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.ActionLink("详情","ThingsDetail",new { id =item.ThingId})
-        </td>
-    </tr>
-}
-</table>
+<br />
+<div class="row">
+    @{
+    foreach (var item in Model.Skip(0).Take(4))
+    {
+    <div class="col-sm-6 col-md-3 myclass">
+        <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+            <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+            <div class="caption">
+                <p>@item.Thing.Name</p>
+                @Html.Raw(PublicFunction.GetThingStatus(item.Thing.Status))
+                <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+            </div>
+        </a>
+    </div>
+        }
+    }
+</div>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(4).Take(4))
+        {
+    <div class="col-sm-6 col-md-3 myclass">
+        <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+            <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+            <div class="caption">
+                <p>@item.Thing.Name</p>
+                @Html.Raw(PublicFunction.GetThingStatus(item.Thing.Status))
+                <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+            </div>
+        </a>
+    </div>
+        }
+    }
+</div>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(8).Take(4))
+        {
+    <div class="col-sm-6 col-md-3 myclass">
+        <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+            <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+            <div class="caption">
+                <p>@item.Thing.Name</p>
+                @Html.Raw(PublicFunction.GetThingStatus(item.Thing.Status))
+                <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+            </div>
+        </a>
+    </div>
+        }
+    }
+</div>
 <div style="text-align:center">
     <ul id="page"></ul>
 </div>

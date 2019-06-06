@@ -1,0 +1,92 @@
+﻿@model SpareShare.Models.AdminChartsViewModel
+@{
+    ViewBag.Title = "管理报表";
+}
+@section head{
+    <script src="~/Scripts/MyScripts/echarts.min.js"></script>
+    <link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="~/Scripts/MyScripts/jquery.easyui.min.js"></script>
+    <script src="~/Scripts/MyScripts/easyui-lang-zh_CN.js"></script>
+    <link href="~/Content/easyui.css" rel="stylesheet">
+}
+
+<h2>管理报表</h2>
+@using (Html.BeginForm("AdminCharts", "Admin", new { }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.StartTime, new { @class = "col-md-2 control-label" })
+        <div class="input-group date form_date col-md-3" data-date="@ViewBag.Start" data-date-format="yyyy MM dd" data-link-field="StartTime" data-link-format="yyyy-mm-dd">
+            <input class="form-control" size="16" type="text" value="@ViewBag.Start" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+        @Html.HiddenFor(m => m.StartTime)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.EndTime, new { @class = "col-md-2 control-label" })
+        <div class="input-group date form_date col-md-3" data-date="@ViewBag.End" data-date-format="yyyy MM dd" data-link-field="EndTime" data-link-format="yyyy-mm-dd">
+            <input class="form-control" size="16" type="text" value="@ViewBag.End" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+        <input type="hidden" id="dtp_input2" value="" /><br />
+        @Html.HiddenFor(m => m.EndTime)
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="查询" class="btn btn-success" />
+        </div>
+    </div>
+}
+<table id="dg" title="订单交易细表" style="width:100%;height:450px"
+       data-options="rownumbers:true,singleSelect:true,method:'get'">
+    <thead>
+        <tr>
+            <th data-options="field:'ThingName',width:200">捐赠物品名</th>
+            <th data-options="field:'ThingType',width:70,align:'center'">物品类别</th>
+            <th data-options="field:'GiverName',width:180">捐赠者用户名</th>
+            <th data-options="field:'QuestName',width:200">受助请求名</th>
+            <th data-options="field:'QuestType',width:70,align:'center'">受助类别</th>
+            <th data-options="field:'ReceiverName',width:180">受助方用户名</th>
+            <th data-options="field:'DealTime',width:160,align:'center'">送达时间</th>
+        </tr>
+    </thead>
+</table>
+
+
+@section Scripts{
+    <script type="text/javascript" src="~/Scripts/MyScripts/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="~/Scripts/MyScripts/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $('.form_date').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+                var da=@Html.Raw(ViewBag.resData);
+                for(var i=0,len=da.length;i<len;i++)
+                {
+                    //使用正则表达式将生日属性中的非数字（\D）删除
+                    //并把得到的毫秒数转换成数字类型
+                    var timeMilliseconds = parseInt(da[i].DealTime.replace(/\D/igm, ""));
+                    da[i].DealTime=loadtime(timeMilliseconds);
+                }
+
+                $('#dg').datagrid({ data: da});
+            
+        })
+        function loadtime(time) {
+            var date = new Date(time + 8 * 3600 * 1000);
+            return date.toJSON().substr(0, 19).replace('T', ' ');
+        }
+    </script>
+}

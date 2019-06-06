@@ -5,6 +5,10 @@
 @section head{
     <script>
         $(function(){
+            images();
+            $(window).resize(function () {
+                images();
+            })
             $("#file1").on("change", function () {
                 var file = this.files[0];
                 if (this.files && file) {
@@ -15,55 +19,152 @@
                     }
                     reader.readAsDataURL(file);
                 }
-            })
+            });
+
+            $("#input1").attr("readonly", @(Model != null && Model.Quest != null?"true":"false"));
+            $("#input2").attr("readonly", @(Model != null && Model.Quest != null ? "true" : "false"));
         });
+        function images(){
+            $('.jqthumb img').jqthumb({
+                classname:"img-thumbnail",
+                width : 200,//宽度
+                height : 200,//高度
+            });
+        }
+
     </script>
+<style>
+    #SS {
+        height: 40px;
+        display: inline;
+        opacity: 0.4;
+    }
+
+        #SS:hover {
+            opacity: 1;
+        }
+
+    .quest .quest-name {
+        vertical-align: middle;
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .quest .quest-type {
+        color: #999999;
+        vertical-align: middle;
+        margin-left: 20px;
+    }
+
+    .reason {
+        margin-top: 5px;
+    }
+
+        .reason .reason-text {
+            vertical-align: middle;
+            font-size: 15px;
+        }
+
+    .info {
+        color: #999999;
+    }
+
+    .row {
+        margin: 0 0 40px 0;
+    }
+
+        .row .line {
+            width: 100%;
+            border: solid #acacac;
+            border-width: 1px 0 0 0;
+            position: relative;
+            left: 0;
+            top: 19px;
+            z-index: -1;
+        }
+
+        .row .refuse {
+            margin: 20px;
+            color: indianred;
+            font-weight: bold;
+        }
+
+    .row-title {
+        padding-right: 10px;
+        font-size: 24px;
+        background-color: white;
+        position: relative;
+        left: 0;
+        top: 0;
+        z-index: 3;
+    }
+
+        .row-title img {
+            height: 24px;
+            width: 24px;
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+
+    .thing-right {
+        border-left: 1px dashed #acacac;
+    }
+
+    .thing-left dl {
+        margin-top: 0;
+    }
+
+        .thing-left dl dt {
+            color: #999999;
+            font-weight: normal;
+            font-size: 12px;
+            width: 50px;
+            text-align: center;
+            margin: 5px 15px 5px 5px;
+        }
+
+        .thing-left dl dd {
+            margin-left: 0px;
+            line-height: 26.8px;
+        }
+</style>
+
 }
-
+<h2> </h2>
 @* 受助请求信息 *@
-@if (Model!=null)
+@if (Model!=null && Model.Quest != null)
 {
-    <h2>
-        受助请求信息
-    </h2>
-    <div>
-        <dl class="dl-horizontal">
-
-            <dt>
-                @Html.DisplayNameFor(model => model.qName)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.qName)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.qType)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.qType)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.qDetail)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.qDetail)
-            </dd>
-        </dl>
+    <div class="row">
+        <div class="line"></div>
+        <span class="row-title"><img src="~/Files/wenhao.png" /><span style="vertical-align:middle;">受助请求</span></span>
+        <div class="row" style="margin:10px 0 0 0;">
+            <div class="quest">
+                <span class="quest-name">@Model.Quest.Name</span>
+            </div>
+            <div class="reason">
+                <span class="reason-text">@Model.Quest.Detail</span>
+            </div>
+            <p></p>
+            <div class="info">
+                <span>
+                    类别：@Model.Quest.Type
+                </span><br />
+                <span style="float:right;margin-left:3px;">发布于@(PublicFunction.TransTime(Model.Quest.ReleaseTime.Value))</span>
+                <a href="~/User/Credit/@(Model.Receiver.UserId)" style="float:right"><span class="glyphicon glyphicon-user"></span> @Model.Receiver.Username </a>
+            </div>
+        </div>
     </div>
 }
 <h2>上传捐赠物品</h2>
 @* 上传物品表单 *@
-@using (Html.BeginForm("UploadThings", "Donate", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("UploadThings", "Donate", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(m => m.tName, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.tName, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.tName, new { @class = "form-control", id = "input1" })
             @Html.ValidationMessageFor(m => m.tName, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -80,7 +181,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.tType, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DropDownListFor(m => m.tType, new SelectList(selectList.AsEnumerable(), "Value", "Text"), new { @class = "form-control" })
+            @Html.DropDownListFor(m => m.tType, new SelectList(selectList.AsEnumerable(), "Value", "Text"), new { @class = "form-control", id = "input2" })
         </div>
     </div>
     
@@ -92,7 +193,7 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
+        <div class="col-md-offset-2 col-md-10 jqthumb">
             <img src="~/Files/1.png" alt="" class="img-thumbnail" id="img1" style="width:200px; height:200px" />
         </div>
     </div>
@@ -103,10 +204,10 @@
             @Html.ValidationMessageFor(m => m.Image, "", new { @class = "text-danger" })
         </div>
     </div>
-    if (Model != null)
+    if (Model != null && Model.Quest != null)
     {
         //hidden提交QuestId
-        <input name="qId" id="qId" type="hidden" value="@Model.qId">
+        <input name="qId" id="qId" type="hidden" value="@Model.Quest.Id">
     }
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

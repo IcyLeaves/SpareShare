@@ -1,58 +1,171 @@
-﻿@model SpareShare.Models.Quests
+﻿@model SpareShare.Models.DetailsViewModel
 
 @{
     ViewBag.Title = "受助请求信息";
 }
+@section head{
+    <script>
+        $(function(){
+            images();
+            $(window).resize(function () {
+                images();
+            })
+        });
+        function images(){
+            var imgwidth=$('.jqthumb:first').width()*0.7;
+            $('.jqthumb img').jqthumb({
+                classname:"img-thumbnail",
+                width : imgwidth,//宽度
+                height : imgwidth,//高度
+            });
+        }
+    </script>
+    <style>
+        #SS {
+            height: 40px;
+            display: inline;
+            opacity: 0.4;
+        }
 
-<h2>受助请求信息</h2>
+            #SS:hover {
+                opacity: 1;
+            }
 
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ReceiverId)
-        </dt>
+        .quest .quest-name {
+            vertical-align: middle;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.ReceiverId)
-        </dd>
+        .quest .quest-type {
+            color: #999999;
+            vertical-align: middle;
+            margin-left: 20px;
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+        .reason {
+            margin-top: 5px;
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+            .reason .reason-text {
+                vertical-align: middle;
+                font-size: 15px;
+            }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
+        .info {
+            color: #999999;
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.Type)
-        </dd>
+        .row {
+            margin: 0 0 40px 0;
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Detail)
-        </dt>
+            .row .line {
+                width: 100%;
+                border: solid #acacac;
+                border-width: 1px 0 0 0;
+                position: relative;
+                left: 0;
+                top: 19px;
+                z-index: -1;
+            }
 
-        <dd>
-            @Html.DisplayFor(model => model.Detail)
-        </dd>
+            .row .refuse {
+                margin: 20px;
+                color: indianred;
+                font-weight: bold;
+            }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
+        .row-title {
+            padding-right: 10px;
+            font-size: 24px;
+            background-color: white;
+            position: relative;
+            left: 0;
+            top: 0;
+            z-index: 3;
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
+            .row-title img {
+                height: 24px;
+                width: 24px;
+                margin-right: 15px;
+                vertical-align: middle;
+            }
 
-    </dl>
+        .thing-right {
+            border-left: 1px dashed #acacac;
+        }
+
+        .thing-left dl {
+            margin-top: 0;
+        }
+
+            .thing-left dl dt {
+                color: #999999;
+                font-weight: normal;
+                font-size: 12px;
+                width: 50px;
+                text-align: center;
+                margin: 5px 15px 5px 5px;
+            }
+
+            .thing-left dl dd {
+                margin-left: 0px;
+                line-height: 26.8px;
+            }
+    </style>
+}
+<h2> </h2>
+@*受助请求块*@
+<div class="row">
+    <div class="line"></div>
+    <span class="row-title"><img src="~/Files/wenhao.png" /><span style="vertical-align:middle;">受助请求</span></span>
+    <div class="row" style="margin:10px 0 0 0;">
+        <div class="quest">
+            <span class="quest-name">@Model.Quest.Name</span>
+        </div>
+        <div class="reason">
+            <span class="reason-text">@Model.Quest.Detail</span>
+        </div>
+        <p></p>
+        <div class="info">
+            <span>
+                类别：@Model.Quest.Type
+            </span><br />
+            <span style="float:right;margin-left:3px;">发布于@(PublicFunction.TransTime(Model.Quest.ReleaseTime.Value))</span>
+            <a href="~/User/Credit/@(Model.Receiver.UserId)" style="float:right"><span class="glyphicon glyphicon-user"></span> @Model.Receiver.Username </a>
+        </div>
+    </div>
 </div>
-@using (Html.BeginForm("QuestsDetail", "Admin", new { id = Model.Id }, FormMethod.Post, new { id = "AssessForm" }))
+
+@using (Html.BeginForm("QuestsDetail", "Admin", new { id = Model.Quest.Id }, FormMethod.Post, new { id = "AssessForm" }))
 {
     <input type="submit" value="通过" name="action" class="btn btn-success" />
-    <button type="submit" value="拒绝" class="btn btn-danger" name="action" >拒绝</button>
+    <!-- 按钮触发模态框 -->
+    <button class="btn btn-danger" name="action" data-toggle="modal" data-target="#myModal">拒绝</button>
     <input type="submit" value="取消" name="action" class="btn btn-link" />
+}
+<!-- 模态框（Modal） -->
+@using (Html.BeginForm("QuestsDetail", "Admin", new { id = Model.Quest.Id }, FormMethod.Post, new { id = "AssessForm" }))
+{
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">说明拒绝理由</h4>
+                </div>
+                <div class="modal-body form-group">
+                    <label class="control-label">拒绝理由</label>
+                    <textarea class="form-control" name="reason" rows="3" style="max-width:none"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <input type="submit" value="提交" name="action" class="btn btn-primary" />
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 }

@@ -6,8 +6,15 @@
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("你好，" + Session["usrName"] + "!", "Manage", "User", routeValues: null, htmlAttributes: new { title = "Manage" })
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                你好，@(Session["usrName"])!
+            </a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("个人信息", "Manage", "User")</li>
+                <li>@Html.ActionLink("信誉评价", "Credit", "User")</li>
+            </ul>
+            @*@Html.ActionLink("你好，" + Session["usrName"] + "!", "ToManagePage", "SSAccount")*@
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">注销</a></li>
     </ul>

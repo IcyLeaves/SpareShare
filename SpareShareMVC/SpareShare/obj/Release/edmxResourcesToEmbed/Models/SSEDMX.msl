@@ -4,6 +4,13 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="SSDBModel.Users">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="QQ" ColumnName="QQ" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="School" ColumnName="School" />
+          <ScalarProperty Name="Province" ColumnName="Province" />
+          <ScalarProperty Name="RegTime" ColumnName="RegTime" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Username" ColumnName="Username" />
           <ScalarProperty Name="Password" ColumnName="Password" />
@@ -13,6 +20,9 @@
     <EntitySetMapping Name="Things">
       <EntityTypeMapping TypeName="SSDBModel.Things">
         <MappingFragment StoreEntitySet="Things">
+          <ScalarProperty Name="ImageHash" ColumnName="ImageHash" />
+          <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+          <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
           <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="DonatorId" ColumnName="DonatorId" />
@@ -26,6 +36,8 @@
     <EntitySetMapping Name="Quests">
       <EntityTypeMapping TypeName="SSDBModel.Quests">
         <MappingFragment StoreEntitySet="Quests">
+          <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+          <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="Detail" ColumnName="Detail" />
           <ScalarProperty Name="Type" ColumnName="Type" />
@@ -38,8 +50,48 @@
     <EntitySetMapping Name="ThingsQuests">
       <EntityTypeMapping TypeName="SSDBModel.ThingsQuests">
         <MappingFragment StoreEntitySet="ThingsQuests">
+          <ScalarProperty Name="Time" ColumnName="Time" />
           <ScalarProperty Name="QuestId" ColumnName="QuestId" />
           <ScalarProperty Name="ThingId" ColumnName="ThingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="SSDBModel.Comments">
+        <MappingFragment StoreEntitySet="Comments">
+          <ScalarProperty Name="CommentTime" ColumnName="CommentTime" />
+          <ScalarProperty Name="BeautifulScore" ColumnName="BeautifulScore" />
+          <ScalarProperty Name="SpeedScore" ColumnName="SpeedScore" />
+          <ScalarProperty Name="UsefulScore" ColumnName="UsefulScore" />
+          <ScalarProperty Name="SimilarScore" ColumnName="SimilarScore" />
+          <ScalarProperty Name="NewScore" ColumnName="NewScore" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
+          <ScalarProperty Name="ThingId" ColumnName="ThingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Assess">
+      <EntityTypeMapping TypeName="SSDBModel.Assess">
+        <MappingFragment StoreEntitySet="Assess">
+          <ScalarProperty Name="Limit" ColumnName="Limit" />
+          <ScalarProperty Name="CreditLevel" ColumnName="CreditLevel" />
+          <ScalarProperty Name="CreditPoint" ColumnName="CreditPoint" />
+          <ScalarProperty Name="ReceiveNum" ColumnName="ReceiveNum" />
+          <ScalarProperty Name="DonateNum" ColumnName="DonateNum" />
+          <ScalarProperty Name="CheckedNum" ColumnName="CheckedNum" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Checks">
+      <EntityTypeMapping TypeName="SSDBModel.Checks">
+        <MappingFragment StoreEntitySet="Checks">
+          <ScalarProperty Name="CheckedTime" ColumnName="CheckedTime" />
+          <ScalarProperty Name="RefuseReason" ColumnName="RefuseReason" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

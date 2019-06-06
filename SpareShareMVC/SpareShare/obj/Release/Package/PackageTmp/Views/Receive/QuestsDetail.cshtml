@@ -1,55 +1,290 @@
-﻿@model SpareShare.Models.Quests
+﻿@model SpareShare.Models.DetailsViewModel
 
 @{
     ViewBag.Title = "受助请求信息";
 }
+@section head{
+<script src="~/Scripts/MyScripts/echarts.min.js"></script>
+    <script>
+        $(function(){
+            images();
+            $(window).resize(function () {
+                images();
+            })
+        });
+        function images(){
+            var imgwidth=$('.jqthumb:first').width()*0.7;
+            $('.jqthumb img').jqthumb({
+                classname:"img-thumbnail",
+                width : imgwidth,//宽度
+                height : imgwidth,//高度
+            });
+        }
+    </script>
+    <style>
+        #SS {
+            height: 40px;
+            display: inline;
+            opacity: 0.4;
+        }
 
-<h2>受助请求信息</h2>
+            #SS:hover {
+                opacity: 1;
+            }
 
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ReceiverId)
-        </dt>
+        .quest .quest-name {
+            vertical-align: middle;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.ReceiverId)
-        </dd>
+        .quest .quest-type {
+            color: #999999;
+            vertical-align: middle;
+            margin-left: 20px;
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+        .reason {
+            margin-top: 5px;
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+            .reason .reason-text {
+                vertical-align: middle;
+                font-size: 15px;
+            }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
+        .info {
+            color: #999999;
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.Type)
-        </dd>
+        .row {
+            margin: 0 0 40px 0;
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Detail)
-        </dt>
+            .row .line {
+                width: 100%;
+                border: solid #acacac;
+                border-width: 1px 0 0 0;
+                position: relative;
+                left: 0;
+                top: 19px;
+                z-index: -1;
+            }
 
-        <dd>
-            @Html.DisplayFor(model => model.Detail)
-        </dd>
-    </dl>
+            .row .refuse {
+                margin: 20px;
+                color: indianred;
+                font-weight: bold;
+            }
+
+        .row-title {
+            padding-right: 10px;
+            font-size: 24px;
+            background-color: white;
+            position: relative;
+            left: 0;
+            top: 0;
+            z-index: 3;
+        }
+
+            .row-title img {
+                height: 24px;
+                width: 24px;
+                margin-right: 15px;
+                vertical-align: middle;
+            }
+
+        .thing-right {
+            border-left: 1px dashed #acacac;
+        }
+
+        .thing-left dl {
+            margin-top: 0;
+        }
+
+            .thing-left dl dt {
+                color: #999999;
+                font-weight: normal;
+                font-size: 12px;
+                width: 50px;
+                text-align: center;
+                margin: 5px 15px 5px 5px;
+            }
+
+            .thing-left dl dd {
+                margin-left: 0px;
+                line-height: 26.8px;
+            }
+    </style>
+}
+<h2> </h2>
+@*受助请求块*@
+<div class="row">
+    <div class="line"></div>
+    <span class="row-title"><img src="~/Files/wenhao.png" /><span style="vertical-align:middle;">受助请求</span></span>
+    <div class="row" style="margin:10px 0 0 0;">
+        <div class="quest">
+            <span class="quest-name">@Model.Quest.Name</span>
+        </div>
+        <div class="reason">
+            <span class="reason-text">@Model.Quest.Detail</span>
+        </div>
+        <p></p>
+        <div class="info">
+            <span>
+                类别：@Model.Quest.Type
+            </span><br />
+            <span style="float:right;margin-left:3px;">发布于@(PublicFunction.TransTime(Model.Quest.ReleaseTime.Value))</span>
+            <a href="~/User/Credit/@(Model.Receiver.UserId)" style="float:right"><span class="glyphicon glyphicon-user"></span> @Model.Receiver.Username </a>
+        </div>
+    </div>
 </div>
-@using (Html.BeginForm("QuestsDetail", "Receive", new { id = Model.Id }, FormMethod.Post, new { id = "AssessForm" }))
+@*捐赠物品块*@
+@if (Model.Thing != null)
 {
-    if (Model.Status == "已接受受助")
+    <div class="row">
+        <div class="line"></div>
+        <span class="row-title"><img src="~/Files/aixin.png" /><span style="vertical-align:middle;">捐赠物品</span></span>
+        <div class="row" style="margin:20px 0 0 0;">
+            <div class="col-md-8 thing-left">
+                <dl class="dl-horizontal">
+                    <dt style="margin-bottom:10px">物品名称</dt>
+                    <dd style="font-size:20px"><strong>@Model.Thing.Name</strong></dd>
+                    <dt>物品类别</dt>
+                    <dd>@Model.Thing.Type</dd>
+                    <dt>备&nbsp;&nbsp;注</dt>
+                    <dd>@Model.Thing.Detail</dd>
+                </dl><br />
+                <a href="~/User/Credit/@(Model.Donator.UserId)"><span class="glyphicon glyphicon-user"></span> @Model.Donator.Username</a>
+                <span class="info">发布于@(PublicFunction.TransTime(Model.Thing.ReleaseTime.Value))</span>
+            </div>
+            <div class="col-md-4 jqthumb thing-right" style="text-align:center">
+                <img src="@PublicFunction.GetImgSrc(Model.Thing.ImageUrl)" class="img-thumbnail" style="width:70%; height:300px;" />
+            </div>
+        </div>
+    </div>
+}
+@* 审核不通过块 *@
+@if (Model.Check != null)
+{
+    <div class="row">
+        <div class="line"></div>
+        <span class="row-title"><img src="~/Files/chahao.png" /><span style="vertical-align:middle;color: indianred;">审核未通过</span></span>
+        <p class="refuse">@Model.Check.RefuseReason</p>
+    </div>
+}
+@* 评论块 *@
+@if (Model.Comment != null)
+{
+    <div class="row">
+        <div class="line"></div>
+        <span class="row-title"><img src="~/Files/pinglun.png" /><span style="vertical-align:middle;">物品评价</span></span>
+        <div class="row" style="margin:20px 0 0 0;">
+            <div class="col-md-4">
+                <div id="radar-chart" style="width:100%;height:300px;"></div>
+            </div>
+            <div class="col-md-8" height="300px">
+                <h2 style="margin-top:0;">评论</h2>
+                <p>
+                    @Model.Comment.Text
+                </p><br />
+                <a href="~/User/Credit/@(Model.Receiver.UserId)"><span class="glyphicon glyphicon-user"></span> @Model.Receiver.Username </a>
+                <span class="info" style="margin-left:5px">| @Model.Comment.CommentTime</span>
+            </div>
+        </div>
+    </div>
+}
+@using (Html.BeginForm("QuestsDetail", "Receive", new { id = Model.Quest.Id }, FormMethod.Post, new { id = "AssessForm" }))
+{
+    if (Model.Quest.Status == "已接受受助")
     {
         <input type="submit" value="确认送达" name="action" class="btn btn-success" />
     }
-    if (Model.Status == "审核未通过" || Model.Status == "正在审核中")
+    if (Model.Quest.Status == "审核未通过" || Model.Quest.Status == "正在审核中" || Model.Quest.Status == "等待受助中")
     {
         <input type="submit" value="删除" name="action" class="btn btn-danger" />
     }
+    if (Model.Quest.Status == "受助已成功" && Model.Comment==null)
+    {
+        <input hidden="hidden" value="@Model.Thing.Id" name="ThingId" />
+        <input type="submit" value="评价物品" name="action" class="btn btn-info" />
+    }
     <input type="submit" value="返回" name="action" class="btn btn-link" />
+}
+@if (Model.Thing != null && Model.Comment != null)
+{
+    <script type="text/javascript">
+    $(function () {
+        var result;
+        $.ajax({
+            url: "/Charts/CommentStatis?thingId="+@(Model.Thing.Id)+"&receiverId="+@(Model.Quest.ReceiverId),    //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true,//请求是否异步，默认为异步，这也是ajax重要特性
+            data: {},    //参数值,键值对
+            type: "GET",   //请求方式
+            success: function (req) {
+                result = req;
+                loadRadarEcharts(result);
+            },
+            complete: function () {
+                //请求完成的处理
+            },
+            error: function () {
+                //请求出错处理
+            }
+        });
+    });
+    function loadRadarEcharts(dataset) {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('radar-chart'));
+        var indicator = JSON.parse(dataset.Indicator);
+        // 指定图表的配置项和数据
+        var option = {
+            tooltip: {
+                formatter:function(params)
+                {
+                    var New = [ "很旧", "比较旧", "半新不旧", "比较新", "很新" ];
+                    var Similar = ["完全不符合", "有一点符合", "比较符合", "非常符合", "完全符合"];
+                    var Useful = ["无用", "有一点用", "比较有用", "非常有用", "正中下怀"];
+                    var Speed=["很慢","有点慢","不慢不快","有点快","很快"];
+                    var Beautiful = ["很丑", "有点丑", "普通", "挺好看", "非常好看"];
+                    return "物品评价</br>"+
+                        "新旧程度:"+New[params.value[0]-1]+"</br>"+
+                        "符合描述程度:"+Similar[params.value[1]-1]+"</br>"+
+                        "实用程度:"+Useful[params.value[2]-1]+"</br>"+
+                        "送达速度:"+Speed[params.value[3]-1]+"</br>"+
+                        "美观程度:"+Beautiful[params.value[4]-1];
+                }
+            },
+            legend: {
+                x:'left',
+                data: ['物品评价']
+            },
+            radar: {
+                // shape: 'circle',
+                name: {
+                    textStyle: {
+                        color: '#999999',
+                        padding: [3, 5]
+                    }
+                },
+                indicator: indicator
+            },
+            series: [{
+                type: 'radar',
+                areaStyle: {normal: {}},
+                data: [
+                    {
+                        value: dataset.SeriesData,
+                        name: '物品评价'
+                    }
+                ]
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+    </script>
+
 }

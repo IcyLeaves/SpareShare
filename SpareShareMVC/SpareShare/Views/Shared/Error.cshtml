@@ -10,3 +10,8 @@
 <p>@Model.Exception.Message</p>
 <p>@Model.Exception.Source</p>
 <p>@Model.Exception.HelpLink</p>
+@if (Model.Exception.InnerException != null)
+{
+    <p>@Model.Exception.InnerException.Message</p>
+    <p>@Model.Exception.InnerException.Source</p>
+}

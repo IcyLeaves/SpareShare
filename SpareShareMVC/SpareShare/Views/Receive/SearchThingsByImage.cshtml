@@ -1,0 +1,123 @@
+﻿@model IEnumerable<SpareShare.Models.ThingsListViewModel>
+
+@{
+    ViewBag.Title = "查询捐赠物品";
+    ViewBag.DetailsURL = "/Receive/ThingsDetail/";
+}
+@section head
+{
+    @Scripts.Render("~/Scripts/MyScripts/jqthumb.min.js")
+    <script>
+        $(function(){
+            images();
+            $(window).resize(function () {
+                images();
+            })
+        });
+        function images(){
+            var imgwidth=$('.thumbnail:first').width();
+            $('.thumbnail img').jqthumb({
+                classname:"img-thumbnail",
+                width : imgwidth,//宽度
+                height : 200,//高度
+            });
+        }
+    </script>
+    <style>
+        .myclass {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            display: inline;
+        }
+                         .caption .badge{
+            color:#ffffff;
+        }
+        .caption .sameprovince{
+            background-color:#ff6a00;
+        }
+        .caption .sameschool{
+            background-color:forestgreen;
+        }
+
+    </style>
+}
+<h2>查询捐赠物品</h2>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(0).Take(4))
+        {
+            <div class="col-sm-6 col-md-3 myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+                    <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+                    <div class="caption">
+                        <p>@item.Thing.Name @Html.Raw(PublicFunction.GetSameSch(item.prior)) @Html.Raw(PublicFunction.GetSamePro(item.prior))</p>
+                        @Html.Raw(PublicFunction.GetSimilar(item.similar))
+                        <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(4).Take(4))
+        {
+            <div class="col-sm-6 col-md-3 myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+                    <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+                    <div class="caption">
+                        <p>@item.Thing.Name @Html.Raw(PublicFunction.GetSameSch(item.prior)) @Html.Raw(PublicFunction.GetSamePro(item.prior))</p>
+                        @Html.Raw(PublicFunction.GetSimilar(item.similar))
+                        <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(8).Take(4))
+        {
+            <div class="col-sm-6 col-md-3 myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+                    <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+                    <div class="caption">
+                        <p>@item.Thing.Name @Html.Raw(PublicFunction.GetSameSch(item.prior)) @Html.Raw(PublicFunction.GetSamePro(item.prior))</p>
+                        @Html.Raw(PublicFunction.GetSimilar(item.similar))
+                        <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<div style="text-align:center">
+    <ul id="page"></ul>
+</div>
+@section Scripts{
+    @Scripts.Render("~/Scripts/MyScripts/bootstrap-paginator.js")
+    <script>
+        $(function () {
+            var currentPage = @(ViewBag.currentPage);
+            var totalPages = @(ViewBag.totalPages);
+            $("#page").bootstrapPaginator({
+                bootstrapMajorVersion: 3, //对应的bootstrap版本
+                currentPage: currentPage, //当前页数
+                numberOfPages: 5, //每次显示页数
+                totalPages: totalPages, //总页数
+                shouldShowPage: true, //是否显示该按钮
+                useBootstrapTooltip: true,
+                onPageClicked: function (event, originalEvent, type, page) {
+                    var urlHash="@ViewBag.hash";
+                    window.location.href = "http://"+window.location.host+"/Receive/SearchThingsByImage?hash="+urlHash+"&currentPage="+page;
+                    //console.log(window.location.host);
+                    //console.log(window.location.href);
+                }
+            });
+        });
+    </script>
+}

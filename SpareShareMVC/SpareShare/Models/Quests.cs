@@ -20,5 +20,7 @@ namespace SpareShare.Models
         public string Type { get; set; }
         public string Detail { get; set; }
         public string Status { get; set; }
+        public Nullable<System.DateTime> ReleaseTime { get; set; }
+        public Nullable<int> CheckId { get; set; }
     }
 }

@@ -21,5 +21,8 @@ namespace SpareShare.Models
         public int DonatorId { get; set; }
         public string Status { get; set; }
         public string ImageUrl { get; set; }
+        public Nullable<System.DateTime> ReleaseTime { get; set; }
+        public Nullable<int> CheckId { get; set; }
+        public string ImageHash { get; set; }
     }
 }

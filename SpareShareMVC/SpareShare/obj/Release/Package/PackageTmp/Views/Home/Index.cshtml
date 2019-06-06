@@ -1,5 +1,378 @@
 ﻿@{
+    Layout = "~/Views/Shared/_IndexLayout.cshtml";
     ViewBag.Title = "首页";
 }
 
-<h2>欢迎来到大学生闲置物品捐助系统</h2>
+@section head{
+    <script src="~/Scripts/MyScripts/echarts.min.js"></script>
+    <script src="~/Scripts/MyScripts/china.js"></script>
+    <style>
+        .jumbotron {
+            background-color: #af544c;
+            padding: 0;
+            margin-bottom: 0;
+            height: 470px;
+        }
+
+        .home {
+            color: #ffffff;
+            height: 470px;
+        }
+
+            .home .row {
+                height: 470px;
+            }
+
+                .home .row .left {
+                    text-align: center;
+                    top: 25%;
+                }
+
+                .home .row .right {
+                    position: relative;
+                    background-image: url(/Files/HOME.png);
+                    background-size: 50%;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    height: 100%;
+                }
+
+        .swim:nth-child(2n+1) {
+            background-color: #f5f5f5;
+        }
+
+        .swim {
+            background-color: #ffffff;
+            padding: 3rem 0;
+        }
+
+            .swim p {
+                font-weight: 300;
+                font-size: 21px;
+            }
+
+            .swim h2 {
+                font-size: 30px;
+            }
+
+        #map-chart {
+            width: 500px;
+            height: 500px;
+        }
+
+        .number {
+            text-align: center;
+            color: #ce7474;
+        }
+
+            .number p {
+                font-size: 50px;
+            }
+
+        .map .right {
+            text-align: center;
+            top: 140px;
+        }
+
+            .map .right h2 {
+                margin-bottom: 20px;
+            }
+
+        .line .left {
+            text-align: center;
+            top: 70px;
+        }
+
+            .line .left h2 {
+                margin-bottom: 20px;
+            }
+
+        .pie .right {
+            text-align: center;
+            top: 70px;
+        }
+
+            .pie .right h2 {
+                margin-bottom: 20px;
+            }
+    </style>
+}
+<div class="jumbotron">
+    <div class="container home">
+        <div class="row">
+            <div class="col-md-4 left">
+                <h2>大学生闲置物品捐助系统</h2>
+                <p>让每个闲置的物品，</p>
+                <p>都拥有它新的归属。</p>
+                <br />
+                <p>快速。直接。明确。</p>
+            </div>
+            <div class="col-md-8 right">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="swimcontainer">
+    <div class="swim number">
+        <div class="container">
+            <div class="row" style="position:relative;">
+                <div class="col-md-6 left">
+                    <h2>爱心用户数</h2>
+                    <p>@(ViewBag.cntUsers)</p>
+                </div>
+                <div class="col-md-6 right">
+                    <h2>捐出物品数</h2>
+                    <p>@(ViewBag.cntThings)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="swim map">
+        <div class="container">
+            <div class="row" style="position:relative;">
+                <div class="col-md-6">
+                    <div id="map-chart"></div>
+                </div>
+                <div class="col-md-5 col-md-offset-1 right">
+                    <h2>无论你在哪里</h2>
+                    <p>每一颗爱心都能彼此相连，</p>
+                    <p>每一次真诚都会不断沉淀。</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="swim line">
+        <div class="container">
+            <div class="row" style="position:relative;">
+                <div class="col-md-4 left">
+                    <h2>无论过去现在</h2>
+                    <p>爱心可能会迟到，</p>
+                    <p>但绝对不会缺席。</p>
+                </div>
+                <div class="col-md-7 col-md-offset-1 right">
+                    <div id="line-chart" style="width:100%;height:300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="swim pie">
+        <div class="container">
+            <div class="row" style="position:relative;">
+                <div class="col-md-6 left">
+                    <div id="pie-chart" style="width:100%;height:300px"></div>
+                </div>
+                <div class="col-md-6 right">
+                    <h2>无论什么种类</h2>
+                    <p>你总能找到你想要的，</p>
+                    <p>不想要的也总有归宿。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    $(function () {
+        var result;
+        $.ajax({
+            url: "/Charts/NumbersStatis",    //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true,//请求是否异步，默认为异步，这也是ajax重要特性
+            data: {},    //参数值,键值对
+            type: "GET",   //请求方式
+            success: function (req) {
+                result = req;
+                loadLineEcharts(result);
+            },
+            complete: function () {
+                //请求完成的处理
+            },
+            error: function () {
+                //请求出错处理
+            }
+        });
+        var result2;
+        $.ajax({
+            url: "/Charts/CategoryStatis",    //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true,//请求是否异步，默认为异步，这也是ajax重要特性
+            data: {},    //参数值,键值对
+            type: "GET",   //请求方式
+            success: function (req) {
+                result2 = req;
+                loadPieEcharts(result2);
+            },
+            complete: function () {
+                //请求完成的处理
+            },
+            error: function () {
+                //请求出错处理
+            }
+        });
+    });
+    function loadLineEcharts(dataset)
+    {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('line-chart'));
+        var series = JSON.parse(dataset.Series);
+        // 指定图表的配置项和数据
+        var option = {
+            title:
+                {
+                    show: true,
+                    text: '近期捐赠物品数',
+                    subtext: '',
+                    x: 'center'
+                },
+            tooltip: {
+                trigger:"axis"
+            },
+            ////工具箱配置
+            //toolbox: {
+            //    show: true,
+            //    feature: {
+            //        mark: { show: true }, // 辅助线标志，上图icon左数1/2/3，分别是启用，删除上一条，删除全部
+            //        dataView: { show: true, readOnly: false },// 数据视图，上图icon左数8，打开数据视图
+            //        magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },// 图表类型切换，当前仅支持直角系下的折线图、柱状图转换，上图icon左数6/7，分别是切换折线图，切换柱形图
+            //        restore: { show: true }, // 还原，复位原始图表，上图icon左数9，还原
+            //        saveAsImage: { show: true } // 保存为图片，上图icon左数10，保存
+            //    }
+            //},
+            xAxis: {
+                data: dataset.xAxis.data
+            },
+            legend:dataset.legend,
+            yAxis: {
+                type: 'value'
+            },
+            series: series
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+    function loadPieEcharts(dataset)
+    {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('pie-chart'));
+        var series = JSON.parse(dataset.SeriesData);
+
+        var option = {
+            title:
+                {
+                    show: true,
+                    text: '捐赠物品种类分布',
+                    subtext: '',
+                    x: 'center'
+                },
+            tooltip: {
+                formatter: "{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: dataset.legend.data
+            },
+            series: [
+                {
+                    name: '捐赠物品种类',
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: series
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+
+</script>
+<script>    
+    $(function () {
+        var result;
+        $.ajax({
+            url: "/Charts/MapStatis",    //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true,//请求是否异步，默认为异步，这也是ajax重要特性
+            data: {},    //参数值,键值对
+            type: "GET",   //请求方式
+            success: function (req) {
+                result = req;
+                loadMapEcharts(result);
+            },
+            complete: function () {
+                //请求完成的处理
+            },
+            error: function () {
+                //请求出错处理
+            }
+        });
+    });
+    function loadMapEcharts(dataset) {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('map-chart'));
+        var series = JSON.parse(dataset.SeriesData);
+        var levels = JSON.parse(dataset.Levels);
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                show: true,
+                text: '爱心地图',
+                subtext: '',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            //左侧小导航图标
+            visualMap: {
+                show: true,
+                x: 'left',
+                y: 'bottom',
+                splitList: levels,
+                color: ['#E63665', '#E84C7B', '#F16C8B', '#f37b74', '#F8ABBB', '#FBDAE1']//右边的是最少的颜色
+            },
+            //配置属性
+            series: [{
+                name: '数量',
+                type: 'map',
+                mapType: 'china',
+                roam: true,
+                scaleLimit: {
+                    min: 1.2,
+                    max: 8
+                },
+                zoom: 1.2,
+                label: {
+                    emphasis: {
+                        show: false
+                    }
+                },
+                data: series
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+</script>

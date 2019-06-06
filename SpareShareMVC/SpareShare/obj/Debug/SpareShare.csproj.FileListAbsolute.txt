@@ -87,9 +87,7 @@ D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\obj\Debug\SpareShare.cs
 D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\obj\Debug\SpareShare.dll
 D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\obj\Debug\SpareShare.pdb
 D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\dll\x86\OpenCvSharpExtern.dll
-D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\dll\x86\opencv_ffmpeg400.dll
 D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\dll\x64\OpenCvSharpExtern.dll
-D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\dll\x64\opencv_ffmpeg400_64.dll
 D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\OpenCvSharp.Blob.dll
 D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\OpenCvSharp.dll
 D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\OpenCvSharp.Extensions.dll
@@ -102,3 +100,5 @@ D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\OpenCvSharp.Extensi
 D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\OpenCvSharp.Extensions.xml
 D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\OpenCvSharp.UserInterface.pdb
 D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\OpenCvSharp.UserInterface.xml
+D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\dll\x86\opencv_ffmpeg410.dll
+D:\3rd Computer 1602\SpareShare\SpareShareMVC\SpareShare\bin\dll\x64\opencv_ffmpeg410_64.dll

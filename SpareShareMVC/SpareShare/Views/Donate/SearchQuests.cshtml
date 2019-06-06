@@ -3,7 +3,53 @@
 @{
     ViewBag.Title = "查询受助请求";
 }
+@section head{
+    <style>
+    .table:hover {
+        cursor: pointer;
+    }
 
+    .quest img {
+        height: 15px;
+        width: 15px;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+
+    .quest a {
+        vertical-align: middle;
+    }
+
+    .quest span {
+        color: #999999;
+        vertical-align: middle;
+        margin-left: 20px;
+    }
+    .quest .badge{
+            color:#ffffff;
+        }
+        .quest .sameprovince{
+            background-color:#ff6a00;
+        }
+        .quest .sameschool{
+            background-color:forestgreen;
+        }
+
+    .reason span {
+        color: #999999;
+        vertical-align: middle;
+    }
+
+    .form-control {
+        display: inline;
+    }
+</style>
+    <script>
+        function doLink(idx){
+            window.location.href="http://"+window.location.host+"/Donate/QuestsDetail/"+idx;
+        }
+    </script>
+}
 <h2>查询受助请求</h2>
 @*关键字查询表单*@
 @using (Html.BeginForm("SearchQuests", "Donate", FormMethod.Get))
@@ -13,44 +59,26 @@
         <button type="submit" class="btn btn-default">搜索</button>
     </p>
 }
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Detail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Detail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.ActionLink("详情", "QuestsDetail", new { id=item.QuestId })
-        </td>
-    </tr>
-}
-
+<table class="table table-hover">
+    @foreach (var item in Model)
+    {
+        <tr onclick="doLink(@(item.Quest.Id))">
+            <td>
+                <div class="quest">
+                    <img src="~/Files/wenhao.png" />
+                    <a>@item.Quest.Name</a>
+                    <span>@item.Quest.Type @Html.Raw(PublicFunction.GetSameSch(item.prior)) @Html.Raw(PublicFunction.GetSamePro(item.prior))</span>
+                    @Html.Raw(PublicFunction.GetQuestStatus(item.Quest.Status))
+                </div>
+                <div class="reason">
+                    <span>@item.Quest.Detail</span>
+                    <span style="float:right">发布于@(PublicFunction.TransTime(item.Quest.ReleaseTime.Value))</span>
+                </div>
+            </td>
+        </tr>
+    }
 </table>
+
 <div style="text-align:center">
     <ul id="page"></ul>
 </div>

@@ -2,42 +2,90 @@
 
 @{
     ViewBag.Title = "审核捐赠物品";
+    ViewBag.DetailsURL = "/Admin/ThingsDetail/";
 }
+@section head
+{
+    @Scripts.Render("~/Scripts/MyScripts/jqthumb.min.js")
+    <script>
+        $(function(){
+            images();
+            $(window).resize(function () {
+                images();
+            })
+        });
+        function images(){
+            var imgwidth=$('.thumbnail:first').width();
+            $('.thumbnail img').jqthumb({
+                classname:"img-thumbnail",
+                width : imgwidth,//宽度
+                height : 200,//高度
+            });
+        }
+    </script>
+    <style>
+        .myclass {
+            margin-bottom: 15px;
+        }
 
+        .form-control {
+            display: inline;
+        }
+    </style>
+}
 <h2>审核捐赠物品</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Detail)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Detail)
-        </td>
-        <td>
-            @Html.ActionLink("审核", "ThingsDetail", new { id=item.ThingId })
-        </td>
-    </tr>
-}
-
-</table>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(0).Take(4))
+        {
+            <div class="col-sm-6 col-md-3 myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+                    <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+                    <div class="caption">
+                        <p>@item.Thing.Name</p>
+                        @Html.Raw(PublicFunction.GetThingStatus(item.Thing.Status))
+                        <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(4).Take(4))
+        {
+            <div class="col-sm-6 col-md-3 myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+                    <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+                    <div class="caption">
+                        <p>@item.Thing.Name</p>
+                        @Html.Raw(PublicFunction.GetThingStatus(item.Thing.Status))
+                        <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<div class="row">
+    @{
+        foreach (var item in Model.Skip(8).Take(4))
+        {
+            <div class="col-sm-6 col-md-3 myclass">
+                <a href="@(ViewBag.DetailsURL)@(item.Thing.Id)" class="thumbnail" style="text-decoration: none">
+                    <img src="@PublicFunction.GetImgSrc(item.Thing.ImageUrl)" class="img-thumbnail" style="width:100%; height:200px;" />
+                    <div class="caption">
+                        <p>@item.Thing.Name</p>
+                        @Html.Raw(PublicFunction.GetThingStatus(item.Thing.Status))
+                        <span style="float:right; color:#808080">发布于@(PublicFunction.TransTime(item.Thing.ReleaseTime.Value))</span>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
 <div style="text-align:center">
     <ul id="page"></ul>
 </div>

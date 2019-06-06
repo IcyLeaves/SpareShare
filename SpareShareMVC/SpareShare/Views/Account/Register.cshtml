@@ -71,8 +71,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Province, new { @class = "col-md-3 control-label" })
         <div class="col-md-6">
-            @Html.TextBoxFor(m => m.Province, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Province, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.Province, new SelectList((PublicFunction.GetProvinces()).AsEnumerable(), "Value", "Text"), new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">

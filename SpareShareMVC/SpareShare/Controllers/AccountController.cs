@@ -44,10 +44,11 @@ namespace SpareShare.Controllers
                 {
                     HttpContext.Session["usrName"] = User.Username;
                     HttpContext.Session["usrId"] = User.UserId;
+                    HttpContext.Session["isAdmin"] = User.IsAdmin;
                 }
             }
             //登录成功后跳转至用户主页
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "User");
         }
 
         // GET: 打开注册界面
@@ -82,7 +83,26 @@ namespace SpareShare.Controllers
                 var u = new Users();
                 u.Username = username;
                 u.Password = password;
+                u.RegTime = DateTime.Now;
+                u.QQ = model.QQ;
+                u.Province = model.Province;
+                u.School = model.School;
+                u.Sex = model.Sex;
+                u.IsAdmin = model.isAdmin;
+                u.Email = model.Email;
                 db.Users.Add(u);
+                db.SaveChanges();
+
+                //新建Assess元组
+                var a = new Assess();
+                a.UserId = u.UserId;
+                a.CreditLevel = 1;
+                a.CheckedNum = 0;
+                a.CreditPoint = 0;
+                a.DonateNum = 0;
+                a.ReceiveNum = 0;
+                a.Limit = 1;
+                db.Assess.Add(a);
                 db.SaveChanges();
             }
             //注册成功跳转至登录页面

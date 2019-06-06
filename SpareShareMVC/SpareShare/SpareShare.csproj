@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\OpenCvSharp3-AnyCPU.4.0.0.20181129\build\OpenCvSharp3-AnyCPU.props" Condition="Exists('..\packages\OpenCvSharp3-AnyCPU.4.0.0.20181129\build\OpenCvSharp3-AnyCPU.props')" />
+  <Import Project="..\packages\OpenCvSharp4.runtime.win.4.1.0.20190416\build\net\OpenCvSharp4.runtime.win.props" Condition="Exists('..\packages\OpenCvSharp4.runtime.win.4.1.0.20190416\build\net\OpenCvSharp4.runtime.win.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -51,19 +51,19 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="OpenCvSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenCvSharp3-AnyCPU.4.0.0.20181129\lib\net40\OpenCvSharp.dll</HintPath>
+      <HintPath>..\packages\OpenCvSharp4.4.1.0.20190416\lib\net40\OpenCvSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenCvSharp.Blob, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenCvSharp3-AnyCPU.4.0.0.20181129\lib\net40\OpenCvSharp.Blob.dll</HintPath>
+      <HintPath>..\packages\OpenCvSharp4.4.1.0.20190416\lib\net40\OpenCvSharp.Blob.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenCvSharp.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenCvSharp3-AnyCPU.4.0.0.20181129\lib\net40\OpenCvSharp.Extensions.dll</HintPath>
+      <HintPath>..\packages\OpenCvSharp4.4.1.0.20190416\lib\net40\OpenCvSharp.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenCvSharp.UserInterface, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenCvSharp3-AnyCPU.4.0.0.20181129\lib\net40\OpenCvSharp.UserInterface.dll</HintPath>
+      <HintPath>..\packages\OpenCvSharp4.4.1.0.20190416\lib\net40\OpenCvSharp.UserInterface.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -188,12 +188,22 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ChartsController.cs" />
     <Compile Include="Controllers\DonateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReceiveController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Assess.cs">
+      <DependentUpon>SSEDMX.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Checks.cs">
+      <DependentUpon>SSEDMX.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Comments.cs">
+      <DependentUpon>SSEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UsersViewModel.cs" />
     <Compile Include="Models\Quests.cs">
@@ -230,12 +240,47 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicFunction.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="TencentAI.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\easyui.css" />
+    <Content Include="Content\images\accordion_arrows.png" />
+    <Content Include="Content\images\blank.gif" />
+    <Content Include="Content\images\calendar_arrows.png" />
+    <Content Include="Content\images\combo_arrow.png" />
+    <Content Include="Content\images\datagrid_icons.png" />
+    <Content Include="Content\images\datebox_arrow.png" />
+    <Content Include="Content\images\layout_arrows.png" />
+    <Content Include="Content\images\linkbutton_bg.png" />
+    <Content Include="Content\images\loading.gif" />
+    <Content Include="Content\images\menu_arrows.png" />
+    <Content Include="Content\images\messager_icons.png" />
+    <Content Include="Content\images\pagination_icons.png" />
+    <Content Include="Content\images\panel_tools.png" />
+    <Content Include="Content\images\passwordbox_close.png" />
+    <Content Include="Content\images\passwordbox_open.png" />
+    <Content Include="Content\images\searchbox_button.png" />
+    <Content Include="Content\images\slider_handle.png" />
+    <Content Include="Content\images\spinner_arrows.png" />
+    <Content Include="Content\images\tabs_icons.png" />
+    <Content Include="Content\images\tagbox_icons.png" />
+    <Content Include="Content\images\tree_icons.png" />
+    <Content Include="Content\images\validatebox_warning.png" />
     <Content Include="favicon.ico" />
     <Content Include="Files\1.png" />
+    <Content Include="Files\aixin.png" />
+    <Content Include="Files\blankStar.png" />
+    <Content Include="Files\chahao.png" />
+    <Content Include="Files\colorStar.png" />
+    <Content Include="Files\HOME.png" />
+    <Content Include="Files\info.png" />
+    <Content Include="Files\pinglun.png" />
+    <Content Include="Files\regImage.jpg" />
+    <Content Include="Files\SpareShare.png" />
+    <Content Include="Files\wenhao.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -269,7 +314,14 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\MyScripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\MyScripts\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Scripts\MyScripts\bootstrap-paginator.js" />
+    <Content Include="Scripts\MyScripts\china.js" />
+    <Content Include="Scripts\MyScripts\easyui-lang-zh_CN.js" />
+    <Content Include="Scripts\MyScripts\echarts.min.js" />
+    <Content Include="Scripts\MyScripts\jqthumb.min.js" />
+    <Content Include="Scripts\MyScripts\jquery.easyui.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
@@ -306,9 +358,16 @@
     <Content Include="Views\Receive\ThingsDetail.cshtml" />
     <Content Include="Views\User\Manage.cshtml" />
     <Content Include="Views\User\EditManage.cshtml" />
+    <Content Include="Views\Shared\_IndexLayout.cshtml" />
+    <Content Include="Views\User\Credit.cshtml" />
+    <Content Include="Views\Receive\UploadComment.cshtml" />
+    <Content Include="Views\Admin\AdminCharts.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Receive\SearchThingsByImage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Charts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -355,7 +414,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\OpenCvSharp3-AnyCPU.4.0.0.20181129\build\OpenCvSharp3-AnyCPU.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\OpenCvSharp3-AnyCPU.4.0.0.20181129\build\OpenCvSharp3-AnyCPU.props'))" />
+    <Error Condition="!Exists('..\packages\OpenCvSharp4.runtime.win.4.1.0.20190416\build\net\OpenCvSharp4.runtime.win.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\OpenCvSharp4.runtime.win.4.1.0.20190416\build\net\OpenCvSharp4.runtime.win.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

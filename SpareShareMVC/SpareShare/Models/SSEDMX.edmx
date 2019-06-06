@@ -5,28 +5,70 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="SSDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Assess">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CheckedNum" Type="int" />
+          <Property Name="DonateNum" Type="int" />
+          <Property Name="ReceiveNum" Type="int" />
+          <Property Name="CreditPoint" Type="int" />
+          <Property Name="CreditLevel" Type="int" />
+          <Property Name="Limit" Type="int" />
+        </EntityType>
+        <EntityType Name="Checks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AdminId" Type="int" />
+          <Property Name="Result" Type="int" />
+          <Property Name="RefuseReason" Type="nvarchar" MaxLength="500" />
+          <Property Name="CheckedTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="ThingId" />
+            <PropertyRef Name="ReceiverId" />
+          </Key>
+          <Property Name="ThingId" Type="int" Nullable="false" />
+          <Property Name="ReceiverId" Type="int" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" MaxLength="1000" />
+          <Property Name="NewScore" Type="int" />
+          <Property Name="SimilarScore" Type="int" />
+          <Property Name="UsefulScore" Type="int" />
+          <Property Name="SpeedScore" Type="int" />
+          <Property Name="BeautifulScore" Type="int" />
+          <Property Name="CommentTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="Quests">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CheckId" Type="int" />
           <Property Name="ReceiverId" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Type" Type="nvarchar" MaxLength="20" />
           <Property Name="Detail" Type="nvarchar" MaxLength="500" />
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="ReleaseTime" Type="datetime" />
         </EntityType>
         <EntityType Name="Things">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CheckId" Type="int" />
           <Property Name="DonatorId" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Type" Type="nvarchar" MaxLength="20" />
           <Property Name="Detail" Type="nvarchar" MaxLength="500" />
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
           <Property Name="ImageUrl" Type="nvarchar" MaxLength="500" />
+          <Property Name="ReleaseTime" Type="datetime" />
+          <Property Name="ImageHash" Type="nchar" MaxLength="64" />
         </EntityType>
         <EntityType Name="ThingsQuests">
           <Key>
@@ -35,6 +77,7 @@
           </Key>
           <Property Name="ThingId" Type="int" Nullable="false" />
           <Property Name="QuestId" Type="int" Nullable="false" />
+          <Property Name="Time" Type="datetime" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -52,6 +95,9 @@
           <Property Name="IsAdmin" Type="char" MaxLength="1" />
         </EntityType>
         <EntityContainer Name="SSDBModelStoreContainer">
+          <EntitySet Name="Assess" EntityType="Self.Assess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Checks" EntityType="Self.Checks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Quests" EntityType="Self.Quests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Things" EntityType="Self.Things" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ThingsQuests" EntityType="Self.ThingsQuests" Schema="dbo" store:Type="Tables" />
@@ -81,6 +127,9 @@
           <EntitySet Name="Things" EntityType="SSDBModel.Things" />
           <EntitySet Name="Quests" EntityType="SSDBModel.Quests" />
           <EntitySet Name="ThingsQuests" EntityType="SSDBModel.ThingsQuests" />
+          <EntitySet Name="Comments" EntityType="SSDBModel.Comments" />
+          <EntitySet Name="Assess" EntityType="SSDBModel.Assess" />
+          <EntitySet Name="Checks" EntityType="SSDBModel.Checks" />
         </EntityContainer>
         <EntityType Name="Things">
           <Key>
@@ -93,6 +142,9 @@
           <Property Name="DonatorId" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="ImageUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ReleaseTime" Type="DateTime" Precision="3" />
+          <Property Name="CheckId" Type="Int32" />
+          <Property Name="ImageHash" Type="String" MaxLength="64" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="Quests">
           <Key>
@@ -104,6 +156,8 @@
           <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Detail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ReleaseTime" Type="DateTime" Precision="3" />
+          <Property Name="CheckId" Type="Int32" />
         </EntityType>
         <EntityType Name="ThingsQuests">
           <Key>
@@ -112,6 +166,44 @@
           </Key>
           <Property Name="ThingId" Type="Int32" Nullable="false" />
           <Property Name="QuestId" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="ThingId" />
+            <PropertyRef Name="ReceiverId" />
+          </Key>
+          <Property Name="ThingId" Type="Int32" Nullable="false" />
+          <Property Name="ReceiverId" Type="Int32" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="NewScore" Type="Int32" />
+          <Property Name="SimilarScore" Type="Int32" />
+          <Property Name="UsefulScore" Type="Int32" />
+          <Property Name="SpeedScore" Type="Int32" />
+          <Property Name="BeautifulScore" Type="Int32" />
+          <Property Name="CommentTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Assess">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CheckedNum" Type="Int32" />
+          <Property Name="DonateNum" Type="Int32" />
+          <Property Name="ReceiveNum" Type="Int32" />
+          <Property Name="CreditPoint" Type="Int32" />
+          <Property Name="CreditLevel" Type="Int32" />
+          <Property Name="Limit" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Checks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdminId" Type="Int32" />
+          <Property Name="Result" Type="Int32" />
+          <Property Name="RefuseReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CheckedTime" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -138,6 +230,9 @@
           <EntitySetMapping Name="Things">
             <EntityTypeMapping TypeName="SSDBModel.Things">
               <MappingFragment StoreEntitySet="Things">
+                <ScalarProperty Name="ImageHash" ColumnName="ImageHash" />
+                <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+                <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
                 <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="DonatorId" ColumnName="DonatorId" />
@@ -151,6 +246,8 @@
           <EntitySetMapping Name="Quests">
             <EntityTypeMapping TypeName="SSDBModel.Quests">
               <MappingFragment StoreEntitySet="Quests">
+                <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+                <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Detail" ColumnName="Detail" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
@@ -163,8 +260,48 @@
           <EntitySetMapping Name="ThingsQuests">
             <EntityTypeMapping TypeName="SSDBModel.ThingsQuests">
               <MappingFragment StoreEntitySet="ThingsQuests">
+                <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="QuestId" ColumnName="QuestId" />
                 <ScalarProperty Name="ThingId" ColumnName="ThingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="SSDBModel.Comments">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="CommentTime" ColumnName="CommentTime" />
+                <ScalarProperty Name="BeautifulScore" ColumnName="BeautifulScore" />
+                <ScalarProperty Name="SpeedScore" ColumnName="SpeedScore" />
+                <ScalarProperty Name="UsefulScore" ColumnName="UsefulScore" />
+                <ScalarProperty Name="SimilarScore" ColumnName="SimilarScore" />
+                <ScalarProperty Name="NewScore" ColumnName="NewScore" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
+                <ScalarProperty Name="ThingId" ColumnName="ThingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Assess">
+            <EntityTypeMapping TypeName="SSDBModel.Assess">
+              <MappingFragment StoreEntitySet="Assess">
+                <ScalarProperty Name="Limit" ColumnName="Limit" />
+                <ScalarProperty Name="CreditLevel" ColumnName="CreditLevel" />
+                <ScalarProperty Name="CreditPoint" ColumnName="CreditPoint" />
+                <ScalarProperty Name="ReceiveNum" ColumnName="ReceiveNum" />
+                <ScalarProperty Name="DonateNum" ColumnName="DonateNum" />
+                <ScalarProperty Name="CheckedNum" ColumnName="CheckedNum" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Checks">
+            <EntityTypeMapping TypeName="SSDBModel.Checks">
+              <MappingFragment StoreEntitySet="Checks">
+                <ScalarProperty Name="CheckedTime" ColumnName="CheckedTime" />
+                <ScalarProperty Name="RefuseReason" ColumnName="RefuseReason" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

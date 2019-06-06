@@ -16,5 +16,6 @@ namespace SpareShare.Models
     {
         public int ThingId { get; set; }
         public int QuestId { get; set; }
+        public Nullable<System.DateTime> Time { get; set; }
     }
 }

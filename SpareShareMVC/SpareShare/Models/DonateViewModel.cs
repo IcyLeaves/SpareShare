@@ -8,16 +8,9 @@ namespace SpareShare.Models
 {
     public class UploadThingsViewModel
     {
-        public int qId { get; set; }
+        public Quests Quest;
 
-        [Display(Name = "请求名称")]
-        public string qName { get; set; }
-
-        [Display(Name = "请求类别")]
-        public string qType { get; set; }
-
-        [Display(Name = "请求描述")]
-        public string qDetail { get; set; }
+        public Users Receiver;
 
         [Required(ErrorMessage = "请输入物品名称")]
         [Display(Name = "物品名称")]
@@ -37,18 +30,25 @@ namespace SpareShare.Models
 
     public class ThingsListViewModel
     {
-        public int ThingId { get; set; }
+        public Things Thing { get; set; }
 
-        [Display(Name = "物品名称")]
-        public string Name { get; set; }
+        public int prior { get; set; }
 
-        [Display(Name = "物品类别")]
-        public string Type { get; set; }
+        public double similar { get; set; }
+    }
 
-        [Display(Name = "物品描述")]
-        public string Detail { get; set; }
+    public class DetailsViewModel
+    {
+        public Things Thing { get; set; }
 
-        [Display(Name = "物品状态")]
-        public string Status { get; set; }
+        public Users Donator { get; set; }
+
+        public Quests Quest { get; set; }
+
+        public Users Receiver { get; set; }
+
+        public Comments Comment { get; set; }
+
+        public Checks Check { get; set; }
     }
 }

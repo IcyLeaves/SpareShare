@@ -8,16 +8,8 @@ namespace SpareShare.Models
 {
     public class UploadQuestsViewModel
     {
-        public int tId { set; get; }
-
-        [Display(Name = "物品名称")]
-        public string tName { get; set; }
-
-        [Display(Name = "物品类别")]
-        public string tType { get; set; }
-        
-        [Display(Name = "物品描述")]
-        public string tDetail { get; set; }
+        public Things Thing { get; set; }
+        public Users Donator { get; set; }
 
         [Required(ErrorMessage = "请输入请求名称")]
         [Display(Name = "请求名称")]
@@ -34,18 +26,38 @@ namespace SpareShare.Models
 
     public class QuestsListViewModel
     {
-        public int QuestId { get; set; }
+        public Quests Quest { get; set; }
+        public int prior { get; set; }
+    }
 
-        [Display(Name = "请求名称")]
-        public string Name { get; set; }
+    public class UploadCommentViewModel
+    {
+        [Required(ErrorMessage = "请评价新旧程度")]
+        [Display(Name = "新旧程度")]
+        public int NewScore { get; set; }
 
-        [Display(Name = "请求类别")]
-        public string Type { get; set; }
+        [Required(ErrorMessage = "请评价符合描述程度")]
+        [Display(Name = "符合描述程度")]
+        public int SimilarScore { get; set; }
 
-        [Display(Name = "请求描述")]
-        public string Detail { get; set; }
+        [Required(ErrorMessage = "请评价实用程度")]
+        [Display(Name = "实用程度")]
+        public int UsefulScore { get; set; }
 
-        [Display(Name = "请求状态")]
-        public string Status { get; set; }
+        [Required(ErrorMessage = "请评价送达速度")]
+        [Display(Name = "送达速度")]
+        public int SpeedScore { get; set; }
+
+        [Required(ErrorMessage = "请评价美观程度")]
+        [Display(Name = "美观程度")]
+        public int BeautifulScore { get; set; }
+
+        [Required(ErrorMessage = "请发表一段评论")]
+        [Display(Name = "评论")]
+        public string Text { get; set; }
+
+        public Things Thing { get; set; }
+
+        public Users Donator { get; set; }
     }
 }
